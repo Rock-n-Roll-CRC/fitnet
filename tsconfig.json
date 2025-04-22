@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "useDefineForClassFields": true,
+    "incremental": true,
+
+    /* Strictness: */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    /* NOT transpiling with TypeScript: */
+    "module": "preserve",
+    "noEmit": true,
+    "jsx": "preserve",
+
+    /* Running in the DOM: */
+    "lib": ["es2022", "dom", "dom.iterable"],
+
+    /* Plugins: */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+
+    /* Custom Import Aliases: */
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "svgr.d.ts",
+    "globals.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}
