@@ -1,0 +1,18 @@
+/* stylelint-disable scale-unlimited/declaration-strict-value */
+
+@mixin remove-list-styles {
+  padding: 0;
+  list-style: none;
+}
+
+@mixin remove-input-styles {
+  padding: 0;
+  outline: 0;
+  border: 0;
+}
+
+@mixin remove-button-styles {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+}

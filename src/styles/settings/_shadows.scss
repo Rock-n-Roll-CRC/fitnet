@@ -1,0 +1,33 @@
+/* stylelint-disable rem-over-px/rem-over-px */
+
+@use "sass:map";
+
+@function get-shadow($shadow-size, $shadow-color: #000) {
+  $shadows: (
+    small: (
+      0.3px 0.5px 0.7px rgb($shadow-color, 21%),
+      0.4px 0.9px 1.3px -0.7px rgb($shadow-color, 30%),
+      1px 2px 2.9px -1.5px rgb($shadow-color, 39%),
+    ),
+
+    medium: (
+      0.3px 0.5px 0.7px rgb($shadow-color, 22%),
+      1px 2px 2.9px -0.5px rgb($shadow-color, 29%),
+      2.2px 4.4px 6.3px -1px rgb($shadow-color, 36%),
+      5px 10px 14.3px -1.5px rgb($shadow-color, 43%),
+    ),
+
+    large: (
+      0.3px 0.5px 0.7px rgb($shadow-color, 20%),
+      1.9px 3.8px 5.4px -0.2px rgb($shadow-color, 23%),
+      3.5px 7px 10px -0.4px rgb($shadow-color, 27%),
+      5.4px 10.8px 15.4px -0.6px rgb($shadow-color, 30%),
+      8.1px 16.1px 23px -0.9px rgb($shadow-color, 34%),
+      11.9px 23.8px 33.9px -1.1px rgb($shadow-color, 37%),
+      17.4px 34.9px 49.7px -1.3px rgb($shadow-color, 40%),
+      25px 50px 71.3px -1.5px rgb($shadow-color, 44%),
+    ),
+  );
+
+  @return map.get($shadows, $shadow-size);
+}
