@@ -1,0 +1,40 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.button {
+  $this: &;
+
+  @include remove-button-styles;
+  @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+
+  padding: 1rem 1.5rem;
+  font-size: $font-size-3;
+  cursor: pointer;
+  border-radius: $border-radius-small;
+  transition: all 0.15s;
+
+  &__icon {
+    inline-size: 1.5rem;
+  }
+
+  &--type-call-to-action {
+    font-weight: $font-weight-bold;
+    color: $color-neutral-1;
+    background-color: $color-primary-5;
+    box-shadow: get-shadow(small, $color-primary-3);
+
+    @media (hover: hover) {
+      &:hover {
+        box-shadow: get-shadow(medium, $color-primary-3);
+      }
+    }
+
+    &:active {
+      box-shadow: get-shadow(small, $color-primary-3);
+    }
+
+    #{$this}__icon {
+      color: $color-neutral-1;
+    }
+  }
+}
