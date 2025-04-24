@@ -1,0 +1,11 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.color-theme-switcher {
+  @include remove-button-styles;
+
+  &__icon {
+    inline-size: 2.5rem;
+    fill: $color-neutral-4;
+  }
+}

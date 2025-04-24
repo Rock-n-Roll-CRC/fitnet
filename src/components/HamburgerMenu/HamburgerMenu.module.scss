@@ -1,0 +1,9 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.hamburger-menu {
+  &__icon {
+    inline-size: 3rem;
+    color: $color-neutral-4;
+  }
+}
