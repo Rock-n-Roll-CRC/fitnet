@@ -1,4 +1,4 @@
-import MoonSVG from "@/assets/icons/moon.svg";
+import MoonSVG from "@/assets/icons/moon-outline.svg";
 
 import styles from "./ColorThemeSwitcher.module.scss";
 

@@ -4,25 +4,20 @@
 .hero {
   @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
-  padding-block: $whitespace-9;
+  padding: $whitespace-9 $whitespace-5;
   text-align: center;
   background-color: $color-neutral-1;
 
-  &__heading,
-  &__description {
-    max-inline-size: 32rem;
-  }
-
   &__heading {
     font-size: $font-size-8;
-    line-height: 1.4;
-    color: $color-neutral-5;
+    line-height: 1.2;
+    color: $color-neutral-8;
     letter-spacing: -0.05rem;
   }
 
   &__description {
-    font-size: $font-size-3;
-    line-height: 1.8;
-    color: $color-neutral-4;
+    font-size: $font-size-4;
+    line-height: 1.5;
+    color: $color-neutral-7;
   }
 }

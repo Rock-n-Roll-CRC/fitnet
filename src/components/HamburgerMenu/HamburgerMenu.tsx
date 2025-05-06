@@ -1,4 +1,4 @@
-import MenuSVG from "@/assets/icons/menu.svg";
+import MenuSVG from "@/assets/icons/menu-outline.svg";
 
 import styles from "./HamburgerMenu.module.scss";
 

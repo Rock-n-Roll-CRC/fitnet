@@ -6,10 +6,10 @@ const Header = ({ children }: { children: ReactNode }) => {
   return <header className={styles.header}>{children}</header>;
 };
 
-const HeaderContainer = ({ children }: { children: ReactNode }) => {
+const Container = ({ children }: { children: ReactNode }) => {
   return <div className={styles.header__container}>{children}</div>;
 };
 
-Header.Container = HeaderContainer;
+Header.Container = Container;
 
 export default Header;
