@@ -4,6 +4,7 @@ import HamburgerMenu from "@/components/HamburgerMenu/HamburgerMenu";
 import ColorThemeSwitcher from "@/components/ColorThemeSwitcher/ColorThemeSwitcher";
 import Main from "@/components/Main/Main";
 import Hero from "@/components/Hero/Hero";
+import Features from "@/components/Features/Features";
 
 const Page = () => {
   return (
@@ -19,6 +20,8 @@ const Page = () => {
 
       <Main>
         <Hero />
+
+        <Features />
       </Main>
     </>
   );

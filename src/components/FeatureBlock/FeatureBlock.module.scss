@@ -1,0 +1,32 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.feature-block {
+  @include flex-shorthand(column, nowrap, $whitespace-8);
+
+  position: relative;
+  padding: $whitespace-9 $whitespace-5;
+  background-color: $color-neutral-2;
+
+  &__text-content {
+    @include flex-shorthand(column, nowrap, $whitespace-6);
+  }
+
+  &__heading {
+    font-size: $font-size-8;
+    line-height: 1.2;
+    color: $color-neutral-8;
+    letter-spacing: -0.05rem;
+  }
+
+  &__description {
+    font-size: $font-size-4;
+    line-height: 1.7;
+    color: $color-neutral-7;
+  }
+
+  &__feature-list {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+  }
+}
