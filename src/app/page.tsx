@@ -5,6 +5,7 @@ import ColorThemeSwitcher from "@/components/ColorThemeSwitcher/ColorThemeSwitch
 import Main from "@/components/Main/Main";
 import Hero from "@/components/Hero/Hero";
 import Features from "@/components/Features/Features";
+import HowItWorks from "@/components/HowItWorks/HowItWorks";
 
 const Page = () => {
   return (
@@ -22,6 +23,8 @@ const Page = () => {
         <Hero />
 
         <Features />
+
+        <HowItWorks />
       </Main>
     </>
   );

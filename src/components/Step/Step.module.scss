@@ -1,0 +1,46 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.step {
+  @include flex-shorthand(column, nowrap, $whitespace-8, center);
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-4, center);
+  }
+
+  &__heading-wrapper {
+    @include flex-shorthand(row, nowrap, $whitespace-5, center);
+  }
+
+  &__number {
+    @include size-shorthand(3.25rem, 3.25rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    background-color: $color-primary-10;
+    border-radius: $border-radius-circle;
+  }
+
+  &__heading {
+    font-size: $font-size-7;
+    color: $color-neutral-8;
+    letter-spacing: -0.05rem;
+  }
+
+  &__description {
+    font-size: $font-size-4;
+    line-height: 1.6;
+    color: $color-neutral-7;
+    text-align: center;
+  }
+
+  &__illustration {
+    max-block-size: 30rem;
+
+    &--horizontal {
+      max-block-size: 21rem;
+    }
+  }
+}
