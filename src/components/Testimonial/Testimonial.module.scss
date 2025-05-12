@@ -1,0 +1,49 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.testimonial {
+  @include size-shorthand(25rem, 35rem);
+  @include flex-shorthand(column, nowrap, null, null, space-between);
+
+  padding: $whitespace-6;
+  background-color: $color-primary-2;
+  border-radius: $border-radius-medium;
+  box-shadow: get-shadow(medium, $color-neutral-5);
+  opacity: 0.4;
+
+  &--selected {
+    opacity: 1;
+    transform: translateY(5%);
+  }
+
+  &__upper-container {
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+  }
+
+  &__quotation-mark {
+    max-inline-size: 4.5rem;
+    color: $color-accent-1;
+    rotate: 180deg;
+  }
+
+  &__description {
+    font-size: $font-size-4;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-8;
+  }
+
+  &__bottom-container {
+    @include flex-shorthand(column, nowrap, $whitespace-2);
+  }
+
+  &__author {
+    font-size: $font-size-3;
+    color: $color-neutral-8;
+  }
+
+  &__label {
+    font-size: $font-size-2;
+    font-style: italic;
+    color: $color-neutral-10;
+  }
+}

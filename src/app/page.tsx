@@ -6,6 +6,7 @@ import Main from "@/components/Main/Main";
 import Hero from "@/components/Hero/Hero";
 import Features from "@/components/Features/Features";
 import HowItWorks from "@/components/HowItWorks/HowItWorks";
+import Testimonials from "@/components/Testimonials/Testimonials";
 
 const Page = () => {
   return (
@@ -25,6 +26,8 @@ const Page = () => {
         <Features />
 
         <HowItWorks />
+
+        <Testimonials />
       </Main>
     </>
   );
