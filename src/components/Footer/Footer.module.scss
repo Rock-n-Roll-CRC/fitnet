@@ -1,0 +1,69 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.footer {
+  @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  padding: $whitespace-7 $whitespace-5;
+  background-color: $color-neutral-1;
+
+  &__cta-block {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__separator {
+    border: 0.1rem solid $color-neutral-3;
+  }
+
+  &__info-row {
+    @include flex-shorthand(row, nowrap, null, null, space-between);
+  }
+
+  &__info-column {
+    @include flex-shorthand(column, nowrap, $whitespace-5);
+  }
+
+  &__column-heading {
+    font-size: $font-size-4;
+    color: $color-neutral-8;
+  }
+
+  &__credentials-container {
+    @include flex-shorthand(column, nowrap, $whitespace-2);
+  }
+
+  &__contact {
+    font-size: $font-size-3;
+    color: $color-neutral-8;
+    text-decoration: none;
+    transition: all 0.15s;
+
+    @media (hover: hover) {
+      &:hover {
+        color: $color-accent-1;
+      }
+    }
+  }
+
+  &__logo-container {
+    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+  }
+
+  &__logo {
+    inline-size: 2.5rem;
+    fill: $color-neutral-7;
+    transition: all 0.15s;
+
+    @media (hover: hover) {
+      &:hover {
+        fill: $color-neutral-8;
+      }
+    }
+  }
+
+  &__copyright {
+    font-size: $font-size-3;
+    color: $color-neutral-7;
+    text-align: center;
+  }
+}
