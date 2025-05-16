@@ -41,7 +41,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className={styles["how-it-works"]}>
+    <section id="how-it-works" className={styles["how-it-works"]}>
       <h2 className={styles["how-it-works__heading"]}>
         Your training journey:
       </h2>

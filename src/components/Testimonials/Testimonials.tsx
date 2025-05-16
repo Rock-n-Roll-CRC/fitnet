@@ -60,7 +60,7 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className={styles.testimonials}>
+    <section id="testimonials" className={styles.testimonials}>
       <h2 className={styles.testimonials__heading}>
         Don&apos;t just take our word for it
       </h2>

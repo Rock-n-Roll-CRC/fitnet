@@ -14,7 +14,7 @@ import styles from "./Features.module.scss";
 
 const Features = () => {
   return (
-    <section className={styles.features}>
+    <section id="features" className={styles.features}>
       <FeatureBlock>
         <FeatureBlock.TextContent>
           <FeatureBlock.Heading>
