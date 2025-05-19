@@ -10,6 +10,7 @@
   border-radius: $border-radius-medium;
   box-shadow: get-shadow(medium, $color-neutral-5);
   opacity: 0.4;
+  transition: transform 0.5s;
 
   &--selected {
     opacity: 1;

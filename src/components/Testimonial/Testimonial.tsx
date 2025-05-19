@@ -6,6 +6,7 @@ import styles from "./Testimonial.module.scss";
 
 const Testimonial = ({
   testimonial,
+  isSelected,
 }: {
   testimonial: {
     author: {
@@ -15,9 +16,12 @@ const Testimonial = ({
     description: JSX.Element;
     label: string;
   };
+  isSelected: boolean;
 }) => {
   return (
-    <li className={styles.testimonial}>
+    <li
+      className={`${styles.testimonial ?? ""} ${isSelected ? (styles["testimonial--selected"] ?? "") : ""}`}
+    >
       <div className={styles["testimonial__upper-container"]}>
         <QuotationMarkSVG className={styles["testimonial__quotation-mark"]} />
         <p className={styles.testimonial__description}>

@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import Testimonial from "@/components/Testimonial/Testimonial";
 
 import ChevronBackSVG from "@/assets/icons/chevron-back-outline.svg";
@@ -59,24 +63,68 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const [selectedTestimonial, setSelectedTestimonial] = useState(
+    Math.ceil(testimonials.length / 2) - 1,
+  );
+
+  function handleSelectPreviousTestimonial() {
+    setSelectedTestimonial(
+      (selectedTestimonial) =>
+        (selectedTestimonial - 1 + testimonials.length) % testimonials.length,
+    );
+  }
+
+  function handleSelectNextTestimonial() {
+    setSelectedTestimonial(
+      (selectedTestimonial) => (selectedTestimonial + 1) % testimonials.length,
+    );
+  }
+
   return (
     <section id="testimonials" className={styles.testimonials}>
       <h2 className={styles.testimonials__heading}>
         Don&apos;t just take our word for it
       </h2>
 
-      <ul className={styles.testimonials__list}>
-        {testimonials.map((testimonial, index) => (
-          <Testimonial key={index} testimonial={testimonial} />
-        ))}
-      </ul>
+      <div className={styles["testimonials__list-wrapper"]}>
+        <ul
+          className={styles.testimonials__list}
+          style={{
+            transform: `translateX(${((Math.ceil(testimonials.length / 2) - 1 - selectedTestimonial) * 26.5).toString()}rem)`,
+          }}
+        >
+          {testimonials.map((testimonial, index) => (
+            <Testimonial
+              key={index}
+              testimonial={testimonial}
+              isSelected={selectedTestimonial === index}
+            />
+          ))}
+        </ul>
+      </div>
 
       <div className={styles["testimonials__button-container"]}>
-        <ChevronBackSVG className={styles.testimonials__button} />
-        <ChevronForwardSVG className={styles.testimonials__button} />
+        <button
+          onClick={handleSelectPreviousTestimonial}
+          className={styles.testimonials__button}
+        >
+          <ChevronBackSVG className={styles["testimonials__button-icon"]} />
+        </button>
+        <button
+          onClick={handleSelectNextTestimonial}
+          className={styles.testimonials__button}
+        >
+          <ChevronForwardSVG className={styles["testimonials__button-icon"]} />
+        </button>
       </div>
     </section>
   );
 };
 
 export default Testimonials;
+
+// (Math.ceil(testimonials.length / 2) - 1) - 2 = -50rem
+// (Math.ceil(testimonials.length / 2) - 1) - 1 = -25rem
+// Math.ceil(testimonials.length / 2) - 1 = 0rem
+// (Math.ceil(testimonials.length / 2) - 1) + 1 = 25rem
+// (Math.ceil(testimonials.length / 2) - 1) + 2 = 50rem

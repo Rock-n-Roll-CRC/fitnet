@@ -19,6 +19,8 @@
   &__list {
     @include remove-list-styles;
     @include flex-shorthand(row, nowrap, $whitespace-5, center);
+
+    transition: transform 0.5s ease;
   }
 
   &__button-container {
@@ -28,6 +30,10 @@
   }
 
   &__button {
+    @include remove-button-styles;
+  }
+
+  &__button-icon {
     inline-size: 2.5rem;
     color: $color-neutral-8;
   }
