@@ -2,38 +2,40 @@
 @use "../../styles/tools" as *;
 
 .feature {
-  @include flex-shorthand(row, nowrap, $whitespace-5);
+  @include themify {
+    @include flex-shorthand(row, nowrap, $whitespace-5);
 
-  &__icon-wrapper {
-    @include size-shorthand(4.5rem, 4.5rem);
-    @include flex-shorthand(row, nowrap, null, center, center);
+    &__icon-wrapper {
+      @include size-shorthand(4.5rem, 4.5rem);
+      @include flex-shorthand(row, nowrap, null, center, center);
 
-    background-color: $color-primary-2;
-    border-radius: $border-radius-medium;
-  }
+      background-color: themed(color-primary-2);
+      border-radius: $border-radius-medium;
+    }
 
-  &__icon {
-    @include size-shorthand(2.5rem, 2.5rem);
+    &__icon {
+      @include size-shorthand(2.5rem, 2.5rem);
 
-    color: $color-primary-6;
-    fill: $color-primary-6;
-  }
+      color: themed(color-primary-6);
+      fill: themed(color-primary-6);
+    }
 
-  &__text-content {
-    @include flex-shorthand(column, nowrap, $whitespace-3);
+    &__text-content {
+      @include flex-shorthand(column, nowrap, $whitespace-3);
 
-    flex: 1;
-  }
+      flex: 1;
+    }
 
-  &__heading {
-    font-size: $font-size-4;
-    font-weight: $font-weight-semi-bold;
-    color: $color-neutral-8;
-  }
+    &__heading {
+      font-size: $font-size-4;
+      font-weight: $font-weight-semi-bold;
+      color: themed(color-neutral-8);
+    }
 
-  &__description {
-    font-size: $font-size-3;
-    line-height: 1.7;
-    color: $color-neutral-7;
+    &__description {
+      font-size: $font-size-3;
+      line-height: 1.7;
+      color: themed(color-neutral-7);
+    }
   }
 }

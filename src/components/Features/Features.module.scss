@@ -2,12 +2,14 @@
 @use "../../styles/tools" as *;
 
 .features {
-  &__separator {
-    position: absolute;
-    inset: auto auto 0 50%;
-    z-index: 999;
-    max-inline-size: 3.5rem;
-    color: $color-accent-1;
-    transform: translate(-50%, 50%) rotate(270deg);
+  @include themify {
+    &__separator {
+      position: absolute;
+      inset: auto auto 0 50%;
+      z-index: 999;
+      max-inline-size: 3.5rem;
+      color: themed(color-accent-1);
+      transform: translate(-50%, 50%) rotate(270deg);
+    }
   }
 }

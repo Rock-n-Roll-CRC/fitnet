@@ -2,10 +2,14 @@
 @use "../../styles/tools" as *;
 
 .color-theme-switcher {
-  @include remove-button-styles;
+  @include themify {
+    @include remove-button-styles;
 
-  &__icon {
-    inline-size: 2.5rem;
-    color: $color-neutral-9;
+    cursor: pointer;
+
+    &__icon {
+      inline-size: 2.5rem;
+      color: themed(color-neutral-9);
+    }
   }
 }

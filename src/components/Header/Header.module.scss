@@ -2,16 +2,18 @@
 @use "../../styles/tools" as *;
 
 .header {
-  @include flex-shorthand(row, nowrap, null, center, space-between);
+  @include themify {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
 
-  position: sticky;
-  inset-block-start: 0;
-  z-index: 1000;
-  padding: $whitespace-6 $whitespace-5;
-  background-color: $color-neutral-1;
-  box-shadow: get-shadow(medium, $color-neutral-3);
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1000;
+    padding: $whitespace-6 $whitespace-5;
+    background-color: themed(color-neutral-1);
+    box-shadow: get-shadow(medium, themed(color-neutral-3));
 
-  &__container {
-    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+    &__container {
+      @include flex-shorthand(row, nowrap, $whitespace-4, center);
+    }
   }
 }

@@ -2,59 +2,61 @@
 @use "../../styles/tools" as *;
 
 .quote-block {
-  @include flex-shorthand(column, nowrap, $whitespace-7);
+  @include themify {
+    @include flex-shorthand(column, nowrap, $whitespace-7);
 
-  &__body {
-    position: relative;
-    padding: $whitespace-5;
-    background-color: $color-neutral-6;
-    border-radius: $border-radius-medium;
-    box-shadow: get-shadow(medium, $color-neutral-5);
+    &__body {
+      position: relative;
+      padding: $whitespace-5;
+      background-color: themed(color-neutral-6);
+      border-radius: $border-radius-medium;
+      box-shadow: get-shadow(medium, themed(color-neutral-5));
 
-    &::after {
-      @include size-shorthand(0, 0);
+      &::after {
+        @include size-shorthand(0, 0);
 
-      position: absolute;
-      inset: auto auto 0 1.5rem;
-      content: "";
-      border: 1.25rem solid transparent;
-      border-block-start-color: $color-neutral-6;
-      border-block-end: 0;
-      transform: translateY(40%) rotate(225deg);
+        position: absolute;
+        inset: auto auto 0 1.5rem;
+        content: "";
+        border: 1.25rem solid transparent;
+        border-block-start-color: themed(color-neutral-6);
+        border-block-end: 0;
+        transform: translateY(40%) rotate(225deg);
+      }
     }
-  }
 
-  &__quote-text {
-    font-size: $font-size-3;
-    line-height: 1.6;
-    color: $color-neutral-1;
-  }
+    &__quote-text {
+      font-size: $font-size-3;
+      line-height: 1.6;
+      color: themed(color-neutral-1);
+    }
 
-  &__author-body {
-    @include flex-shorthand(row, nowrap, $whitespace-5);
-  }
+    &__author-body {
+      @include flex-shorthand(row, nowrap, $whitespace-5);
+    }
 
-  &__author-image {
-    @include size-shorthand(5.5rem, 5.5rem);
+    &__author-image {
+      @include size-shorthand(5.5rem, 5.5rem);
 
-    object-fit: cover;
-    object-position: center;
-    border-radius: $border-radius-circle;
-  }
+      object-fit: cover;
+      object-position: center;
+      border-radius: $border-radius-circle;
+    }
 
-  &__author-text-content {
-    @include flex-shorthand(column, nowrap, $whitespace-1, null, center);
-  }
+    &__author-text-content {
+      @include flex-shorthand(column, nowrap, $whitespace-1, null, center);
+    }
 
-  &__author-name {
-    font-size: $font-size-3;
-    font-weight: $font-weight-bold;
-    color: $color-neutral-8;
-  }
+    &__author-name {
+      font-size: $font-size-3;
+      font-weight: $font-weight-bold;
+      color: themed(color-neutral-8);
+    }
 
-  &__author-position {
-    font-size: $font-size-2;
-    font-style: italic;
-    color: $color-neutral-7;
+    &__author-position {
+      font-size: $font-size-2;
+      font-style: italic;
+      color: themed(color-neutral-7);
+    }
   }
 }

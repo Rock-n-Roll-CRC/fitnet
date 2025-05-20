@@ -2,22 +2,24 @@
 @use "../../styles/tools" as *;
 
 .hero {
-  @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+  @include themify {
+    @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
-  padding: $whitespace-9 $whitespace-5;
-  text-align: center;
-  background-color: $color-neutral-1;
+    padding: $whitespace-9 $whitespace-5;
+    text-align: center;
+    background-color: themed(color-neutral-1);
 
-  &__heading {
-    font-size: $font-size-8;
-    line-height: 1.2;
-    color: $color-neutral-8;
-    letter-spacing: -0.05rem;
-  }
+    &__heading {
+      font-size: $font-size-8;
+      line-height: 1.2;
+      color: themed(color-neutral-8);
+      letter-spacing: -0.05rem;
+    }
 
-  &__description {
-    font-size: $font-size-4;
-    line-height: 1.5;
-    color: $color-neutral-7;
+    &__description {
+      font-size: $font-size-4;
+      line-height: 1.5;
+      color: themed(color-neutral-7);
+    }
   }
 }

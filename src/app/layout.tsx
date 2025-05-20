@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import { Montserrat } from "next/font/google";
 
+import { ThemeProvider } from "@/contexts/ThemeContext";
+
 import "@/styles/main.scss";
 
 export const metadata = {
@@ -16,7 +18,9 @@ const montserrat = Montserrat({ display: "swap", subsets: ["latin"] });
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 };
