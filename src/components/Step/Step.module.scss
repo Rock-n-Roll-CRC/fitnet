@@ -2,11 +2,15 @@
 @use "../../styles/tools" as *;
 
 .step {
+  $this: &;
+
   @include themify {
     @include flex-shorthand(column, nowrap, $whitespace-8, center);
 
     &__body {
       @include flex-shorthand(column, nowrap, $whitespace-4, center);
+
+      max-inline-size: 40rem;
     }
 
     &__heading-wrapper {
@@ -42,6 +46,35 @@
 
       &--horizontal {
         max-block-size: 21rem;
+      }
+    }
+
+    @include media-up-shorthand(laptop-1) {
+      @include flex-shorthand(row, nowrap, $whitespace-10);
+
+      &:nth-child(odd) {
+        #{$this}__illustration {
+          order: -1;
+        }
+      }
+
+      &__illustration {
+        block-size: 35rem;
+        max-block-size: 35rem;
+
+        &--horizontal {
+          block-size: 25rem;
+        }
+      }
+    }
+
+    @include media-up-shorthand(laptop-l-1) {
+      flex-direction: column;
+
+      &:nth-child(odd) {
+        #{$this}__illustration {
+          order: unset;
+        }
       }
     }
   }

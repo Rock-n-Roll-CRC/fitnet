@@ -3,11 +3,17 @@
 
 .feature-block {
   @include themify {
-    @include flex-shorthand(column, nowrap, $whitespace-8);
+    @include flex-shorthand(row, nowrap, $whitespace-10, center, center);
 
     position: relative;
     padding: $whitespace-9 $whitespace-5;
     background-color: themed(color-neutral-2);
+
+    &__body {
+      @include flex-shorthand(column, nowrap, $whitespace-8);
+
+      max-inline-size: 40rem;
+    }
 
     &__text-content {
       @include flex-shorthand(column, nowrap, $whitespace-6);
@@ -29,6 +35,23 @@
     &__feature-list {
       @include remove-list-styles;
       @include flex-shorthand(column, nowrap, $whitespace-7);
+    }
+
+    &__picture {
+      display: none;
+      min-inline-size: 35rem;
+      max-inline-size: 40rem;
+      block-size: auto;
+    }
+
+    @include media-up-shorthand(laptop-1) {
+      &__body {
+        min-inline-size: 35rem;
+      }
+
+      &__picture {
+        display: block;
+      }
     }
   }
 }

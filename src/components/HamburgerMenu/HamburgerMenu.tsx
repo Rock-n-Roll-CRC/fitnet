@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
+import NavigationList from "@/components/NavigationList/NavigationList";
 import Button from "@/components/Button/Button";
 
 import MenuSVG from "@/assets/icons/menu-outline.svg";
@@ -28,43 +28,12 @@ const HamburgerMenu = () => {
       </button>
 
       <div className={styles["hamburger-menu__body"]}>
-        <nav>
-          <ul className={styles["hamburger-menu__links-list"]}>
-            <li>
-              <Link
-                href="#features"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-                className={styles["hamburger-menu__link"]}
-              >
-                Features
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#how-it-works"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-                className={styles["hamburger-menu__link"]}
-              >
-                How It Works
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#testimonials"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-                className={styles["hamburger-menu__link"]}
-              >
-                Testimonials
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        <NavigationList
+          location="hamburger-menu"
+          linkOnClick={() => {
+            setIsOpen(false);
+          }}
+        />
 
         <Button type="call-to-action">Get Started</Button>
       </div>

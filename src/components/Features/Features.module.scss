@@ -3,6 +3,8 @@
 
 .features {
   @include themify {
+    background-color: themed(color-neutral-2);
+
     &__separator {
       position: absolute;
       inset: auto auto 0 50%;

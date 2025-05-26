@@ -70,45 +70,8 @@
       transition: all 0.5s;
     }
 
-    &__links-list {
-      @include remove-list-styles;
-      @include flex-shorthand(column, nowrap, $whitespace-8);
-
-      margin-block-start: $whitespace-11;
-      text-align: center;
-    }
-
-    &__link {
-      position: relative;
-      padding: 0 $whitespace-5;
-      font-size: $font-size-6;
-      font-weight: $font-weight-bold;
-      color: themed(color-neutral-8);
-      text-decoration: none;
-
-      &::after {
-        @include absolute-shorthand(auto, auto, -1rem, 50%);
-        @include size-shorthand(0, 0.2rem);
-
-        display: block;
-        content: "";
-        background: themed(color-accent-1);
-        transition:
-          inline-size 0.3s ease,
-          inset-inline-start 0.3s ease;
-      }
-
-      &:focus::after {
-        inset-inline-start: 0;
-        inline-size: 100%;
-      }
-
-      @media (hover: hover) {
-        &:hover::after {
-          inset-inline-start: 0;
-          inline-size: 100%;
-        }
-      }
+    @include media-up-shorthand(tablet-2) {
+      display: none;
     }
   }
 }

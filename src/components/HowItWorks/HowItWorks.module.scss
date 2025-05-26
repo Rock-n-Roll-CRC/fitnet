@@ -20,5 +20,12 @@
       @include remove-list-styles;
       @include flex-shorthand(column, nowrap, $whitespace-12, center);
     }
+
+    @include media-up-shorthand(laptop-l-1) {
+      &__body {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
   }
 }

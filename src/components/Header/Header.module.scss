@@ -3,8 +3,6 @@
 
 .header {
   @include themify {
-    @include flex-shorthand(row, nowrap, null, center, space-between);
-
     position: sticky;
     inset-block-start: 0;
     z-index: 1000;
@@ -12,8 +10,21 @@
     background-color: themed(color-neutral-1);
     box-shadow: get-shadow(medium, themed(color-neutral-3));
 
+    &__wrapper {
+      @include flex-shorthand(row, nowrap, null, center, space-between);
+    }
+
     &__container {
       @include flex-shorthand(row, nowrap, $whitespace-4, center);
+    }
+
+    @include media-up-shorthand(laptop-1) {
+      @include flex-shorthand(row, nowrap, null, null, center);
+
+      &__wrapper {
+        min-inline-size: 78rem;
+        max-inline-size: 95rem;
+      }
     }
   }
 }

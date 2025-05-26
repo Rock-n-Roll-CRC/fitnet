@@ -1,5 +1,6 @@
 import Header from "@/components/Header/Header";
 import Logo from "@/components/Logo/Logo";
+import NavigationList from "@/components/NavigationList/NavigationList";
 import HamburgerMenu from "@/components/HamburgerMenu/HamburgerMenu";
 import ColorThemeSwitcher from "@/components/ColorThemeSwitcher/ColorThemeSwitcher";
 import Main from "@/components/Main/Main";
@@ -8,6 +9,7 @@ import Features from "@/components/Features/Features";
 import HowItWorks from "@/components/HowItWorks/HowItWorks";
 import Testimonials from "@/components/Testimonials/Testimonials";
 import Footer from "@/components/Footer/Footer";
+import Button from "@/components/Button/Button";
 
 const Page = () => {
   return (
@@ -15,7 +17,12 @@ const Page = () => {
       <Header>
         <Logo />
 
+        <NavigationList location="header" />
+
         <Header.Container>
+          <Button type="call-to-action" location="header">
+            Sign Up
+          </Button>
           <HamburgerMenu />
           <ColorThemeSwitcher />
         </Header.Container>

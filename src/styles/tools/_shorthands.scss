@@ -1,5 +1,7 @@
 @use "sass:map";
 
+@use "../settings/breakpoints" as *;
+
 /* ==========================================================================
    Positioning:
    ========================================================================== */
@@ -66,4 +68,14 @@
 @mixin color-shorthand($color, $background-color) {
   color: $color;
   background-color: $background-color;
+}
+
+/* ==========================================================================
+    Media Queries:
+    ========================================================================== */
+
+@mixin media-up-shorthand($size) {
+  @media (min-width: map.get($breakpoints, $size)) {
+    @content;
+  }
 }

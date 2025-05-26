@@ -3,11 +3,18 @@
 
 .hero {
   @include themify {
-    @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+    @include flex-shorthand(row, nowrap, $whitespace-10, center, center);
 
     padding: $whitespace-9 $whitespace-5;
-    text-align: center;
     background-color: themed(color-neutral-1);
+
+    &__body {
+      @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+
+      min-inline-size: 28.5rem;
+      max-inline-size: 42.5rem;
+      text-align: center;
+    }
 
     &__heading {
       font-size: $font-size-8;
@@ -20,6 +27,19 @@
       font-size: $font-size-4;
       line-height: 1.5;
       color: themed(color-neutral-7);
+    }
+
+    &__image {
+      display: none;
+      min-inline-size: 25rem;
+      max-inline-size: 30rem;
+      block-size: auto;
+    }
+
+    @include media-up-shorthand(tablet-2) {
+      &__image {
+        display: block;
+      }
     }
   }
 }

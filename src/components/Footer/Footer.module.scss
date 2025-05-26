@@ -3,21 +3,36 @@
 
 .footer {
   @include themify {
-    @include flex-shorthand(column, nowrap, $whitespace-6);
-
     padding: $whitespace-7 $whitespace-5;
     background-color: themed(color-neutral-1);
 
-    &__cta-block {
-      @include flex-shorthand(row, nowrap, null, center, space-between);
+    &__wrapper {
+      max-inline-size: 33rem;
+      margin: 0 auto;
     }
 
-    &__separator {
-      border: 0.1rem solid themed(color-neutral-3);
+    &__cta-block {
+      @include flex-shorthand(row, nowrap, null, center, space-between);
+
+      inline-size: 100%;
+    }
+
+    &__body {
+      @include flex-shorthand(
+        column,
+        nowrap,
+        $whitespace-6,
+        center,
+        space-between
+      );
     }
 
     &__info-row {
       @include flex-shorthand(row, nowrap, null, null, space-between);
+
+      inline-size: 100%;
+      padding-block: $whitespace-6;
+      border-block: 0.2rem solid themed(color-neutral-3);
     }
 
     &__info-column {
@@ -66,6 +81,38 @@
       font-size: $font-size-3;
       color: themed(color-neutral-7);
       text-align: center;
+    }
+
+    @include media-up-shorthand(laptop-2) {
+      &__wrapper {
+        @include flex-shorthand(column, nowrap, $whitespace-6, center);
+
+        max-inline-size: none;
+        margin: 0;
+      }
+
+      &__body {
+        @include flex-shorthand(
+          row,
+          nowrap,
+          $whitespace-10,
+          center,
+          space-between
+        );
+
+        max-inline-size: 95rem;
+      }
+
+      &__cta-block {
+        @include flex-shorthand(row, nowrap, $whitespace-8, center, null);
+
+        inline-size: auto;
+      }
+
+      &__info-row {
+        gap: $whitespace-8;
+        inline-size: auto;
+      }
     }
   }
 }
