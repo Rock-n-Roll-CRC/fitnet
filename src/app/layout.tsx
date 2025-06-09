@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Montserrat } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
@@ -19,7 +20,10 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Toaster />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

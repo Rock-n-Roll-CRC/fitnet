@@ -41,6 +41,7 @@ yarn-error.log*
 next-env.d.ts
 globals.d.ts
 svgr.d.ts
+env.d.ts
 
 # workspace settings
 /.vscode

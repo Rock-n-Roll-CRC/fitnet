@@ -4,6 +4,8 @@
 
 @use "../settings/themes" as *;
 
+$theme-map: null;
+
 @mixin themify {
   @each $theme, $map in $themes {
     :global(.theme--#{$theme}) & {

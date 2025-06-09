@@ -1,0 +1,10 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.main {
+  inline-size: 100vi;
+  min-block-size: 100vb;
+  padding: $whitespace-8 $whitespace-7;
+  background-color: $color-neutral-1;
+  @include flex-shorthand(row, nowrap, null, center, center);
+}

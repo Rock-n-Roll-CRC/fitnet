@@ -20,6 +20,7 @@
   &--type-call-to-action {
     font-weight: $font-weight-semi-bold;
     color: $color-neutral-1;
+    text-decoration: none;
     background: linear-gradient(to right, $color-primary-9, $color-primary-5);
     box-shadow: get-shadow(small, $color-primary-5);
 

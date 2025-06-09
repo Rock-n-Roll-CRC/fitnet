@@ -44,6 +44,8 @@
   "include": [
     "svgr.d.ts",
     "globals.d.ts",
+    "env.d.ts",
+    "types/next-auth.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
