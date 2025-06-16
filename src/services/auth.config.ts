@@ -11,8 +11,12 @@ export const authConfig = {
     authorized({ auth }) {
       return !!auth;
     },
-    jwt({ token, user, trigger }) {
-      if (trigger === "signIn") return { ...token, user };
+    jwt({ token, account, user, trigger }) {
+      if (trigger === "signIn")
+        return {
+          ...token,
+          user: { ...user, id: account?.providerAccountId ?? user.id },
+        };
 
       return token;
     },

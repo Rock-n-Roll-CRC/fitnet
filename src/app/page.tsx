@@ -10,8 +10,16 @@ import HowItWorks from "@/components/HowItWorks/HowItWorks";
 import Testimonials from "@/components/Testimonials/Testimonials";
 import Footer from "@/components/Footer/Footer";
 import Button from "@/components/Button/Button";
+import { auth } from "@/services/auth";
+import { redirect } from "next/navigation";
 
-const Page = () => {
+const Page = async () => {
+  const session = await auth();
+
+  if (session) {
+    return redirect("search");
+  }
+
   return (
     <>
       <Header>

@@ -94,7 +94,7 @@ export const signUpWithCredentials = async (credentials: FormData) => {
     if (existingUserByPhoneNumber)
       throw new Error("A user with this phone number already exists.");
 
-    const { error } = await supabase
+    const { data: user, error: usersError } = await supabase
       .from("users")
       .insert([
         {
@@ -104,9 +104,26 @@ export const signUpWithCredentials = async (credentials: FormData) => {
           password: await hash(password, 10),
         },
       ])
+      .select()
+      .single();
+
+    if (usersError)
+      throw new Error(usersError.message, { cause: usersError.cause });
+
+    const { error: profilesError } = await supabase
+      .from("profiles")
+      .insert([
+        {
+          full_name: `${firstName} ${lastName}`,
+          role: "client",
+          user_id: user.id,
+          phone_number: phoneNumber,
+        },
+      ])
       .select();
 
-    if (error) throw new Error(error.message, { cause: error.cause });
+    if (profilesError)
+      throw new Error(profilesError.message, { cause: profilesError.cause });
   } catch (error) {
     const isError = error instanceof Error;
     const isZodError = error instanceof ZodError;

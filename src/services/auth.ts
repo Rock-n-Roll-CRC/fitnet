@@ -47,16 +47,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Google({
       async profile(profile) {
-        const existingUser = await getUserByEmail(profile.email);
+        let user = await getUserByEmail(profile.email);
 
-        if (!existingUser) {
-          await supabase
+        if (!user) {
+          const { data, error: usersError } = await supabase
             .from("users")
             .insert([{ full_name: profile.name, email: profile.email }])
-            .select();
-        }
+            .select()
+            .single();
 
-        const user = await getUserByEmail(profile.email);
+          if (usersError)
+            throw new Error(usersError.message, { cause: usersError.cause });
+
+          user = data;
+
+          const { error: profilesError } = await supabase
+            .from("profiles")
+            .insert([
+              { full_name: profile.name, role: "client", user_id: user.id },
+            ])
+            .select();
+
+          if (profilesError)
+            throw new Error(profilesError.message, {
+              cause: profilesError.cause,
+            });
+        }
 
         return {
           id: user.id,

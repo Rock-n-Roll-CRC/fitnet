@@ -183,6 +183,56 @@ export type Database = {
   };
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          age: number | null;
+          avatar: string | null;
+          created_at: string;
+          domains: Json[] | null;
+          full_name: string;
+          gender: string | null;
+          id: string;
+          phone_number: string | null;
+          role: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          age?: number | null;
+          avatar?: string | null;
+          created_at?: string;
+          domains?: Json[] | null;
+          full_name: string;
+          gender?: string | null;
+          id?: string;
+          phone_number?: string | null;
+          role: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          age?: number | null;
+          avatar?: string | null;
+          created_at?: string;
+          domains?: Json[] | null;
+          full_name?: string;
+          gender?: string | null;
+          id?: string;
+          phone_number?: string | null;
+          role?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       users: {
         Row: {
           created_at: string;
