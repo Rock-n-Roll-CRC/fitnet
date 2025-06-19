@@ -1,0 +1,8 @@
+@use "../../../styles/settings" as *;
+@use "../../../styles/tools" as *;
+
+.main {
+  @include flex-shorthand(column, nowrap, $whitespace-8);
+
+  padding: $whitespace-5;
+}

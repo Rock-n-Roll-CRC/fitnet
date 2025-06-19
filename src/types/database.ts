@@ -183,6 +183,38 @@ export type Database = {
   };
   public: {
     Tables: {
+      coordinates: {
+        Row: {
+          created_at: string;
+          id: number;
+          latitude: number;
+          longitude: number;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          latitude: number;
+          longitude: number;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          latitude?: number;
+          longitude?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "coordinates_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           age: number | null;
@@ -191,6 +223,7 @@ export type Database = {
           domains: Json[] | null;
           full_name: string;
           gender: string | null;
+          geolocation: Json | null;
           id: string;
           phone_number: string | null;
           role: string;
@@ -204,6 +237,7 @@ export type Database = {
           domains?: Json[] | null;
           full_name: string;
           gender?: string | null;
+          geolocation?: Json | null;
           id?: string;
           phone_number?: string | null;
           role: string;
@@ -217,6 +251,7 @@ export type Database = {
           domains?: Json[] | null;
           full_name?: string;
           gender?: string | null;
+          geolocation?: Json | null;
           id?: string;
           phone_number?: string | null;
           role?: string;

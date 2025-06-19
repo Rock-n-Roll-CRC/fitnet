@@ -1,0 +1,22 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.search-filter {
+  @include grid-shorthand(null, 1fr, $whitespace-7, $whitespace-5);
+
+  &__input-wrapper {
+    @include flex-shorthand(row, nowrap, $whitespace-3, center);
+  }
+
+  &__input-group-wrapper {
+    @include flex-shorthand(row, nowrap, $whitespace-5, center);
+  }
+
+  &__input-group {
+    @include flex-shorthand(column, nowrap, $whitespace-3, center);
+  }
+
+  &__input {
+    max-inline-size: 7rem;
+  }
+}

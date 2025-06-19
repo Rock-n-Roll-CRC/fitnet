@@ -136,3 +136,14 @@ export const signUpWithCredentials = async (credentials: FormData) => {
     }
   }
 };
+
+export const updateProfileGeolocation = async (
+  userId: string,
+  position: unknown,
+) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ geolocation: JSON.stringify(position) })
+    .eq("user_id", userId)
+    .select();
+};

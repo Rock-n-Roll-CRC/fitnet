@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Montserrat } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 
 import { ThemeProvider } from "@/contexts/ThemeContext";
