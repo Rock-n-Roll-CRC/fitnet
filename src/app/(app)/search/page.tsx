@@ -1,26 +1,22 @@
+import SearchFilter from "@/components/SearchFilter/SearchFilter";
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
+import { getCoachProfiles } from "@/services/apiProfiles";
+
 import styles from "./page.module.scss";
-import { getCoachesProfiles } from "@/services/apiProfiles";
-import { auth } from "@/services/auth";
-import SearchFilter from "@/components/SearchFilter/SearchFilter";
 
 const Page = async ({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) => {
-  const searchParameters = await searchParams;
-  const session = await auth();
-  const coaches = await getCoachesProfiles(searchParameters);
-
-  if (!session) return;
+  const coaches = await getCoachProfiles(await searchParams);
 
   return (
     <main className={styles.main}>
       <SearchFilter />
 
-      <MapWrapper session={session} coaches={coaches} />
+      <MapWrapper coaches={coaches} />
     </main>
   );
 };

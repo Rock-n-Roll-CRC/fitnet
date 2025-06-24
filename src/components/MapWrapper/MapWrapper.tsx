@@ -1,24 +1,19 @@
 "use client";
 
+import type { Tables } from "@/types/database";
+
 import dynamic from "next/dynamic";
 
 import styles from "./MapWrapper.module.scss";
-import type { Session } from "next-auth";
 
 const Map = dynamic(() => import("@/components/Map/Map"), {
   ssr: false,
 });
 
-const MapWrapper = ({
-  session,
-  coaches,
-}: {
-  session: Session;
-  coaches: any[];
-}) => {
+const MapWrapper = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
   return (
     <div className={styles["map-wrapper"]}>
-      <Map session={session} coaches={coaches} />
+      <Map coaches={coaches} />
     </div>
   );
 };

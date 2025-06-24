@@ -1,5 +1,4 @@
 import { supabase } from "@/services/supabase";
-import { calculateDistance } from "@/utilities/helpers";
 
 export const getProfileByUserId = async (userId: string) => {
   const { data, error } = await supabase
@@ -16,12 +15,10 @@ export const getProfileByUserId = async (userId: string) => {
   return data;
 };
 
-export const getCoachesProfiles = async (filters?: {
+export const getCoachProfiles = async (filters?: {
   gender?: string;
   minAge?: string;
   maxAge?: string;
-  minDistance?: string;
-  maxDistance?: string;
 }) => {
   let query = supabase.from("profiles").select("*").eq("role", "coach");
 

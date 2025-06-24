@@ -1,110 +1,175 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import { updateProfileGeolocation } from "@/services/actions";
-import type { Session } from "next-auth";
+
+import type { Tables } from "@/types/database";
+
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
+
 import { calculateDistance } from "@/utilities/helpers";
 
-const Map = ({ session, coaches }: { session: Session; coaches: any[] }) => {
-  const searchParams = useSearchParams();
-  const filters = Object.fromEntries(searchParams.entries());
-  const [position, setPosition] = useState<GeolocationPosition>();
-  const [nearbyCoaches, setNearbyCoaches] = useState(coaches);
+interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+interface OpenMeteoCityItem {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  elevation: number;
+  feature_code: string;
+  country_code: string;
+  admin1_id: number;
+  timezone: string;
+  population: number;
+  country_id: number;
+  country: string;
+  admin1: string;
+}
+
+interface OpenMeteoData {
+  results?: OpenMeteoCityItem[];
+  generationtime_ms: number;
+}
+
+const MapUpdater = ({ center }: { center: Coordinates }) => {
+  const map = useMap();
 
   useEffect(() => {
-    setNearbyCoaches(coaches);
+    map.setView(center);
+  }, [center, map]);
 
-    if (position) {
-      if (filters.minDistance) {
-        setNearbyCoaches((nearbyCoaches) =>
-          nearbyCoaches.filter((coach) => {
-            const position1 = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            };
-            const position2 = {
-              lat: JSON.parse(coach.geolocation).coords.latitude,
-              lng: JSON.parse(coach.geolocation).coords.longitude,
-            };
+  return null;
+};
 
-            const distance = calculateDistance(position1, position2);
+const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
+  const searchParams = useSearchParams();
 
-            return distance >= +filters.minDistance;
-          }),
-        );
-      }
+  const [userCoords, setUserCoords] = useState<Coordinates>();
+  const [cityCoords, setCityCoords] = useState<Coordinates>();
+  const [inputCity, setInputCity] = useState("");
+  const [isPositionDenied, setIsPositionDenied] = useState(false);
 
-      if (filters.maxDistance) {
-        setNearbyCoaches((nearbyCoaches) =>
-          nearbyCoaches.filter((coach) => {
-            const position1 = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            };
-            const position2 = {
-              lat: JSON.parse(coach.geolocation).coords.latitude,
-              lng: JSON.parse(coach.geolocation).coords.longitude,
-            };
+  const mapCenter = userCoords ?? cityCoords ?? { lat: 51.5074, lng: -0.1278 };
+  const filteredCoaches = coaches.filter((coach) => {
+    if (!userCoords) return true;
 
-            const distance = calculateDistance(position1, position2);
+    const coachPosition = JSON.parse(
+      coach.geolocation as string,
+    ) as GeolocationPosition;
+    const coachCoords = {
+      lat: coachPosition.coords.latitude,
+      lng: coachPosition.coords.longitude,
+    };
 
-            return distance <= +filters.maxDistance;
-          }),
-        );
+    const distance = calculateDistance(userCoords, coachCoords);
+    const minDistance = searchParams.get("minDistance");
+    const maxDistance = searchParams.get("maxDistance");
+
+    if (minDistance && maxDistance)
+      return distance >= +minDistance && distance <= +maxDistance;
+    if (minDistance) return distance >= +minDistance;
+    if (maxDistance) return distance <= +maxDistance;
+
+    return true;
+  });
+
+  async function handleFetchCityCoords() {
+    try {
+      if (!inputCity) throw new Error("The city must be defined.");
+
+      const response = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${inputCity}&count=1`,
+      );
+      const data = (await response.json()) as OpenMeteoData;
+
+      const city = data.results?.at(0);
+
+      if (!city) throw new Error("The city could not be found.");
+
+      setCityCoords({ lat: city.latitude, lng: city.longitude });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`Failed to fetch city's coordinates: ${error.message}`);
+        throw new Error(`Failed to fetch city's coordinates: ${error.message}`);
       }
     }
-  }, [coaches, filters.maxDistance, filters.minDistance, position]);
+  }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setPosition(position);
-
-      void (async () => {
-        await updateProfileGeolocation(session.user.id, position.toJSON());
-      })();
-    });
-  }, [session.user.id]);
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude: lat, longitude: lng } }) => {
+        setUserCoords({ lat, lng });
+      },
+      () => {
+        setIsPositionDenied(true);
+      },
+      { enableHighAccuracy: true },
+    );
+  }, []);
 
   return (
     <>
-      {position ? (
-        <MapContainer
-          center={[position.coords.latitude, position.coords.longitude]}
-          zoom={15}
-          zoomControl={false}
-          style={{ height: "100%", width: "100%" }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      {isPositionDenied && (
+        <div>
+          <label htmlFor="city">Your city:</label>
+          <input
+            type="text"
+            name="city"
+            id="city"
+            value={inputCity}
+            onChange={(event) => {
+              setInputCity(event.target.value);
+            }}
           />
-          <Marker
-            position={[position.coords.latitude, position.coords.longitude]}
-          >
+          <button onClick={() => void handleFetchCityCoords()}>Submit</button>
+        </div>
+      )}
+      <MapContainer
+        center={mapCenter}
+        zoom={15}
+        zoomControl={false}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {userCoords && (
+          <Marker position={userCoords}>
             <Tooltip direction="top" offset={[-15, -20]} permanent>
-              Me
+              You
             </Tooltip>
           </Marker>
-          {nearbyCoaches.map((coach) => (
-            <Marker
-              key={coach}
-              position={[
-                JSON.parse(coach.geolocation).coords.latitude,
-                JSON.parse(coach.geolocation).coords.longitude,
-              ]}
-            >
+        )}
+        {filteredCoaches.map((coach) => {
+          const {
+            coords: { latitude: lat, longitude: lng },
+          } = JSON.parse(coach.geolocation as string) as GeolocationPosition;
+          const coachCoords = { lat, lng };
+
+          return (
+            <Marker key={coach.id} position={coachCoords}>
               <Tooltip direction="top" offset={[-15, -20]} permanent>
-                {coach["full_name"]}
+                {coach.full_name}
               </Tooltip>
             </Marker>
-          ))}
-        </MapContainer>
-      ) : null}
+          );
+        })}
+        <MapUpdater center={mapCenter} />
+      </MapContainer>
     </>
   );
 };
