@@ -15,10 +15,13 @@ import {
   Tooltip,
   useMap,
 } from "react-leaflet";
+import { Icon } from "leaflet";
 
 import CoachDetailsModal from "@/components/CoachDetailsModal/CoachDetailsModal";
 
 import { calculateDistance } from "@/utilities/helpers";
+
+import styles from "./Map.module.scss";
 
 interface Coordinates {
   lat: number;
@@ -162,6 +165,11 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
             coords: { latitude: lat, longitude: lng },
           } = JSON.parse(coach.geolocation as string) as GeolocationPosition;
           const coachCoords = { lat, lng };
+          const icon = new Icon({
+            iconUrl: coach.avatar,
+            className: styles["map__marker-icon"],
+            iconAnchor: [30, 15],
+          });
 
           return (
             <Marker
@@ -172,6 +180,7 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
                   setSelectedCoach(coach);
                 },
               }}
+              icon={icon}
             >
               <Tooltip direction="top" offset={[-15, -20]} permanent>
                 {coach.full_name}

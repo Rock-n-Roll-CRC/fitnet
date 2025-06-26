@@ -1,0 +1,10 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.map {
+  &__marker-icon {
+    @include size-shorthand(3rem, 3rem);
+
+    border-radius: $border-radius-circle;
+  }
+}
