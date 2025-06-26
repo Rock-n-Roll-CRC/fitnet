@@ -4,10 +4,12 @@ import { hash } from "bcrypt";
 import { z, ZodError } from "zod/v4";
 
 import { supabase } from "@/services/supabase";
-import { signIn } from "@/services/auth";
+import { auth, signIn } from "@/services/auth";
 import { getUserByEmail, getUserByPhoneNumber } from "@/services/apiUsers";
+import { getProfileByUserId } from "@/services/apiProfiles";
 import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { revalidatePath } from "next/cache";
 
 const SignUpFormSchema = z.object({
   firstName: z
@@ -135,4 +137,68 @@ export const signUpWithCredentials = async (credentials: FormData) => {
       throw new Error(errorMessage);
     }
   }
+};
+
+export const saveProfile = async (savedProfileId: string) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const userProfile = await getProfileByUserId(session.user.id);
+
+  const { data: duplicate, error: duplicateError } = await supabase
+    .from("saved_profiles")
+    .select()
+    .eq("saver_profile_id", userProfile.id)
+    .eq("saved_profile_id", savedProfileId)
+    .maybeSingle();
+
+  if (duplicateError) {
+    console.error(`Failed to save a user profile: ${duplicateError.message}`);
+    throw new Error(
+      `Failed to save a user profile: ${duplicateError.message}`,
+      {
+        cause: duplicateError.cause,
+      },
+    );
+  }
+
+  if (duplicate) return;
+
+  const { data, error } = await supabase
+    .from("saved_profiles")
+    .insert([
+      { saver_profile_id: userProfile.id, saved_profile_id: savedProfileId },
+    ])
+    .select();
+
+  if (error) {
+    console.error(`Failed to save a user profile: ${error.message}`);
+    throw new Error(`Failed to save a user profile: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  return data;
+};
+
+export const deleteSavedProfile = async (savedProfileId: string) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const userProfile = await getProfileByUserId(session.user.id);
+
+  const { error } = await supabase
+    .from("saved_profiles")
+    .delete()
+    .eq("saver_profile_id", userProfile.id)
+    .eq("saved_profile_id", savedProfileId);
+
+  if (error)
+    throw new Error(`Failed to delete a saved profile: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/coaches");
 };

@@ -183,38 +183,6 @@ export type Database = {
   };
   public: {
     Tables: {
-      coordinates: {
-        Row: {
-          created_at: string;
-          id: number;
-          latitude: number;
-          longitude: number;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: number;
-          latitude: number;
-          longitude: number;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: number;
-          latitude?: number;
-          longitude?: number;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "coordinates_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       profiles: {
         Row: {
           age: number | null;
@@ -264,6 +232,45 @@ export type Database = {
             columns: ["user_id"];
             isOneToOne: true;
             referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      saved_profiles: {
+        Row: {
+          created_at: string;
+          id: number;
+          saved_profile_id: string;
+          saver_profile_id: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          saved_profile_id: string;
+          saver_profile_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          saved_profile_id?: string;
+          saver_profile_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "saved_profiles_saved_profile_id_fkey";
+            columns: ["saved_profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "saved_profiles_saver_profile_id_fkey";
+            columns: ["saver_profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];

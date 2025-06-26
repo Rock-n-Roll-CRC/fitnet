@@ -16,6 +16,8 @@ import {
   useMap,
 } from "react-leaflet";
 
+import CoachDetailsModal from "@/components/CoachDetailsModal/CoachDetailsModal";
+
 import { calculateDistance } from "@/utilities/helpers";
 
 interface Coordinates {
@@ -61,6 +63,7 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
   const [cityCoords, setCityCoords] = useState<Coordinates>();
   const [inputCity, setInputCity] = useState("");
   const [isPositionDenied, setIsPositionDenied] = useState(false);
+  const [selectedCoach, setSelectedCoach] = useState<Tables<"profiles">>();
 
   const mapCenter = userCoords ?? cityCoords ?? { lat: 51.5074, lng: -0.1278 };
   const filteredCoaches = coaches.filter((coach) => {
@@ -161,7 +164,15 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
           const coachCoords = { lat, lng };
 
           return (
-            <Marker key={coach.id} position={coachCoords}>
+            <Marker
+              key={coach.id}
+              position={coachCoords}
+              eventHandlers={{
+                click: () => {
+                  setSelectedCoach(coach);
+                },
+              }}
+            >
               <Tooltip direction="top" offset={[-15, -20]} permanent>
                 {coach.full_name}
               </Tooltip>
@@ -170,6 +181,12 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
         })}
         <MapUpdater center={mapCenter} />
       </MapContainer>
+      <CoachDetailsModal
+        coach={selectedCoach}
+        onClose={() => {
+          setSelectedCoach(undefined);
+        }}
+      />
     </>
   );
 };
