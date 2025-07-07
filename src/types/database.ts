@@ -185,6 +185,53 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          avatar_url: string;
+          birthdate: string | null;
+          created_at: string;
+          full_name: string;
+          gender: string;
+          location: Json | null;
+          phone_number: string;
+          role: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          avatar_url?: string;
+          birthdate?: string | null;
+          created_at?: string;
+          full_name: string;
+          gender: string;
+          location?: Json | null;
+          phone_number: string;
+          role: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          avatar_url?: string;
+          birthdate?: string | null;
+          created_at?: string;
+          full_name?: string;
+          gender?: string;
+          location?: Json | null;
+          phone_number?: string;
+          role?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey1";
+            columns: ["user_id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      profiles_backup: {
+        Row: {
           age: number | null;
           avatar: string | null;
           created_at: string;
@@ -231,7 +278,7 @@ export type Database = {
             foreignKeyName: "profiles_user_id_fkey";
             columns: ["user_id"];
             isOneToOne: true;
-            referencedRelation: "users";
+            referencedRelation: "users_backup";
             referencedColumns: ["id"];
           },
         ];
@@ -239,21 +286,54 @@ export type Database = {
       saved_profiles: {
         Row: {
           created_at: string;
-          id: number;
+          saved_user_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          saved_user_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          saved_user_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "saved_profiles_saved_user_id_fkey1";
+            columns: ["saved_user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+          {
+            foreignKeyName: "saved_profiles_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      saved_profiles_backup: {
+        Row: {
+          created_at: string;
+          id: string;
           saved_profile_id: string;
           saver_profile_id: string;
           updated_at: string;
         };
         Insert: {
           created_at?: string;
-          id?: number;
+          id?: string;
           saved_profile_id: string;
           saver_profile_id: string;
           updated_at?: string;
         };
         Update: {
           created_at?: string;
-          id?: number;
+          id?: string;
           saved_profile_id?: string;
           saver_profile_id?: string;
           updated_at?: string;
@@ -263,19 +343,43 @@ export type Database = {
             foreignKeyName: "saved_profiles_saved_profile_id_fkey";
             columns: ["saved_profile_id"];
             isOneToOne: false;
-            referencedRelation: "profiles";
+            referencedRelation: "profiles_backup";
             referencedColumns: ["id"];
           },
           {
             foreignKeyName: "saved_profiles_saver_profile_id_fkey";
             columns: ["saver_profile_id"];
             isOneToOne: false;
-            referencedRelation: "profiles";
+            referencedRelation: "profiles_backup";
             referencedColumns: ["id"];
           },
         ];
       };
       users: {
+        Row: {
+          created_at: string;
+          email: string;
+          id: string;
+          password_hash: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          email: string;
+          id?: string;
+          password_hash?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          email?: string;
+          id?: string;
+          password_hash?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      users_backup: {
         Row: {
           created_at: string;
           email: string;
@@ -310,7 +414,30 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      citext: {
+        Args: { "": boolean } | { "": string } | { "": unknown };
+        Returns: string;
+      };
+      citext_hash: {
+        Args: { "": string };
+        Returns: number;
+      };
+      citextin: {
+        Args: { "": unknown };
+        Returns: string;
+      };
+      citextout: {
+        Args: { "": string };
+        Returns: unknown;
+      };
+      citextrecv: {
+        Args: { "": unknown };
+        Returns: string;
+      };
+      citextsend: {
+        Args: { "": string };
+        Returns: string;
+      };
     };
     Enums: {
       [_ in never]: never;

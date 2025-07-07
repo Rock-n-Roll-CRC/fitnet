@@ -70,11 +70,9 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
 
   const mapCenter = userCoords ?? cityCoords ?? { lat: 51.5074, lng: -0.1278 };
   const filteredCoaches = coaches.filter((coach) => {
-    if (!userCoords) return true;
+    if (!userCoords || !coach.location) return true;
 
-    const coachPosition = JSON.parse(
-      coach.geolocation as string,
-    ) as GeolocationPosition;
+    const coachPosition = coach.location as unknown as GeolocationPosition;
     const coachCoords = {
       lat: coachPosition.coords.latitude,
       lng: coachPosition.coords.longitude,
@@ -161,19 +159,21 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
           </Marker>
         )}
         {filteredCoaches.map((coach) => {
+          if (!coach.location) return null;
+
           const {
             coords: { latitude: lat, longitude: lng },
-          } = JSON.parse(coach.geolocation as string) as GeolocationPosition;
+          } = coach.location as unknown as GeolocationPosition;
           const coachCoords = { lat, lng };
           const icon = new Icon({
-            iconUrl: coach.avatar,
+            iconUrl: coach.avatar_url,
             className: styles["map__marker-icon"],
             iconAnchor: [30, 15],
           });
 
           return (
             <Marker
-              key={coach.id}
+              key={coach.user_id}
               position={coachCoords}
               eventHandlers={{
                 click: () => {

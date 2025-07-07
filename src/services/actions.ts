@@ -5,7 +5,7 @@ import { z, ZodError } from "zod/v4";
 
 import { supabase } from "@/services/supabase";
 import { auth, signIn } from "@/services/auth";
-import { getUserByEmail, getUserByPhoneNumber } from "@/services/apiUsers";
+import { getUserByEmail } from "@/services/apiUsers";
 import { getProfileByUserId } from "@/services/apiProfiles";
 import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -83,27 +83,19 @@ export const signUpWithCredentials = async (credentials: FormData) => {
   try {
     const credentialsObj = Object.fromEntries(credentials.entries());
 
-    const { firstName, lastName, phoneNumber, email, password } =
-      SignUpFormSchema.parse(credentialsObj);
+    const { email, password } = SignUpFormSchema.parse(credentialsObj);
 
     const existingUserByEmail = await getUserByEmail(email);
 
     if (existingUserByEmail)
       throw new Error("A user with this email already exists.");
 
-    const existingUserByPhoneNumber = await getUserByPhoneNumber(phoneNumber);
-
-    if (existingUserByPhoneNumber)
-      throw new Error("A user with this phone number already exists.");
-
     const { data: user, error: usersError } = await supabase
       .from("users")
       .insert([
         {
-          full_name: `${firstName} ${lastName}`,
-          phone_number: phoneNumber,
           email: email,
-          password: await hash(password, 10),
+          password_hash: await hash(password, 10),
         },
       ])
       .select()
@@ -111,21 +103,6 @@ export const signUpWithCredentials = async (credentials: FormData) => {
 
     if (usersError)
       throw new Error(usersError.message, { cause: usersError.cause });
-
-    const { error: profilesError } = await supabase
-      .from("profiles")
-      .insert([
-        {
-          full_name: `${firstName} ${lastName}`,
-          role: "client",
-          user_id: user.id,
-          phone_number: phoneNumber,
-        },
-      ])
-      .select();
-
-    if (profilesError)
-      throw new Error(profilesError.message, { cause: profilesError.cause });
   } catch (error) {
     const isError = error instanceof Error;
     const isZodError = error instanceof ZodError;
@@ -139,18 +116,16 @@ export const signUpWithCredentials = async (credentials: FormData) => {
   }
 };
 
-export const saveProfile = async (savedProfileId: string) => {
+export const saveProfile = async (userId: string) => {
   const session = await auth();
 
   if (!session) return;
 
-  const userProfile = await getProfileByUserId(session.user.id);
-
   const { data: duplicate, error: duplicateError } = await supabase
     .from("saved_profiles")
     .select()
-    .eq("saver_profile_id", userProfile.id)
-    .eq("saved_profile_id", savedProfileId)
+    .eq("user_id", session.user.id)
+    .eq("saved_user_id", userId)
     .maybeSingle();
 
   if (duplicateError) {
@@ -167,9 +142,7 @@ export const saveProfile = async (savedProfileId: string) => {
 
   const { data, error } = await supabase
     .from("saved_profiles")
-    .insert([
-      { saver_profile_id: userProfile.id, saved_profile_id: savedProfileId },
-    ])
+    .insert([{ user_id: session.user.id, saved_user_id: userId }])
     .select();
 
   if (error) {
@@ -182,18 +155,16 @@ export const saveProfile = async (savedProfileId: string) => {
   return data;
 };
 
-export const deleteSavedProfile = async (savedProfileId: string) => {
+export const deleteSavedProfile = async (savedUserId: string) => {
   const session = await auth();
 
   if (!session) return;
 
-  const userProfile = await getProfileByUserId(session.user.id);
-
   const { error } = await supabase
     .from("saved_profiles")
     .delete()
-    .eq("saver_profile_id", userProfile.id)
-    .eq("saved_profile_id", savedProfileId);
+    .eq("user_id", session.user.id)
+    .eq("saved_user_id", savedUserId);
 
   if (error)
     throw new Error(`Failed to delete a saved profile: ${error.message}`, {

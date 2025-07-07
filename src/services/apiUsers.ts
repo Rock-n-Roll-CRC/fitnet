@@ -19,7 +19,10 @@ export const getUserByCredentials = async (credentials: {
 
   if (!data) return null;
 
-  if (data.password && !(await compare(credentials.password, data.password)))
+  if (
+    data.password_hash &&
+    !(await compare(credentials.password, data.password_hash))
+  )
     return null;
 
   return data;
@@ -30,21 +33,6 @@ export const getUserByEmail = async (email: string) => {
     .from("users")
     .select("*")
     .eq("email", email)
-    .maybeSingle();
-
-  if (error) {
-    console.error(error.message);
-    throw new Error(error.message, { cause: error.cause });
-  }
-
-  return data;
-};
-
-export const getUserByPhoneNumber = async (phoneNumber: string) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("phone_number", phoneNumber)
     .maybeSingle();
 
   if (error) {

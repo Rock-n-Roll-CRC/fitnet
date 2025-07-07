@@ -5,7 +5,7 @@ export const getProfileByUserId = async (userId: string) => {
     .from("profiles")
     .select("*")
     .eq("user_id", userId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error(error.message);

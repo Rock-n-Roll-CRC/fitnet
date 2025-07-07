@@ -18,7 +18,7 @@ const SavedProfileItem = ({
   return (
     <div>
       <Image
-        src={savedProfile.avatar}
+        src={savedProfile.avatar_url}
         alt={savedProfile.full_name}
         width={30}
         height={30}
@@ -28,7 +28,9 @@ const SavedProfileItem = ({
       <p>Gender: {savedProfile.gender}</p>
       <p>Phone Number: {savedProfile.phone_number}</p>
 
-      <button onClick={() => void handleDeleteSavedProfile(savedProfile.id)}>
+      <button
+        onClick={() => void handleDeleteSavedProfile(savedProfile.user_id)}
+      >
         Delete
       </button>
     </div>

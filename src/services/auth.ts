@@ -32,12 +32,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const user = await getUserByCredentials(validatedCredentials);
 
-          if (!user?.phone_number) return null;
+          if (!user) return null;
 
           return {
             id: user.id,
-            fullName: user.full_name,
-            phoneNumber: user.phone_number,
             email: user.email,
           };
         } catch {
@@ -52,7 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!user) {
           const { data, error: usersError } = await supabase
             .from("users")
-            .insert([{ full_name: profile.name, email: profile.email }])
+            .insert([{ email: profile.email }])
             .select()
             .single();
 
@@ -60,23 +58,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error(usersError.message, { cause: usersError.cause });
 
           user = data;
-
-          const { error: profilesError } = await supabase
-            .from("profiles")
-            .insert([
-              { full_name: profile.name, role: "client", user_id: user.id },
-            ])
-            .select();
-
-          if (profilesError)
-            throw new Error(profilesError.message, {
-              cause: profilesError.cause,
-            });
         }
 
         return {
           id: user.id,
-          fullName: user.full_name,
           email: user.email,
         };
       },

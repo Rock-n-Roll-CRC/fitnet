@@ -12,13 +12,15 @@ const Page = async () => {
 
   const profile = await getProfileByUserId(session.user.id);
 
+  if (!profile) return;
+
   return (
     <main className={styles.main}>
       <div className={styles.profile}>
         <div className={styles["profile__top-container"]}>
           <div className={styles["profile__avatar-wrapper"]}>
             <Image
-              src={profile.avatar}
+              src={profile.avatar_url}
               alt={profile.full_name}
               fill
               className={styles.profile__avatar}

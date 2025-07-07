@@ -18,7 +18,7 @@ const CoachDetailsModal = ({
   async function handleSaveProfile() {
     if (!coach) return;
 
-    await saveProfile(coach.id);
+    await saveProfile(coach.user_id);
 
     onClose();
   }
@@ -27,7 +27,12 @@ const CoachDetailsModal = ({
 
   return (
     <div className={styles["coach-details-modal"]}>
-      <Image src={coach.avatar} alt={coach.full_name} width={30} height={30} />
+      <Image
+        src={coach.avatar_url}
+        alt={coach.full_name}
+        width={30}
+        height={30}
+      />
       <p>Full Name: {coach.full_name}</p>
       <p>Age: {coach.age}</p>
       <p>Gender: {coach.gender}</p>

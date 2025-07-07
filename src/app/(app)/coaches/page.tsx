@@ -1,6 +1,5 @@
 import { auth } from "@/services/auth";
 import { getSavedProfiles } from "@/services/apiSavedProfiles";
-import { getProfileByUserId } from "@/services/apiProfiles";
 import SavedProfileItem from "@/components/SavedProfileItem/SavedProfileItem";
 
 const Page = async () => {
@@ -8,13 +7,15 @@ const Page = async () => {
 
   if (!session) return;
 
-  const userProfile = await getProfileByUserId(session.user.id);
-  const savedProfiles = await getSavedProfiles(userProfile.id);
+  const savedProfiles = await getSavedProfiles(session.user.id);
 
   return (
     <main>
       {savedProfiles.map(({ profile: savedProfile }) => (
-        <SavedProfileItem key={savedProfile.id} savedProfile={savedProfile} />
+        <SavedProfileItem
+          key={savedProfile.user_id}
+          savedProfile={savedProfile}
+        />
       ))}
     </main>
   );
