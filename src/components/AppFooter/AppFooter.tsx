@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import PeopleOutlineSVG from "@/assets/icons/people-outline.svg";
-import SearchOutlineSVG from "@/assets/icons/search-outline.svg";
+import StarOutlineSVG from "@/assets/icons/star-outline.svg";
+import CompassOutlineSVG from "@/assets/icons/compass-outline.svg";
 import PersonOutlineSVG from "@/assets/icons/person-outline.svg";
-import PeopleSVG from "@/assets/icons/people.svg";
-import SearchSVG from "@/assets/icons/search.svg";
+import StarSVG from "@/assets/icons/star.svg";
+import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
 
 import styles from "./AppFooter.module.scss";
@@ -22,9 +22,9 @@ const AppFooter = () => {
           <li className={styles["app-footer__list-item"]}>
             <Link href="/coaches" className={styles["app-footer__nav-link"]}>
               {pathname === "/coaches" ? (
-                <PeopleSVG className={styles["app-footer__nav-link-icon"]} />
+                <StarSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
-                <PeopleOutlineSVG
+                <StarOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               )}
@@ -36,9 +36,9 @@ const AppFooter = () => {
               className={`${styles["app-footer__nav-link"] ?? ""} ${styles["app-footer__nav-link--circled"] ?? ""}`}
             >
               {pathname === "/search" ? (
-                <SearchSVG className={styles["app-footer__nav-link-icon"]} />
+                <CompassSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
-                <SearchOutlineSVG
+                <CompassOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               )}
