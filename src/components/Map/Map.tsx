@@ -5,8 +5,9 @@ import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
 import type { Tables } from "@/types/database";
+import type { LeafletMouseEvent, LeafletMouseEventHandlerFn } from "leaflet";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   MapContainer,
@@ -14,6 +15,7 @@ import {
   TileLayer,
   Tooltip,
   useMap,
+  useMapEvent,
 } from "react-leaflet";
 import { Icon } from "leaflet";
 
@@ -22,6 +24,8 @@ import CoachDetailsModal from "@/components/CoachDetailsModal/CoachDetailsModal"
 import { calculateDistance } from "@/utilities/helpers";
 
 import styles from "./Map.module.scss";
+import { updateProfileLocation } from "@/services/actions";
+import type { Session } from "next-auth";
 
 interface Coordinates {
   lat: number;
@@ -59,7 +63,29 @@ const MapUpdater = ({ center }: { center: Coordinates }) => {
   return null;
 };
 
-const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
+const ClickHandler = ({
+  onMapClick,
+}: {
+  onMapClick: LeafletMouseEventHandlerFn;
+}) => {
+  useMapEvent("click", onMapClick);
+
+  return null;
+};
+
+const Map = ({
+  coaches,
+  isSelectingPosition,
+  userCoords: userCoordsProp,
+  setUserCoords: setUserCoordsProp,
+  session,
+}: {
+  coaches?: Tables<"profiles">[];
+  isSelectingPosition?: boolean;
+  userCoords?: Coordinates;
+  setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
+  session: Session;
+}) => {
   const searchParams = useSearchParams();
 
   const [userCoords, setUserCoords] = useState<Coordinates>();
@@ -68,17 +94,20 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
   const [isPositionDenied, setIsPositionDenied] = useState(false);
   const [selectedCoach, setSelectedCoach] = useState<Tables<"profiles">>();
 
-  const mapCenter = userCoords ?? cityCoords ?? { lat: 51.5074, lng: -0.1278 };
-  const filteredCoaches = coaches.filter((coach) => {
-    if (!userCoords || !coach.location) return true;
+  const currentUserCoords = userCoordsProp ?? userCoords;
+  const currentSetUserCoords = setUserCoordsProp ?? setUserCoords;
+  const mapCenter = currentUserCoords ??
+    cityCoords ?? { lat: 51.5074, lng: -0.1278 };
+  const filteredCoaches = coaches?.filter((coach) => {
+    if (!currentUserCoords || !coach.location) return true;
 
-    const coachPosition = coach.location as unknown as GeolocationPosition;
+    const coachPosition = coach.location as unknown as Coordinates;
     const coachCoords = {
-      lat: coachPosition.coords.latitude,
-      lng: coachPosition.coords.longitude,
+      lat: coachPosition.lat,
+      lng: coachPosition.lng,
     };
 
-    const distance = calculateDistance(userCoords, coachCoords);
+    const distance = calculateDistance(currentUserCoords, coachCoords);
     const minDistance = searchParams.get("minDistance");
     const maxDistance = searchParams.get("maxDistance");
 
@@ -112,17 +141,25 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
     }
   }
 
+  function handleMapClick(event: LeafletMouseEvent) {
+    if (isSelectingPosition)
+      currentSetUserCoords({ lat: event.latlng.lat, lng: event.latlng.lng });
+  }
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude: lat, longitude: lng } }) => {
-        setUserCoords({ lat, lng });
+        currentSetUserCoords({ lat, lng });
+        void (async () => {
+          await updateProfileLocation(session.user.id, { lat, lng });
+        })();
       },
       () => {
         setIsPositionDenied(true);
       },
       { enableHighAccuracy: true },
     );
-  }, []);
+  }, [currentSetUserCoords, session.user.id]);
 
   return (
     <>
@@ -151,19 +188,17 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {userCoords && (
-          <Marker position={userCoords}>
+        {currentUserCoords && (
+          <Marker position={currentUserCoords}>
             <Tooltip direction="top" offset={[-15, -20]} permanent>
               You
             </Tooltip>
           </Marker>
         )}
-        {filteredCoaches.map((coach) => {
+        {filteredCoaches?.map((coach) => {
           if (!coach.location) return null;
 
-          const {
-            coords: { latitude: lat, longitude: lng },
-          } = coach.location as unknown as GeolocationPosition;
+          const { lat, lng } = coach.location as unknown as Coordinates;
           const coachCoords = { lat, lng };
           const icon = new Icon({
             iconUrl: coach.avatar_url,
@@ -189,6 +224,7 @@ const Map = ({ coaches }: { coaches: Tables<"profiles">[] }) => {
           );
         })}
         <MapUpdater center={mapCenter} />
+        <ClickHandler onMapClick={handleMapClick} />
       </MapContainer>
       <CoachDetailsModal
         coach={selectedCoach}

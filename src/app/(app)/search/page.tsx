@@ -1,5 +1,5 @@
-import SearchFilter from "@/components/SearchFilter/SearchFilter";
-import MapWrapper from "@/components/MapWrapper/MapWrapper";
+import ClientSearchPage from "@/components/ClientSearchPage/ClientSearchPage";
+import CoachSearchPage from "@/components/CoachSearchPage/CoachSearchPage";
 
 import { auth } from "@/services/auth";
 import { getCoachProfiles, getProfileByUserId } from "@/services/apiProfiles";
@@ -24,17 +24,9 @@ const Page = async ({
   return (
     <main className={styles.main}>
       {userProfile.role === "client" ? (
-        <>
-          <SearchFilter />
-
-          <MapWrapper coaches={coaches} />
-        </>
+        <ClientSearchPage coaches={coaches} session={session} />
       ) : (
-        <>
-          <SearchFilter />
-
-          <MapWrapper coaches={coaches} />
-        </>
+        <CoachSearchPage session={session} />
       )}
     </main>
   );

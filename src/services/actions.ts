@@ -6,7 +6,6 @@ import { z, ZodError } from "zod/v4";
 import { supabase } from "@/services/supabase";
 import { auth, signIn } from "@/services/auth";
 import { getUserByEmail } from "@/services/apiUsers";
-import { getProfileByUserId } from "@/services/apiProfiles";
 import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { revalidatePath } from "next/cache";
@@ -172,4 +171,27 @@ export const deleteSavedProfile = async (savedUserId: string) => {
     });
 
   revalidatePath("/coaches");
+};
+
+export const updateProfileLocation = async (
+  userId: string,
+  location: {
+    lat: number;
+    lng: number;
+  },
+) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ location })
+    .eq("user_id", userId)
+    .select();
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to update profile location: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  return data;
 };

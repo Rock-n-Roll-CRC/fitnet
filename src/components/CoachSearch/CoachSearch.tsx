@@ -1,0 +1,44 @@
+"use client";
+
+import { useState } from "react";
+
+interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+const CoachSearch = ({
+  isSelectingPosition,
+  onSetLocation,
+  onSaveLocation,
+  userCoords,
+}: {
+  isSelectingPosition: boolean;
+  onSetLocation: () => void;
+  onSaveLocation: () => void;
+  userCoords: Coordinates | undefined;
+}) => {
+  const [isSearching, setIsSearching] = useState(false);
+
+  function handleToggleIsSearching() {
+    setIsSearching((isSearching) => !isSearching);
+  }
+
+  return (
+    <div>
+      <button
+        onClick={handleToggleIsSearching}
+      >{`${isSearching ? "Stop" : "Start"} Searching`}</button>
+
+      <button
+        onClick={
+          isSelectingPosition && userCoords ? onSaveLocation : onSetLocation
+        }
+      >
+        {isSelectingPosition && userCoords ? "Save location" : "Set location"}
+      </button>
+    </div>
+  );
+};
+
+export default CoachSearch;
