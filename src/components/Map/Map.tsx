@@ -99,6 +99,8 @@ const Map = ({
   const mapCenter = currentUserCoords ??
     cityCoords ?? { lat: 51.5074, lng: -0.1278 };
   const filteredCoaches = coaches?.filter((coach) => {
+    if (!coach.isSearching) return false;
+
     if (!currentUserCoords || !coach.location) return true;
 
     const coachPosition = coach.location as unknown as Coordinates;

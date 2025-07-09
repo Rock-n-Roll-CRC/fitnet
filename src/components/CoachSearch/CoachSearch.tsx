@@ -1,5 +1,6 @@
 "use client";
 
+import { updateProfileIsSearching } from "@/services/actions";
 import { useState } from "react";
 
 interface Coordinates {
@@ -19,15 +20,22 @@ const CoachSearch = ({
   userCoords: Coordinates | undefined;
 }) => {
   const [isSearching, setIsSearching] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  function handleToggleIsSearching() {
+  async function handleToggleIsSearching() {
+    setIsDisabled(true);
+    await updateProfileIsSearching(!isSearching);
     setIsSearching((isSearching) => !isSearching);
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 5000);
   }
 
   return (
     <div>
       <button
         onClick={handleToggleIsSearching}
+        disabled={isDisabled}
       >{`${isSearching ? "Stop" : "Start"} Searching`}</button>
 
       <button

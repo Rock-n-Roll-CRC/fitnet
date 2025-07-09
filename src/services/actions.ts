@@ -195,3 +195,24 @@ export const updateProfileLocation = async (
 
   return data;
 };
+
+export const updateProfileIsSearching = async (value: boolean) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ isSearching: value })
+    .eq("user_id", session.user.id)
+    .select();
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to update profile is searching: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  return data;
+};
