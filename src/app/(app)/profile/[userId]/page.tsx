@@ -5,12 +5,12 @@ import { getProfileByUserId } from "@/services/apiProfiles";
 
 import styles from "./page.module.scss";
 
-const Page = async () => {
+const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const session = await auth();
 
   if (!session) return;
 
-  const profile = await getProfileByUserId(session.user.id);
+  const profile = await getProfileByUserId((await params).userId);
 
   if (!profile) return;
 

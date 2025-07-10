@@ -11,8 +11,9 @@ import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
 
 import styles from "./AppFooter.module.scss";
+import type { Session } from "next-auth";
 
-const AppFooter = () => {
+const AppFooter = ({ session }: { session: Session }) => {
   const pathname = usePathname();
 
   return (
@@ -45,8 +46,11 @@ const AppFooter = () => {
             </Link>
           </li>
           <li className={styles["app-footer__list-item"]}>
-            <Link href="/profile" className={styles["app-footer__nav-link"]}>
-              {pathname === "/profile" ? (
+            <Link
+              href={`/profile/${session.user.id}`}
+              className={styles["app-footer__nav-link"]}
+            >
+              {pathname === `/profile/${session.user.id}` ? (
                 <PersonSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
                 <PersonOutlineSVG
