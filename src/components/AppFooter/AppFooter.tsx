@@ -20,8 +20,8 @@ const AppFooter = () => {
       <nav className={styles["app-footer__nav"]}>
         <ul className={styles["app-footer__list"]}>
           <li className={styles["app-footer__list-item"]}>
-            <Link href="/coaches" className={styles["app-footer__nav-link"]}>
-              {pathname === "/coaches" ? (
+            <Link href="/favourites" className={styles["app-footer__nav-link"]}>
+              {pathname === "/favourites" ? (
                 <StarSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
                 <StarOutlineSVG

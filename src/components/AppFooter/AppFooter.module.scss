@@ -2,9 +2,9 @@
 @use "../../styles/tools" as *;
 
 .app-footer {
-  // position: absolute;
-  // inset-block-end: 0;
-  // z-index: 9999;
+  position: fixed;
+  inset-block-end: 0;
+  z-index: 9999;
   inline-size: 100%;
   padding: $whitespace-6 0;
   background-color: $color-neutral-1;
