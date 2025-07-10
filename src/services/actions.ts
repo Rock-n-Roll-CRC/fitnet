@@ -123,7 +123,7 @@ export const saveProfile = async (userId: string) => {
   const { data: duplicate, error: duplicateError } = await supabase
     .from("saved_profiles")
     .select()
-    .eq("user_id", session.user.id)
+    .eq("saver_user_id", session.user.id)
     .eq("saved_user_id", userId)
     .maybeSingle();
 
@@ -141,7 +141,7 @@ export const saveProfile = async (userId: string) => {
 
   const { data, error } = await supabase
     .from("saved_profiles")
-    .insert([{ user_id: session.user.id, saved_user_id: userId }])
+    .insert([{ saver_user_id: session.user.id, saved_user_id: userId }])
     .select();
 
   if (error) {
@@ -154,6 +154,25 @@ export const saveProfile = async (userId: string) => {
   return data;
 };
 
+export const deleteSaverProfile = async (saverUserId: string) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { error } = await supabase
+    .from("saved_profiles")
+    .delete()
+    .eq("saver_user_id", saverUserId)
+    .eq("saved_user_id", session.user.id);
+
+  if (error)
+    throw new Error(`Failed to delete a saved profile: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/favourites");
+};
+
 export const deleteSavedProfile = async (savedUserId: string) => {
   const session = await auth();
 
@@ -162,7 +181,7 @@ export const deleteSavedProfile = async (savedUserId: string) => {
   const { error } = await supabase
     .from("saved_profiles")
     .delete()
-    .eq("user_id", session.user.id)
+    .eq("saver_user_id", session.user.id)
     .eq("saved_user_id", savedUserId);
 
   if (error)
@@ -170,7 +189,7 @@ export const deleteSavedProfile = async (savedUserId: string) => {
       cause: error.cause,
     });
 
-  revalidatePath("/coaches");
+  revalidatePath("/favourites");
 };
 
 export const updateProfileLocation = async (

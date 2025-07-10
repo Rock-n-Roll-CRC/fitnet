@@ -295,17 +295,17 @@ export type Database = {
         Row: {
           created_at: string;
           saved_user_id: string;
-          user_id: string;
+          saver_user_id: string;
         };
         Insert: {
           created_at?: string;
           saved_user_id: string;
-          user_id: string;
+          saver_user_id: string;
         };
         Update: {
           created_at?: string;
           saved_user_id?: string;
-          user_id?: string;
+          saver_user_id?: string;
         };
         Relationships: [
           {
@@ -316,11 +316,11 @@ export type Database = {
             referencedColumns: ["user_id"];
           },
           {
-            foreignKeyName: "saved_profiles_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: "saved_profiles_saver_user_id_fkey";
+            columns: ["saver_user_id"];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
           },
         ];
       };

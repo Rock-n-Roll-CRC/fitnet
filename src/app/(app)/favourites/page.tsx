@@ -1,6 +1,11 @@
+import ProfileItem from "@/components/ProfileItem/ProfileItem";
+
 import { auth } from "@/services/auth";
-import { getSavedProfiles } from "@/services/apiSavedProfiles";
-import SavedProfileItem from "@/components/SavedProfileItem/SavedProfileItem";
+import { getProfileByUserId } from "@/services/apiProfiles";
+import {
+  getSavedProfiles,
+  getSaverProfiles,
+} from "@/services/apiSavedProfiles";
 
 import styles from "./page.module.scss";
 
@@ -9,15 +14,21 @@ const Page = async () => {
 
   if (!session) return;
 
-  const savedProfiles = await getSavedProfiles(session.user.id);
+  const profile = await getProfileByUserId(session.user.id);
+
+  if (!profile) return;
+
+  const displayedProfiles =
+    profile.role === "client"
+      ? await getSavedProfiles(session.user.id)
+      : profile.role === "coach"
+        ? await getSaverProfiles(session.user.id)
+        : null;
 
   return (
     <main className={styles.main}>
-      {savedProfiles.map(({ profile: savedProfile }) => (
-        <SavedProfileItem
-          key={savedProfile.user_id}
-          savedProfile={savedProfile}
-        />
+      {displayedProfiles?.map(({ profile }) => (
+        <ProfileItem key={profile.user_id} profile={profile} />
       ))}
     </main>
   );
