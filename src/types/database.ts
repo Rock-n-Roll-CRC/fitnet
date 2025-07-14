@@ -188,6 +188,48 @@ export type Database = {
   };
   public: {
     Tables: {
+      connection_requests: {
+        Row: {
+          created_at: string;
+          id: string;
+          receiver_id: string;
+          sender_id: string;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          receiver_id: string;
+          sender_id: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          receiver_id?: string;
+          sender_id?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "connection_requests_receiver_id_fkey";
+            columns: ["receiver_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+          {
+            foreignKeyName: "connection_requests_sender_id_fkey";
+            columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string;

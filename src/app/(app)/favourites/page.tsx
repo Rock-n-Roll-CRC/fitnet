@@ -1,11 +1,13 @@
 import ProfileItem from "@/components/ProfileItem/ProfileItem";
+import RequestItem from "@/components/RequestItem/RequestItem";
 
 import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
+import { getSavedProfiles } from "@/services/apiSavedProfiles";
 import {
-  getSavedProfiles,
-  getSaverProfiles,
-} from "@/services/apiSavedProfiles";
+  getPendingConnectionRequests,
+  getSentPendingConnectionRequests,
+} from "@/services/apiConnectionRequests";
 
 import styles from "./page.module.scss";
 
@@ -18,17 +20,38 @@ const Page = async () => {
 
   if (!profile) return;
 
-  const displayedProfiles =
-    profile.role === "client"
-      ? await getSavedProfiles(session.user.id)
-      : profile.role === "coach"
-        ? await getSaverProfiles(session.user.id)
-        : null;
+  const savedProfiles = await getSavedProfiles(session.user.id);
+
+  const pendingConnectionRequests = await getPendingConnectionRequests(
+    session.user.id,
+  );
+  const sentPendingConnectionRequests = await getSentPendingConnectionRequests(
+    session.user.id,
+  );
+
+  console.log(savedProfiles);
 
   return (
     <main className={styles.main}>
-      {displayedProfiles?.map(({ profile }) => (
-        <ProfileItem key={profile.user_id} profile={profile} />
+      {savedProfiles.map(({ saverProfile, savedProfile }) => (
+        <ProfileItem
+          key={profile.user_id}
+          profile={
+            session.user.id === saverProfile.user_id
+              ? savedProfile
+              : saverProfile
+          }
+        />
+      ))}
+
+      <hr />
+
+      {pendingConnectionRequests.map((request, index) => (
+        <RequestItem key={index} request={request} type="received" />
+      ))}
+
+      {sentPendingConnectionRequests.map((request, index) => (
+        <RequestItem key={index} request={request} type="sent" />
       ))}
     </main>
   );

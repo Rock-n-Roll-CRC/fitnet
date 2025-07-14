@@ -9,6 +9,7 @@ import { getUserByEmail } from "@/services/apiUsers";
 import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { revalidatePath } from "next/cache";
+import type { Tables } from "@/types/database";
 
 const SignUpFormSchema = z.object({
   firstName: z
@@ -115,74 +116,11 @@ export const signUpWithCredentials = async (credentials: FormData) => {
   }
 };
 
-export const saveProfile = async (userId: string) => {
-  const session = await auth();
-
-  if (!session) return;
-
-  const { data: duplicate, error: duplicateError } = await supabase
-    .from("saved_profiles")
-    .select()
-    .eq("saver_user_id", session.user.id)
-    .eq("saved_user_id", userId)
-    .maybeSingle();
-
-  if (duplicateError) {
-    console.error(`Failed to save a user profile: ${duplicateError.message}`);
-    throw new Error(
-      `Failed to save a user profile: ${duplicateError.message}`,
-      {
-        cause: duplicateError.cause,
-      },
-    );
-  }
-
-  if (duplicate) return;
-
-  const { data, error } = await supabase
-    .from("saved_profiles")
-    .insert([{ saver_user_id: session.user.id, saved_user_id: userId }])
-    .select();
-
-  if (error) {
-    console.error(`Failed to save a user profile: ${error.message}`);
-    throw new Error(`Failed to save a user profile: ${error.message}`, {
-      cause: error.cause,
-    });
-  }
-
-  return data;
-};
-
-export const deleteSaverProfile = async (saverUserId: string) => {
-  const session = await auth();
-
-  if (!session) return;
-
-  const { error } = await supabase
-    .from("saved_profiles")
-    .delete()
-    .eq("saver_user_id", saverUserId)
-    .eq("saved_user_id", session.user.id);
-
-  if (error)
-    throw new Error(`Failed to delete a saved profile: ${error.message}`, {
-      cause: error.cause,
-    });
-
-  revalidatePath("/favourites");
-};
-
 export const deleteSavedProfile = async (savedUserId: string) => {
-  const session = await auth();
-
-  if (!session) return;
-
   const { error } = await supabase
     .from("saved_profiles")
     .delete()
-    .eq("saver_user_id", session.user.id)
-    .eq("saved_user_id", savedUserId);
+    .or(`saver_user_id.eq.${savedUserId},saved_user_id.eq.${savedUserId}`);
 
   if (error)
     throw new Error(`Failed to delete a saved profile: ${error.message}`, {
@@ -234,4 +172,149 @@ export const updateProfileIsSearching = async (value: boolean) => {
   }
 
   return data;
+};
+
+export const sendConnectionRequest = async (userId: string) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { data: duplicate, error: duplicateError } = await supabase
+    .from("connection_requests")
+    .select("*")
+    .eq("sender_id", session.user.id)
+    .eq("receiver_id", userId)
+    .eq("status", "pending")
+    .maybeSingle();
+
+  if (duplicateError) {
+    console.error(duplicateError.message);
+    throw new Error(
+      `Failed to send connection request: ${duplicateError.message}`,
+      { cause: duplicateError.cause },
+    );
+  }
+
+  if (duplicate) return;
+
+  const { data, error } = await supabase
+    .from("connection_requests")
+    .insert({ sender_id: session.user.id, receiver_id: userId });
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to send connection request: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  return data;
+};
+
+export const acceptConnectionRequest = async (
+  request: Tables<"connection_requests"> & {
+    senderProfile: Tables<"profiles">;
+    receiverProfile: Tables<"profiles">;
+  },
+) => {
+  const { data: acceptedRequest, error: acceptedRequestError } = await supabase
+    .from("connection_requests")
+    .update({ status: "accepted" })
+    .eq("id", request.id)
+    .select()
+    .maybeSingle();
+
+  if (acceptedRequestError) {
+    console.error(acceptedRequestError.message);
+    throw new Error(
+      `Failed to accept connection request: ${acceptedRequestError.message}`,
+      {
+        cause: acceptedRequestError.cause,
+      },
+    );
+  }
+
+  if (!acceptedRequest) {
+    revalidatePath("/favourites");
+    return;
+  }
+
+  const { data: duplicate, error: duplicateError } = await supabase
+    .from("saved_profiles")
+    .select()
+    .eq("saver_user_id", request.receiver_id)
+    .eq("saved_user_id", request.sender_id)
+    .maybeSingle();
+
+  if (duplicateError) {
+    console.error(`Failed to save a user profile: ${duplicateError.message}`);
+    throw new Error(
+      `Failed to save a user profile: ${duplicateError.message}`,
+      {
+        cause: duplicateError.cause,
+      },
+    );
+  }
+
+  if (duplicate) return;
+
+  const { data, error } = await supabase
+    .from("saved_profiles")
+    .insert([
+      { saver_user_id: request.receiver_id, saved_user_id: request.sender_id },
+    ])
+    .select();
+
+  if (error) {
+    console.error(`Failed to save a user profile: ${error.message}`);
+    throw new Error(`Failed to save a user profile: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  revalidatePath("/favourites");
+};
+
+export const declineConnectionRequest = async (
+  request: Tables<"connection_requests"> & {
+    senderProfile: Tables<"profiles">;
+    receiverProfile: Tables<"profiles">;
+  },
+) => {
+  const { data, error } = await supabase
+    .from("connection_requests")
+    .update({ status: "declined" })
+    .eq("id", request.id)
+    .select();
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to decline connection request: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  revalidatePath("/favourites");
+};
+
+export const deleteConnectionRequest = async (
+  request: Tables<"connection_requests"> & {
+    senderProfile: Tables<"profiles">;
+    receiverProfile: Tables<"profiles">;
+  },
+) => {
+  const { error } = await supabase
+    .from("connection_requests")
+    .delete()
+    .eq("id", request.id)
+    .eq("status", "pending");
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to delete connection request: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  revalidatePath("/favourites");
 };

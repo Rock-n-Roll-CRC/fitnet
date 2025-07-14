@@ -4,9 +4,10 @@ import type { Tables } from "@/types/database";
 
 import Image from "next/image";
 
-import { saveProfile } from "@/services/actions";
+import { sendConnectionRequest } from "@/services/actions";
 
 import styles from "./CoachDetailsModal.module.scss";
+import Link from "next/link";
 
 const CoachDetailsModal = ({
   coach,
@@ -15,10 +16,10 @@ const CoachDetailsModal = ({
   coach?: Tables<"profiles">;
   onClose: () => void;
 }) => {
-  async function handleSaveProfile() {
+  async function handleSendConnectionRequest() {
     if (!coach) return;
 
-    await saveProfile(coach.user_id);
+    await sendConnectionRequest(coach.user_id);
 
     onClose();
   }
@@ -40,7 +41,11 @@ const CoachDetailsModal = ({
 
       <button onClick={onClose}>Close</button>
 
-      <button onClick={() => void handleSaveProfile()}>Accept</button>
+      <Link href={`/profile/${coach.user_id}`}>Open Profile</Link>
+
+      <button onClick={() => void handleSendConnectionRequest()}>
+        Connect
+      </button>
     </div>
   );
 };

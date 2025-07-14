@@ -4,12 +4,11 @@ import type { Tables } from "@/types/database";
 
 import Image from "next/image";
 
-import { deleteSavedProfile, deleteSaverProfile } from "@/services/actions";
+import { deleteSavedProfile } from "@/services/actions";
 
 const ProfileItem = ({ profile }: { profile: Tables<"profiles"> }) => {
   async function handleDeleteProfile(userId: string) {
-    if (profile.role === "client") await deleteSaverProfile(userId);
-    if (profile.role === "coach") await deleteSavedProfile(userId);
+    await deleteSavedProfile(userId);
   }
 
   return (
