@@ -13,13 +13,15 @@ const CoachSearch = ({
   onSetLocation,
   onSaveLocation,
   userCoords,
+  isSearching: isSearchingProp,
 }: {
   isSelectingPosition: boolean;
   onSetLocation: () => void;
   onSaveLocation: () => void;
   userCoords: Coordinates | undefined;
+  isSearching: boolean;
 }) => {
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(isSearchingProp);
   const [isDisabled, setIsDisabled] = useState(false);
 
   async function handleToggleIsSearching() {

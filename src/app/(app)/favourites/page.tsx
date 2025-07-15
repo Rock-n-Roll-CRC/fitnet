@@ -29,8 +29,6 @@ const Page = async () => {
     session.user.id,
   );
 
-  console.log(savedProfiles);
-
   return (
     <main className={styles.main}>
       {savedProfiles.map(({ saverProfile, savedProfile }) => (

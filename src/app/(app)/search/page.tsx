@@ -26,7 +26,10 @@ const Page = async ({
       {userProfile.role === "client" ? (
         <ClientSearchPage coaches={coaches} session={session} />
       ) : (
-        <CoachSearchPage session={session} />
+        <CoachSearchPage
+          session={session}
+          isSearching={userProfile.isSearching}
+        />
       )}
     </main>
   );

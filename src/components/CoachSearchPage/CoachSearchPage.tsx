@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CoachSearch from "@/components/CoachSearch/CoachSearch";
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
@@ -14,7 +14,13 @@ interface Coordinates {
   lng: number;
 }
 
-const CoachSearchPage = ({ session }: { session: Session }) => {
+const CoachSearchPage = ({
+  session,
+  isSearching,
+}: {
+  session: Session;
+  isSearching: boolean;
+}) => {
   const [isSelectingPosition, setIsSelectingPosition] = useState(false);
   const [userCoords, setUserCoords] = useState<Coordinates>();
 
@@ -29,6 +35,22 @@ const CoachSearchPage = ({ session }: { session: Session }) => {
     await updateProfileLocation(session.user.id, userCoords);
   }
 
+  useEffect(() => {
+    function handleBeforeUnload() {
+      navigator.sendBeacon(
+        "/api/set-is-searching",
+        JSON.stringify({ value: false }),
+      );
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      handleBeforeUnload();
+    };
+  }, []);
+
   return (
     <>
       {isSelectingPosition && (
@@ -42,6 +64,7 @@ const CoachSearchPage = ({ session }: { session: Session }) => {
         isSelectingPosition={isSelectingPosition}
         onSetLocation={handleSetLocation}
         onSaveLocation={handleSaveLocation}
+        isSearching={isSearching}
       />
 
       <MapWrapper
