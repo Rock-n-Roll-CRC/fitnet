@@ -4,6 +4,8 @@ import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
 
 import styles from "./page.module.scss";
+import BlockButton from "@/components/BlockButton/BlockButton";
+import { isBlocked } from "@/services/apiBlockedProfiles";
 
 const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const session = await auth();
@@ -13,6 +15,8 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const profile = await getProfileByUserId((await params).userId);
 
   if (!profile) return;
+
+  const isProfileBlocked = await isBlocked(session.user.id, profile.user_id);
 
   return (
     <main className={styles.main}>
@@ -41,6 +45,10 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
           </p>
         </div>
       </div>
+
+      {session.user.id !== profile.user_id && (
+        <BlockButton isBlocked={isProfileBlocked} profile={profile} />
+      )}
     </main>
   );
 };

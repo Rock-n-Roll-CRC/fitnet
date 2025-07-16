@@ -1,13 +1,30 @@
 import { supabase } from "@/services/supabase";
 
 export const getPendingConnectionRequests = async (userId: string) => {
+  const { data: blockedIds, error: blockedIdsError } = await supabase
+    .from("blocked_profiles")
+    .select("blocked_id")
+    .eq("blocker_id", userId);
+
+  if (blockedIdsError) {
+    console.error(blockedIdsError.message);
+    throw new Error(
+      `Failed to fetch coaches' profiles: ${blockedIdsError.message}`,
+    );
+  }
+
   const { data, error } = await supabase
     .from("connection_requests")
     .select(
       "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
     )
     .eq("receiver_id", userId)
-    .eq("status", "pending");
+    .eq("status", "pending")
+    .not(
+      "sender_id",
+      "in",
+      `(${blockedIds.map((blockedId) => blockedId.blocked_id).join(",")})`,
+    );
 
   if (error) {
     console.error(error.message);

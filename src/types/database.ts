@@ -188,6 +188,39 @@ export type Database = {
   };
   public: {
     Tables: {
+      blocked_profiles: {
+        Row: {
+          blocked_id: string;
+          blocker_id: string;
+          created_at: string;
+        };
+        Insert: {
+          blocked_id: string;
+          blocker_id: string;
+          created_at?: string;
+        };
+        Update: {
+          blocked_id?: string;
+          blocker_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "blocked_profiles_blocked_id_fkey";
+            columns: ["blocked_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+          {
+            foreignKeyName: "blocked_profiles_blocker_id_fkey";
+            columns: ["blocker_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+        ];
+      };
       connection_requests: {
         Row: {
           created_at: string;

@@ -11,6 +11,7 @@ import {
 } from "@/services/actions";
 
 import styles from "./RequestItem.module.scss";
+import Link from "next/link";
 
 const RequestItem = ({
   request,
@@ -54,6 +55,7 @@ const RequestItem = ({
         <>
           <button onClick={() => void handleAcceptRequest()}>Accept</button>
           <button onClick={() => void handleDeclineRequest()}>Ignore</button>
+          <Link href={`/profile/${profile.user_id}`}>Open Profile</Link>
         </>
       )}
     </div>

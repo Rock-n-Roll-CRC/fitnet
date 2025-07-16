@@ -318,3 +318,43 @@ export const deleteConnectionRequest = async (
 
   revalidatePath("/favourites");
 };
+
+export const blockProfile = async (userId: string) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { error } = await supabase
+    .from("blocked_profiles")
+    .insert({ blocker_id: session.user.id, blocked_id: userId });
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to block profile: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  revalidatePath("/search");
+};
+
+export const unblockProfile = async (userId: string) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { error } = await supabase
+    .from("blocked_profiles")
+    .delete()
+    .eq("blocker_id", session.user.id)
+    .eq("blocked_id", userId);
+
+  if (error) {
+    console.error(error.message);
+    throw new Error(`Failed to unblock profile: ${error.message}`, {
+      cause: error.cause,
+    });
+  }
+
+  revalidatePath("/search");
+};

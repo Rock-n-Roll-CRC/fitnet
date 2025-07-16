@@ -4,7 +4,7 @@ import type { Tables } from "@/types/database";
 
 import Image from "next/image";
 
-import { sendConnectionRequest } from "@/services/actions";
+import { blockProfile, sendConnectionRequest } from "@/services/actions";
 
 import styles from "./CoachDetailsModal.module.scss";
 import Link from "next/link";
@@ -20,6 +20,14 @@ const CoachDetailsModal = ({
     if (!coach) return;
 
     await sendConnectionRequest(coach.user_id);
+
+    onClose();
+  }
+
+  async function handleBlockProfile() {
+    if (!coach) return;
+
+    await blockProfile(coach.user_id);
 
     onClose();
   }
@@ -46,6 +54,8 @@ const CoachDetailsModal = ({
       <button onClick={() => void handleSendConnectionRequest()}>
         Connect
       </button>
+
+      <button onClick={() => void handleBlockProfile()}>Block</button>
     </div>
   );
 };

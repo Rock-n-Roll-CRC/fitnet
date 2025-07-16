@@ -2,7 +2,10 @@ import ClientSearchPage from "@/components/ClientSearchPage/ClientSearchPage";
 import CoachSearchPage from "@/components/CoachSearchPage/CoachSearchPage";
 
 import { auth } from "@/services/auth";
-import { getCoachProfiles, getProfileByUserId } from "@/services/apiProfiles";
+import {
+  getNotBlockedCoachProfiles,
+  getProfileByUserId,
+} from "@/services/apiProfiles";
 
 import styles from "./page.module.scss";
 
@@ -19,7 +22,10 @@ const Page = async ({
 
   if (!userProfile) return;
 
-  const coaches = await getCoachProfiles(await searchParams);
+  const coaches = await getNotBlockedCoachProfiles(
+    session.user.id,
+    await searchParams,
+  );
 
   return (
     <main className={styles.main}>
@@ -36,3 +42,7 @@ const Page = async ({
 };
 
 export default Page;
+
+// Block button
+// Rating (stars) system
+// Request history page
