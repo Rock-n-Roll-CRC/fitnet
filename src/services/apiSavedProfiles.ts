@@ -17,3 +17,20 @@ export const getSavedProfiles = async (userId: string) => {
 
   return data;
 };
+
+export const isConnected = async (userId1: string, userId2: string) => {
+  const { data, error } = await supabase
+    .from("saved_profiles")
+    .select()
+    .or(
+      `and(saver_user_id.eq.${userId1},saved_user_id.eq.${userId2}),and(saver_user_id.eq.${userId2},saved_user_id.eq.${userId1})`,
+    )
+    .maybeSingle();
+
+  if (error)
+    throw new Error(`Failed to check isConnected: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  return !!data;
+};

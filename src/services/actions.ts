@@ -335,6 +335,9 @@ export const blockProfile = async (userId: string) => {
     });
   }
 
+  await deleteSavedProfile(userId);
+  await deleteConnectionRequestByUserId(userId);
+
   revalidatePath("/search");
 };
 
@@ -357,4 +360,18 @@ export const unblockProfile = async (userId: string) => {
   }
 
   revalidatePath("/search");
+};
+
+export const deleteConnectionRequestByUserId = async (userId: string) => {
+  const { error } = await supabase
+    .from("connection_requests")
+    .delete()
+    .or(`and(sender_id.eq.${userId}),and(receiver_id.eq.${userId})`)
+    .eq("status", "pending");
+
+  if (error)
+    throw new Error(
+      `Failed to delete connection request by user_id: ${error.message}`,
+      { cause: error.cause },
+    );
 };

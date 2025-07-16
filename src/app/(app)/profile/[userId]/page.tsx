@@ -6,6 +6,8 @@ import { getProfileByUserId } from "@/services/apiProfiles";
 import styles from "./page.module.scss";
 import BlockButton from "@/components/BlockButton/BlockButton";
 import { isBlocked } from "@/services/apiBlockedProfiles";
+import ConnectButton from "@/components/ConnectButton/ConnectButton";
+import { isConnected } from "@/services/apiSavedProfiles";
 
 const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const session = await auth();
@@ -17,6 +19,10 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   if (!profile) return;
 
   const isProfileBlocked = await isBlocked(session.user.id, profile.user_id);
+  const isProfileConnected = await isConnected(
+    session.user.id,
+    profile.user_id,
+  );
 
   return (
     <main className={styles.main}>
@@ -49,6 +55,10 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
       {session.user.id !== profile.user_id && (
         <BlockButton isBlocked={isProfileBlocked} profile={profile} />
       )}
+
+      {profile.role === "coach" &&
+        session.user.id !== profile.user_id &&
+        !isProfileConnected && <ConnectButton profile={profile} />}
     </main>
   );
 };

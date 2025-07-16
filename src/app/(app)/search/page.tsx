@@ -43,6 +43,6 @@ const Page = async ({
 
 export default Page;
 
-// Block button
-// Rating (stars) system
+// Display blocked on the map as red (open profile + unblock button) + Page with blocking/unblocking
 // Request history page
+// Rating (stars) system
