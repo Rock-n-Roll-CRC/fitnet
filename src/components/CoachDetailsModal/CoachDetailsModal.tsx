@@ -2,37 +2,34 @@
 
 import type { Tables } from "@/types/database";
 
+import Link from "next/link";
 import Image from "next/image";
 
-import { blockProfile, sendConnectionRequest } from "@/services/actions";
+import ConnectButton from "@/components/ConnectButton/ConnectButton";
+import BlockButton from "@/components/BlockButton/BlockButton";
 
 import styles from "./CoachDetailsModal.module.scss";
-import Link from "next/link";
+import type { Session } from "next-auth";
 
-const CoachDetailsModal = ({
+export default function CoachDetailsModal({
   coach,
+  session,
+  blockedProfiles,
   onClose,
 }: {
-  coach?: Tables<"profiles">;
+  coach: Tables<"profiles">;
+  session: Session;
+  blockedProfiles: (Tables<"blocked_profiles"> & {
+    blockerProfile: Tables<"profiles">;
+    blockedProfile: Tables<"profiles">;
+  })[];
   onClose: () => void;
-}) => {
-  async function handleSendConnectionRequest() {
-    if (!coach) return;
-
-    await sendConnectionRequest(coach.user_id);
-
-    onClose();
-  }
-
-  async function handleBlockProfile() {
-    if (!coach) return;
-
-    await blockProfile(coach.user_id);
-
-    onClose();
-  }
-
-  if (!coach) return;
+}) {
+  const initialIsBlocked = blockedProfiles.some(
+    (blockedProfile) =>
+      blockedProfile.blockerProfile.user_id === session.user.id &&
+      blockedProfile.blockedProfile.user_id === coach.user_id,
+  );
 
   return (
     <div className={styles["coach-details-modal"]}>
@@ -51,13 +48,13 @@ const CoachDetailsModal = ({
 
       <Link href={`/profile/${coach.user_id}`}>Open Profile</Link>
 
-      <button onClick={() => void handleSendConnectionRequest()}>
-        Connect
-      </button>
+      <ConnectButton profile={coach} onClose={onClose} />
 
-      <button onClick={() => void handleBlockProfile()}>Block</button>
+      <BlockButton
+        profile={coach}
+        initialIsBlocked={initialIsBlocked}
+        onClose={onClose}
+      />
     </div>
   );
-};
-
-export default CoachDetailsModal;
+}

@@ -53,7 +53,7 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
       </div>
 
       {session.user.id !== profile.user_id && (
-        <BlockButton isBlocked={isProfileBlocked} profile={profile} />
+        <BlockButton initialIsBlocked={isProfileBlocked} profile={profile} />
       )}
 
       {profile.role === "coach" &&

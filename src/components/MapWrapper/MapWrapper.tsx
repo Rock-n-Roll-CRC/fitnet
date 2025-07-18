@@ -19,12 +19,17 @@ const Map = dynamic(() => import("@/components/Map/Map"), {
 
 const MapWrapper = ({
   coaches,
+  blockedProfiles,
   isSelectingPosition,
   userCoords: userCoordsProp,
   setUserCoords: setUserCoordsProp,
   session,
 }: {
   coaches?: Tables<"profiles">[];
+  blockedProfiles?: (Tables<"blocked_profiles"> & {
+    blockerProfile: Tables<"profiles">;
+    blockedProfile: Tables<"profiles">;
+  })[];
   isSelectingPosition?: boolean;
   userCoords?: Coordinates;
   setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
@@ -34,6 +39,7 @@ const MapWrapper = ({
     <div className={styles["map-wrapper"]}>
       <Map
         coaches={coaches}
+        blockedProfiles={blockedProfiles}
         isSelectingPosition={isSelectingPosition}
         userCoords={userCoordsProp}
         setUserCoords={setUserCoordsProp}

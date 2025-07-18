@@ -6,16 +6,25 @@ import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
 const ClientSearchPage = ({
   coaches,
+  blockedProfiles,
   session,
 }: {
   coaches: Tables<"profiles">[];
+  blockedProfiles: (Tables<"blocked_profiles"> & {
+    blockerProfile: Tables<"profiles">;
+    blockedProfile: Tables<"profiles">;
+  })[];
   session: Session;
 }) => {
   return (
     <>
       <SearchFilter />
 
-      <MapWrapper coaches={coaches} session={session} />
+      <MapWrapper
+        coaches={coaches}
+        blockedProfiles={blockedProfiles}
+        session={session}
+      />
     </>
   );
 };

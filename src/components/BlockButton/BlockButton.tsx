@@ -6,22 +6,28 @@ import { blockProfile, unblockProfile } from "@/services/actions";
 import { useState } from "react";
 
 export default function BlockButton({
-  isBlocked: isBlockedProp,
   profile,
+  initialIsBlocked,
+  onClose,
 }: {
-  isBlocked: boolean;
   profile: Tables<"profiles">;
+  initialIsBlocked: boolean;
+  onClose?: () => void;
 }) {
-  const [isBlocked, setIsBlocked] = useState(isBlockedProp);
+  const [isBlocked, setIsBlocked] = useState(initialIsBlocked);
 
   async function handleUnblockProfile() {
     await unblockProfile(profile.user_id);
     setIsBlocked(false);
+
+    onClose?.();
   }
 
   async function handleBlockProfile() {
     await blockProfile(profile.user_id);
     setIsBlocked(true);
+
+    onClose?.();
   }
 
   return (

@@ -75,12 +75,17 @@ const ClickHandler = ({
 
 const Map = ({
   coaches,
+  blockedProfiles,
   isSelectingPosition,
   userCoords: userCoordsProp,
   setUserCoords: setUserCoordsProp,
   session,
 }: {
   coaches?: Tables<"profiles">[];
+  blockedProfiles?: (Tables<"blocked_profiles"> & {
+    blockerProfile: Tables<"profiles">;
+    blockedProfile: Tables<"profiles">;
+  })[];
   isSelectingPosition?: boolean;
   userCoords?: Coordinates;
   setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
@@ -120,6 +125,13 @@ const Map = ({
 
     return true;
   });
+  const blockedCoachesIDs = blockedProfiles
+    ? blockedProfiles.reduce((accum: string[], item) => {
+        return item.blockedProfile.role === "coach"
+          ? [...accum, item.blockedProfile.user_id]
+          : accum;
+      }, [])
+    : [];
 
   async function handleFetchCityCoords() {
     try {
@@ -207,6 +219,11 @@ const Map = ({
             className: styles["map__marker-icon"],
             iconAnchor: [30, 15],
           });
+          const redIcon = new Icon({
+            iconUrl: coach.avatar_url,
+            className: `${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--red"] ?? ""}`,
+            iconAnchor: [30, 15],
+          });
 
           return (
             <Marker
@@ -217,7 +234,7 @@ const Map = ({
                   setSelectedCoach(coach);
                 },
               }}
-              icon={icon}
+              icon={blockedCoachesIDs.includes(coach.user_id) ? redIcon : icon}
             >
               <Tooltip direction="top" offset={[-15, -20]} permanent>
                 {coach.full_name}
@@ -228,12 +245,16 @@ const Map = ({
         <MapUpdater center={mapCenter} />
         <ClickHandler onMapClick={handleMapClick} />
       </MapContainer>
-      <CoachDetailsModal
-        coach={selectedCoach}
-        onClose={() => {
-          setSelectedCoach(undefined);
-        }}
-      />
+      {selectedCoach && (
+        <CoachDetailsModal
+          coach={selectedCoach}
+          session={session}
+          blockedProfiles={blockedProfiles}
+          onClose={() => {
+            setSelectedCoach(undefined);
+          }}
+        />
+      )}
     </>
   );
 };

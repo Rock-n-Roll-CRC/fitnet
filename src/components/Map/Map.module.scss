@@ -6,5 +6,9 @@
     @include size-shorthand(3rem, 3rem);
 
     border-radius: $border-radius-circle;
+
+    &--red {
+      border: 0.2rem solid red;
+    }
   }
 }
