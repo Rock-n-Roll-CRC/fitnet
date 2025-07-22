@@ -1,0 +1,15 @@
+@use "../../../../styles/settings" as *;
+@use "../../../../styles/tools" as *;
+
+.main {
+  @include flex-shorthand(column, nowrap, $whitespace-5);
+
+  block-size: 73.5rem;
+  overflow: scroll;
+  scrollbar-gutter: auto;
+  overscroll-behavior: auto;
+
+  &__content {
+    padding: 0 $whitespace-5;
+  }
+}

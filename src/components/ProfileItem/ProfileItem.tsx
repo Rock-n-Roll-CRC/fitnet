@@ -4,11 +4,21 @@ import type { Tables } from "@/types/database";
 
 import Image from "next/image";
 
-import { deleteSavedProfile } from "@/services/actions";
+import { deleteSavedProfile, unblockProfile } from "@/services/actions";
 
-const ProfileItem = ({ profile }: { profile: Tables<"profiles"> }) => {
+const ProfileItem = ({
+  profile,
+  type = "saved",
+}: {
+  profile: Tables<"profiles">;
+  type?: "saved" | "blocked";
+}) => {
   async function handleDeleteProfile(userId: string) {
     await deleteSavedProfile(userId);
+  }
+
+  async function handleUnblockProfile(userId: string) {
+    await unblockProfile(userId);
   }
 
   return (
@@ -24,9 +34,16 @@ const ProfileItem = ({ profile }: { profile: Tables<"profiles"> }) => {
       <p>Gender: {profile.gender}</p>
       <p>Phone Number: {profile.phone_number}</p>
 
-      <button onClick={() => void handleDeleteProfile(profile.user_id)}>
-        Delete
-      </button>
+      {type === "saved" && (
+        <button onClick={() => void handleDeleteProfile(profile.user_id)}>
+          Delete
+        </button>
+      )}
+      {type === "blocked" && (
+        <button onClick={() => void handleUnblockProfile(profile.user_id)}>
+          Unblock
+        </button>
+      )}
     </div>
   );
 };

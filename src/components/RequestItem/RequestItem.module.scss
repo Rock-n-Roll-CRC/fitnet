@@ -1,0 +1,58 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.request-item {
+  @include flex-shorthand(column, nowrap, $whitespace-7);
+
+  padding: $whitespace-7 0;
+  border-block: 0.2rem solid $color-neutral-2;
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-3, center, center);
+  }
+
+  &__button-container {
+    @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+  }
+
+  &__image {
+    @include size-shorthand(7.5rem, 7.5rem);
+
+    border-radius: $border-radius-circle;
+  }
+
+  &__name {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__invite-date {
+    font-size: $font-size-2;
+    color: $color-neutral-6;
+    text-transform: uppercase;
+  }
+
+  &__button {
+    @include remove-button-styles;
+
+    padding: $whitespace-3 $whitespace-5;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    text-decoration: none;
+    border-radius: $border-radius-pill;
+
+    &--green {
+      background-color: $color-accent-2;
+    }
+
+    &--transparent {
+      color: $color-neutral-5;
+    }
+
+    &--red {
+      background-color: $color-accent-3;
+    }
+  }
+}

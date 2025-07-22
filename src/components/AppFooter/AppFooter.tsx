@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import StarOutlineSVG from "@/assets/icons/star-outline.svg";
+import PeopleOutlineSVG from "@/assets/icons/people-outline.svg";
 import CompassOutlineSVG from "@/assets/icons/compass-outline.svg";
 import PersonOutlineSVG from "@/assets/icons/person-outline.svg";
-import StarSVG from "@/assets/icons/star.svg";
+import PeopleSVG from "@/assets/icons/people.svg";
 import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
+import ArchiveSVG from "@/assets/icons/archive.svg";
+import ArchiveOutlineSVG from "@/assets/icons/archive-outline.svg";
 
 import styles from "./AppFooter.module.scss";
 import type { Session } from "next-auth";
@@ -21,11 +23,25 @@ const AppFooter = ({ session }: { session: Session }) => {
       <nav className={styles["app-footer__nav"]}>
         <ul className={styles["app-footer__list"]}>
           <li className={styles["app-footer__list-item"]}>
-            <Link href="/favourites" className={styles["app-footer__nav-link"]}>
-              {pathname === "/favourites" ? (
-                <StarSVG className={styles["app-footer__nav-link-icon"]} />
+            <Link href="/archive" className={styles["app-footer__nav-link"]}>
+              {pathname === "/archive" ? (
+                <ArchiveSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
-                <StarOutlineSVG
+                <ArchiveOutlineSVG
+                  className={styles["app-footer__nav-link-icon"]}
+                />
+              )}
+            </Link>
+          </li>
+          <li className={styles["app-footer__list-item"]}>
+            <Link
+              href="/connections"
+              className={styles["app-footer__nav-link"]}
+            >
+              {pathname === "/connections" ? (
+                <PeopleSVG className={styles["app-footer__nav-link-icon"]} />
+              ) : (
+                <PeopleOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               )}
