@@ -9,8 +9,6 @@ import PersonOutlineSVG from "@/assets/icons/person-outline.svg";
 import PeopleSVG from "@/assets/icons/people.svg";
 import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
-import ArchiveSVG from "@/assets/icons/archive.svg";
-import ArchiveOutlineSVG from "@/assets/icons/archive-outline.svg";
 
 import styles from "./AppFooter.module.scss";
 import type { Session } from "next-auth";
@@ -23,22 +21,11 @@ const AppFooter = ({ session }: { session: Session }) => {
       <nav className={styles["app-footer__nav"]}>
         <ul className={styles["app-footer__list"]}>
           <li className={styles["app-footer__list-item"]}>
-            <Link href="/archive" className={styles["app-footer__nav-link"]}>
-              {pathname === "/archive" ? (
-                <ArchiveSVG className={styles["app-footer__nav-link-icon"]} />
-              ) : (
-                <ArchiveOutlineSVG
-                  className={styles["app-footer__nav-link-icon"]}
-                />
-              )}
-            </Link>
-          </li>
-          <li className={styles["app-footer__list-item"]}>
             <Link
               href="/connections"
               className={styles["app-footer__nav-link"]}
             >
-              {pathname === "/connections" ? (
+              {pathname.startsWith("/connections") ? (
                 <PeopleSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
                 <PeopleOutlineSVG

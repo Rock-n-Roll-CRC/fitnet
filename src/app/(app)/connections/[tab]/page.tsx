@@ -83,7 +83,7 @@ export default async function Page({
 
       <div className={styles.main__content}>
         {tab === "friends" &&
-          savedProfiles?.map(({ saverProfile, savedProfile }) => (
+          savedProfiles?.map(({ created_at, saverProfile, savedProfile }) => (
             <ProfileItem
               key={profile.user_id}
               profile={
@@ -91,6 +91,7 @@ export default async function Page({
                   ? savedProfile
                   : saverProfile
               }
+              date={created_at}
               type="saved"
             />
           ))}
@@ -101,10 +102,11 @@ export default async function Page({
           ))}
 
         {tab === "blocked" &&
-          blockedProfiles?.map(({ blockedProfile }) => (
+          blockedProfiles?.map(({ created_at, blockedProfile }) => (
             <ProfileItem
               key={profile.user_id}
               profile={blockedProfile}
+              date={created_at}
               type="blocked"
             />
           ))}

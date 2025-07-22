@@ -28,7 +28,7 @@ const RequestItem = ({
     type === "sent" ? request.receiverProfile : request.senderProfile;
 
   const today = new Date();
-  const inviteDate = new Date(profile.created_at);
+  const inviteDate = new Date(request.created_at);
   const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
   today.setHours(0, 0, 0, 0);
