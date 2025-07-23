@@ -70,7 +70,7 @@ const RequestItem = ({
           {profile.full_name}
         </span>
         <span className={styles["request-item__invite-date"]}>
-          Invite sent {diffInDays} days ago
+          Request sent {diffInDays} days ago
         </span>
       </div>
 
@@ -79,7 +79,7 @@ const RequestItem = ({
           <>
             <button
               onClick={() => void handleDeleteRequest()}
-              className={styles["request-item__button"]}
+              className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--red"] ?? ""}`}
             >
               Delete
             </button>

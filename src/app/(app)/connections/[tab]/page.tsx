@@ -7,7 +7,10 @@ import RequestItem from "@/components/RequestItem/RequestItem";
 import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
 import { getSavedProfiles } from "@/services/apiSavedProfiles";
-import { getPendingConnectionRequests } from "@/services/apiConnectionRequests";
+import {
+  getPendingConnectionRequests,
+  getSentPendingConnectionRequests,
+} from "@/services/apiConnectionRequests";
 import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 
 import styles from "./page.module.scss";
@@ -39,6 +42,12 @@ export default async function Page({
         receiverProfile: Tables<"profiles">;
       })[]
     | undefined;
+  let sentRequests:
+    | (Tables<"connection_requests"> & {
+        senderProfile: Tables<"profiles">;
+        receiverProfile: Tables<"profiles">;
+      })[]
+    | undefined;
   let blockedProfiles:
     | (Tables<"blocked_profiles"> & {
         blockerProfile: Tables<"profiles">;
@@ -52,6 +61,7 @@ export default async function Page({
       break;
     case "requests":
       pendingRequests = await getPendingConnectionRequests(session.user.id);
+      sentRequests = await getSentPendingConnectionRequests(session.user.id);
       break;
     case "blocked":
       blockedProfiles = await getBlockedProfiles(session.user.id);
@@ -96,10 +106,15 @@ export default async function Page({
             />
           ))}
 
-        {tab === "requests" &&
-          pendingRequests?.map((request, index) => (
-            <RequestItem key={index} request={request} type="received" />
-          ))}
+        {tab === "requests"
+          ? profile.role === "coach"
+            ? pendingRequests?.map((request, index) => (
+                <RequestItem key={index} request={request} type="received" />
+              ))
+            : sentRequests?.map((request, index) => (
+                <RequestItem key={index} request={request} type="sent" />
+              ))
+          : null}
 
         {tab === "blocked" &&
           blockedProfiles?.map(({ created_at, blockedProfile }) => (
