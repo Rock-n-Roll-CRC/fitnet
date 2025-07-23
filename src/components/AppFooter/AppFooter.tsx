@@ -9,6 +9,8 @@ import PersonOutlineSVG from "@/assets/icons/person-outline.svg";
 import PeopleSVG from "@/assets/icons/people.svg";
 import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
+import ChatboxEllipsesSVG from "@/assets/icons/chatbox-ellipses.svg";
+import ChatboxEllipsesOutlineSVG from "@/assets/icons/chatbox-ellipses-outline.svg";
 
 import styles from "./AppFooter.module.scss";
 import type { Session } from "next-auth";
@@ -43,6 +45,19 @@ const AppFooter = ({ session }: { session: Session }) => {
                 <CompassSVG className={styles["app-footer__nav-link-icon"]} />
               ) : (
                 <CompassOutlineSVG
+                  className={styles["app-footer__nav-link-icon"]}
+                />
+              )}
+            </Link>
+          </li>
+          <li className={styles["app-footer__list-item"]}>
+            <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
+              {pathname === `/messages` ? (
+                <ChatboxEllipsesSVG
+                  className={styles["app-footer__nav-link-icon"]}
+                />
+              ) : (
+                <ChatboxEllipsesOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               )}

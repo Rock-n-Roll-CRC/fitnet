@@ -1,0 +1,36 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.active-chat {
+  @include flex-shorthand(row, nowrap, null, null, space-between);
+
+  padding: $whitespace-5;
+  text-decoration: none;
+  background-color: $color-neutral-1;
+  border-radius: $border-radius-extra-large;
+
+  &__body {
+    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+  }
+
+  &__image {
+    @include size-shorthand(6rem, 6rem);
+
+    border-radius: $border-radius-large;
+  }
+
+  &__name {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__message {
+    font-size: $font-size-2;
+    color: $color-neutral-8;
+  }
+
+  &__message-date {
+    color: $color-neutral-8;
+  }
+}

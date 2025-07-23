@@ -1,0 +1,9 @@
+@use "../../../styles/settings" as *;
+@use "../../../styles/tools" as *;
+
+.main {
+  @include size-shorthand(100vi, 100vb);
+
+  padding: $whitespace-5 $whitespace-3;
+  background-color: $color-neutral-2;
+}
