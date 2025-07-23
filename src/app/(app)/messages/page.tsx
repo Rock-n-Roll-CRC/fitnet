@@ -1,4 +1,4 @@
-import ActiveChat from "@/components/ActiveChat/ActiveChat";
+import ActiveChats from "@/components/ActiveChats/ActiveChats";
 
 import { auth } from "@/services/auth";
 import { getActiveChats } from "@/services/apiMessages";
@@ -14,12 +14,7 @@ export default async function Page() {
 
   return (
     <main className={styles.main}>
-      {activeChats.map((activeChat) => (
-        <ActiveChat
-          key={activeChat.chatPartnerProfile.user_id}
-          activeChat={activeChat}
-        />
-      ))}
+      <ActiveChats session={session} activeChats={activeChats} />
     </main>
   );
 }

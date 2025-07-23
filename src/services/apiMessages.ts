@@ -1,9 +1,15 @@
 import type { Tables } from "@/types/database";
 
-import { supabase } from "@/services/supabase";
+export const getActiveChats = async (
+  userId: string,
+  type: "server" | "client" = "server",
+) => {
+  const client =
+    type === "server"
+      ? (await import("@/services/supabase")).supabase
+      : (await import("@/services/supabase.client")).supabaseClient;
 
-export const getActiveChats = async (userId: string) => {
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("messages")
     .select(
       "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",

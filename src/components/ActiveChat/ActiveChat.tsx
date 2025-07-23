@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import styles from "./ActiveChat.module.scss";
 
-export default async function ActiveChat({
+export default function ActiveChat({
   activeChat: { chatPartnerProfile: profile, lastMessage },
 }: {
   activeChat: {
