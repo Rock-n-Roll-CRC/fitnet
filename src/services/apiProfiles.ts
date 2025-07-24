@@ -1,7 +1,13 @@
-import { supabase } from "@/services/supabase";
+export const getProfileByUserId = async (
+  userId: string,
+  type: "server" | "client" = "server",
+) => {
+  const client =
+    type === "server"
+      ? (await import("@/services/supabase")).supabase
+      : (await import("@/services/supabase.client")).supabaseClient;
 
-export const getProfileByUserId = async (userId: string) => {
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("profiles")
     .select("*")
     .eq("user_id", userId)
@@ -20,7 +26,9 @@ export const getCoachProfiles = async (filters?: {
   minAge?: string;
   maxAge?: string;
 }) => {
-  let query = supabase.from("profiles").select("*").eq("role", "coach");
+  const client = (await import("@/services/supabase")).supabase;
+
+  let query = client.from("profiles").select("*").eq("role", "coach");
 
   if (filters?.gender) {
     query = query.eq("gender", filters.gender);
@@ -52,7 +60,9 @@ export const getNotBlockedCoachProfiles = async (
     maxAge?: string;
   },
 ) => {
-  const { data: blockedIds, error: blockedIdsError } = await supabase
+  const client = (await import("@/services/supabase")).supabase;
+
+  const { data: blockedIds, error: blockedIdsError } = await client
     .from("blocked_profiles")
     .select("blocked_id")
     .eq("blocker_id", userId);
@@ -64,7 +74,7 @@ export const getNotBlockedCoachProfiles = async (
     );
   }
 
-  let query = supabase
+  let query = client
     .from("profiles")
     .select("*")
     .eq("role", "coach")

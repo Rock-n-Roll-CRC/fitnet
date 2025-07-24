@@ -1,6 +1,4 @@
-import ChatHeader from "@/components/ChatHeader/ChatHeader";
-import ChatMain from "@/components/ChatMain/ChatMain";
-import ChatFooter from "@/components/ChatFooter/ChatFooter";
+import Chat from "@/components/Chat/Chat";
 
 import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
@@ -29,11 +27,7 @@ export default async function Page({
 
   return (
     <main className={styles.main}>
-      <ChatHeader profile={profile} />
-
-      <ChatMain session={session} messages={messages} />
-
-      <ChatFooter profile={profile} />
+      <Chat session={session} profile={profile} messages={messages} />
     </main>
   );
 }

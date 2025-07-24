@@ -15,7 +15,7 @@ export default function ChatMain({
 }) {
   return (
     <section className={styles["chat-main"]}>
-      {messages.reverse().map((message) => (
+      {messages.map((message) => (
         <div
           key={message.id}
           className={`${styles["chat-main__message-box"] ?? ""} ${styles[`chat-main__message-box--${message.sender_id === session.user.id ? "user" : "partner"}`] ?? ""}`}
