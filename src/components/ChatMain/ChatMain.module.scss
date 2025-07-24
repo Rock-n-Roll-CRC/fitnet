@@ -2,7 +2,7 @@
 @use "../../styles/tools" as *;
 
 .chat-main {
-  @include flex-shorthand(column, nowrap, $whitespace-7);
+  @include flex-shorthand(column, nowrap, $whitespace-8);
 
   block-size: 100%;
   padding: $whitespace-7 0;
@@ -11,6 +11,7 @@
   overscroll-behavior: auto;
 
   &__message-box {
+    position: relative;
     inline-size: 25rem;
     padding: $whitespace-5;
     word-wrap: break-word;
@@ -27,5 +28,12 @@
       color: $color-neutral-1;
       background-color: $color-primary-6;
     }
+  }
+
+  &__message-time {
+    @include absolute-shorthand(auto, 0, -2.5rem, auto);
+
+    font-size: $font-size-2;
+    color: $color-neutral-7;
   }
 }

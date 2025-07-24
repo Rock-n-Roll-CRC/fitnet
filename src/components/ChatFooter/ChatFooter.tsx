@@ -15,6 +15,7 @@ export default function ChatFooter({
     <form
       action={sendMessage.bind(null, profile.user_id)}
       className={styles["chat-footer"]}
+      autoComplete="off"
     >
       <input
         type="text"

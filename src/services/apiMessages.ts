@@ -54,7 +54,7 @@ export const getMessages = async (userId: string) => {
       "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
     )
     .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: true });
 
   if (error)
     throw new Error(`Failed to get messages: ${error.message}`, {

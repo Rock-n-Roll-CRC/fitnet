@@ -21,6 +21,9 @@ export default function ChatMain({
           className={`${styles["chat-main__message-box"] ?? ""} ${styles[`chat-main__message-box--${message.sender_id === session.user.id ? "user" : "partner"}`] ?? ""}`}
         >
           {message.content}
+          <span className={styles["chat-main__message-time"]}>
+            {`${new Date(message.created_at).getHours().toString()}:${new Date(message.created_at).getMinutes().toString()}`}
+          </span>
         </div>
       ))}
     </section>
