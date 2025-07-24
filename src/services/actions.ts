@@ -375,3 +375,20 @@ export const deleteConnectionRequestByUserId = async (userId: string) => {
       { cause: error.cause },
     );
 };
+
+export const sendMessage = async (userId: string, formData: FormData) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const content = formData.get("message") as string;
+
+  const { error } = await supabase
+    .from("messages")
+    .insert({ content, sender_id: session.user.id, receiver_id: userId });
+
+  if (error)
+    throw new Error(`Failed to send the message: ${error.message}`, {
+      cause: error.cause,
+    });
+};

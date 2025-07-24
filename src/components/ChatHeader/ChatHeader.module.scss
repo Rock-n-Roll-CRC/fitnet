@@ -1,0 +1,24 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.chat-header {
+  @include flex-shorthand(row, nowrap, $whitespace-4, center);
+
+  position: sticky;
+  inset-block-start: 0;
+  padding: $whitespace-5 $whitespace-3;
+  background-color: $color-neutral-1;
+  border-radius: $border-radius-large;
+
+  &__image {
+    @include size-shorthand(4rem, 4rem);
+
+    border-radius: $border-radius-large;
+  }
+
+  &__name {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+}

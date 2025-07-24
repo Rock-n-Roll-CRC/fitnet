@@ -1,0 +1,35 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.chat-footer {
+  @include flex-shorthand(row, nowrap, $whitespace-4, center);
+
+  position: sticky;
+  inset-block-end: 9rem;
+  padding: $whitespace-5 $whitespace-3;
+  background-color: $color-neutral-1;
+  border-radius: $border-radius-large;
+
+  &__input {
+    @include remove-input-styles;
+
+    padding: $whitespace-4;
+    color: $color-neutral-10;
+    background-color: $color-neutral-3;
+    border-radius: $border-radius-large;
+  }
+
+  &__button {
+    @include remove-button-styles;
+
+    padding: $whitespace-4;
+    background-color: $color-primary-6;
+    border-radius: $border-radius-large;
+  }
+
+  &__button-icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-neutral-1;
+  }
+}

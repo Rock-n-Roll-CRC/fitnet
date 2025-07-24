@@ -1,0 +1,31 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.chat-main {
+  @include flex-shorthand(column, nowrap, $whitespace-7);
+
+  block-size: 100%;
+  padding: $whitespace-7 0;
+  overflow: scroll;
+  scrollbar-gutter: auto;
+  overscroll-behavior: auto;
+
+  &__message-box {
+    inline-size: 25rem;
+    padding: $whitespace-5;
+    word-wrap: break-word;
+    border-radius: $border-radius-large;
+
+    &--partner {
+      align-self: flex-start;
+      color: $color-neutral-10;
+      background-color: $color-neutral-5;
+    }
+
+    &--user {
+      align-self: flex-end;
+      color: $color-neutral-1;
+      background-color: $color-primary-6;
+    }
+  }
+}

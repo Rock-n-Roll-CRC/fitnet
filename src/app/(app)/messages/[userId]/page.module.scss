@@ -1,0 +1,9 @@
+@use "../../../../styles/settings" as *;
+@use "../../../../styles/tools" as *;
+
+.main {
+  min-inline-size: 100vi;
+  min-block-size: 100vb;
+  padding: 0 $whitespace-5;
+  background-color: $color-neutral-3;
+}

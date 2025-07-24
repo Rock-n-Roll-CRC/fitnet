@@ -52,7 +52,7 @@ const AppFooter = ({ session }: { session: Session }) => {
           </li>
           <li className={styles["app-footer__list-item"]}>
             <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
-              {pathname === `/messages` ? (
+              {pathname.startsWith(`/messages`) ? (
                 <ChatboxEllipsesSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />

@@ -44,3 +44,22 @@ export const getActiveChats = async (
     },
   );
 };
+
+export const getMessages = async (userId: string) => {
+  const client = (await import("@/services/supabase")).supabase;
+
+  const { data, error } = await client
+    .from("messages")
+    .select(
+      "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
+    )
+    .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+    .order("created_at", { ascending: false });
+
+  if (error)
+    throw new Error(`Failed to get messages: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  return data;
+};
