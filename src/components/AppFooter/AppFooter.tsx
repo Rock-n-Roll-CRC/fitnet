@@ -9,8 +9,8 @@ import PersonOutlineSVG from "@/assets/icons/person-outline.svg";
 import PeopleSVG from "@/assets/icons/people.svg";
 import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
-import ChatboxEllipsesSVG from "@/assets/icons/chatbox-ellipses.svg";
-import ChatboxEllipsesOutlineSVG from "@/assets/icons/chatbox-ellipses-outline.svg";
+import ChatbubbleEllipsesSVG from "@/assets/icons/chatbubble-ellipses.svg";
+import ChatbubbleEllipsesOutlineSVG from "@/assets/icons/chatbubble-ellipses-outline.svg";
 
 import styles from "./AppFooter.module.scss";
 import type { Session } from "next-auth";
@@ -53,11 +53,11 @@ const AppFooter = ({ session }: { session: Session }) => {
           <li className={styles["app-footer__list-item"]}>
             <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
               {pathname.startsWith(`/messages`) ? (
-                <ChatboxEllipsesSVG
+                <ChatbubbleEllipsesSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               ) : (
-                <ChatboxEllipsesOutlineSVG
+                <ChatbubbleEllipsesOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               )}

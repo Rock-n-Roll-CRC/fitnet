@@ -5,9 +5,15 @@
   position: sticky;
   inset-block-end: 0;
   z-index: 9999;
-  inline-size: 100%;
-  padding: $whitespace-6 0;
+  max-inline-size: fit-content;
+  padding: $whitespace-5 $whitespace-6;
+  margin: 0 auto;
   background-color: $color-neutral-1;
+  border-start-start-radius: $border-radius-extra-large;
+  border-start-end-radius: $border-radius-extra-large;
+  border-end-start-radius: $border-radius-medium;
+  border-end-end-radius: $border-radius-medium;
+  box-shadow: 0 0 1.5rem 0 $color-neutral-5;
 
   &__list {
     @include remove-list-styles;
