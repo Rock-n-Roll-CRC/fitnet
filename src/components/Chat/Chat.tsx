@@ -27,8 +27,8 @@ export default function Chat({
   const [messages, setMessages] = useState(initialMessages);
 
   useEffect(() => {
-    const channel = supabaseClient
-      .channel("realtime:messages")
+    const channelMsgs = supabaseClient
+      .channel(`realtime:messages:msgs:${session.user.id}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages" },
@@ -64,7 +64,7 @@ export default function Chat({
       .subscribe();
 
     return () => {
-      supabaseClient.removeChannel(channel);
+      channelMsgs.unsubscribe();
     };
   }, [session.user.id]);
 
