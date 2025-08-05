@@ -11,6 +11,8 @@ import CompassSVG from "@/assets/icons/compass.svg";
 import PersonSVG from "@/assets/icons/person.svg";
 import ChatbubbleEllipsesSVG from "@/assets/icons/chatbubble-ellipses.svg";
 import ChatbubbleEllipsesOutlineSVG from "@/assets/icons/chatbubble-ellipses-outline.svg";
+import NotificationsSVG from "@/assets/icons/notifications.svg";
+import NotificationsOutlineSVG from "@/assets/icons/notifications-outline.svg";
 
 import styles from "./AppFooter.module.scss";
 import type { Session } from "next-auth";
@@ -37,6 +39,19 @@ const AppFooter = ({ session }: { session: Session }) => {
             </Link>
           </li>
           <li className={styles["app-footer__list-item"]}>
+            <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
+              {pathname.startsWith(`/messages`) ? (
+                <ChatbubbleEllipsesSVG
+                  className={styles["app-footer__nav-link-icon"]}
+                />
+              ) : (
+                <ChatbubbleEllipsesOutlineSVG
+                  className={styles["app-footer__nav-link-icon"]}
+                />
+              )}
+            </Link>
+          </li>
+          <li className={styles["app-footer__list-item"]}>
             <Link
               href="/search"
               className={`${styles["app-footer__nav-link"] ?? ""} ${styles["app-footer__nav-link--circled"] ?? ""}`}
@@ -50,14 +65,18 @@ const AppFooter = ({ session }: { session: Session }) => {
               )}
             </Link>
           </li>
+
           <li className={styles["app-footer__list-item"]}>
-            <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
-              {pathname.startsWith(`/messages`) ? (
-                <ChatbubbleEllipsesSVG
+            <Link
+              href="/notifications"
+              className={styles["app-footer__nav-link"]}
+            >
+              {pathname.startsWith("/notifications") ? (
+                <NotificationsSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               ) : (
-                <ChatbubbleEllipsesOutlineSVG
+                <NotificationsOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
               )}

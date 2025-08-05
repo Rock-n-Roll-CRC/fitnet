@@ -56,3 +56,20 @@ export const getSentPendingConnectionRequests = async (userId: string) => {
 
   return data;
 };
+
+export const getConnectionRequest = async (id: string) => {
+  const { data, error } = await supabase
+    .from("connection_requests")
+    .select(
+      "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
+    )
+    .eq("id", id)
+    .single();
+
+  if (error)
+    throw new Error(`Failed to get connection request: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  return data;
+};

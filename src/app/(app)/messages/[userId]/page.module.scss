@@ -2,8 +2,7 @@
 @use "../../../../styles/tools" as *;
 
 .main {
-  min-inline-size: 100vi;
-  min-block-size: 100vb;
+  flex: 1;
   padding: 0 $whitespace-5;
-  background-color: $color-neutral-3;
+  background-color: $color-neutral-1;
 }

@@ -2,8 +2,9 @@
 @use "../../../styles/tools" as *;
 
 .main {
-  @include size-shorthand(100vi, 100vb);
+  @include flex-shorthand(column, nowrap, $whitespace-5);
 
+  flex: 1;
   padding: $whitespace-5 $whitespace-3;
-  background-color: $color-neutral-2;
+  background-color: $color-neutral-1;
 }

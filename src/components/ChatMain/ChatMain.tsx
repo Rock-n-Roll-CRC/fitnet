@@ -22,7 +22,11 @@ export default function ChatMain({
         >
           {message.content}
           <span className={styles["chat-main__message-time"]}>
-            {`${new Date(message.created_at).getHours().toString()}:${new Date(message.created_at).getMinutes().toString()}`}
+            {new Date(message.created_at).toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            })}
           </span>
         </div>
       ))}

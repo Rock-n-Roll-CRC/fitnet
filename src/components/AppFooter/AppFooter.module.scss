@@ -4,8 +4,9 @@
 .app-footer {
   position: sticky;
   inset-block-end: 0;
+  inset-inline-start: 50%;
   z-index: 9999;
-  max-inline-size: fit-content;
+  inline-size: max-content;
   padding: $whitespace-5 $whitespace-6;
   margin: 0 auto;
   background-color: $color-neutral-1;
@@ -17,7 +18,7 @@
 
   &__list {
     @include remove-list-styles;
-    @include flex-shorthand(row, nowrap, $whitespace-7, center, center);
+    @include flex-shorthand(row, nowrap, $whitespace-6, center, center);
   }
 
   &__nav-link {

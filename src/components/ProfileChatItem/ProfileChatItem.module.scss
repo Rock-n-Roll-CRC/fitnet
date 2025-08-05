@@ -1,0 +1,28 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile-chat-item {
+  @include flex-shorthand(row, nowrap, null, null, space-between);
+
+  padding: $whitespace-5;
+  text-decoration: none;
+  background-color: $color-neutral-2;
+  border-radius: $border-radius-large;
+  box-shadow: 0 0 1.5rem $color-neutral-5;
+
+  &__body {
+    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+  }
+
+  &__image {
+    @include size-shorthand(6rem, 6rem);
+
+    border-radius: $border-radius-large;
+  }
+
+  &__name {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+}

@@ -1,0 +1,11 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.notification-list {
+  @include remove-list-styles;
+  @include flex-shorthand(column, nowrap, $whitespace-5);
+
+  flex: 1;
+  padding: $whitespace-5;
+  background-color: $color-neutral-1;
+}

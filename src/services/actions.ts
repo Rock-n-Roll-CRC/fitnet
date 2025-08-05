@@ -199,13 +199,31 @@ export const sendConnectionRequest = async (userId: string) => {
 
   const { data, error } = await supabase
     .from("connection_requests")
-    .insert({ sender_id: session.user.id, receiver_id: userId });
+    .insert({ sender_id: session.user.id, receiver_id: userId })
+    .select()
+    .single();
 
   if (error) {
     console.error(error.message);
     throw new Error(`Failed to send connection request: ${error.message}`, {
       cause: error.cause,
     });
+  }
+
+  const { error: notifError } = await supabase.from("notifications").insert({
+    user_id: userId,
+    type: "REQUEST_RECEIVED",
+    entity_id: data.id,
+  });
+
+  if (notifError) {
+    console.error(notifError.message);
+    throw new Error(
+      `Failed to send connection request: ${notifError.message}`,
+      {
+        cause: notifError.cause,
+      },
+    );
   }
 
   return data;
@@ -273,6 +291,19 @@ export const acceptConnectionRequest = async (
   }
 
   revalidatePath("/favourites");
+
+  const { error: notifError } = await supabase.from("notifications").insert({
+    user_id: request.sender_id,
+    type: "REQUEST_ACCEPTED",
+    entity_id: request.id,
+  });
+
+  if (notifError) {
+    console.error(`Failed to save a user profile: ${notifError.message}`);
+    throw new Error(`Failed to save a user profile: ${notifError.message}`, {
+      cause: notifError.cause,
+    });
+  }
 };
 
 export const declineConnectionRequest = async (
@@ -383,12 +414,102 @@ export const sendMessage = async (userId: string, formData: FormData) => {
 
   const content = formData.get("message") as string;
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("messages")
-    .insert({ content, sender_id: session.user.id, receiver_id: userId });
+    .insert({ content, sender_id: session.user.id, receiver_id: userId })
+    .select()
+    .single();
 
   if (error)
     throw new Error(`Failed to send the message: ${error.message}`, {
       cause: error.cause,
     });
+
+  const { error: notifError } = await supabase.from("notifications").insert({
+    user_id: userId,
+    type: "NEW_MESSAGE",
+    entity_id: data.id,
+  });
+
+  if (notifError)
+    throw new Error(`Failed to send the message: ${notifError.message}`, {
+      cause: notifError.cause,
+    });
+};
+
+export const clearNotifications = async () => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { error } = await supabase
+    .from("notifications")
+    .delete()
+    .eq("user_id", session.user.id);
+
+  if (error)
+    throw new Error(`Failed to clear notifications: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/notifications");
+};
+
+export const readAllNotifications = async () => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { error } = await supabase
+    .from("notifications")
+    .update({ is_read: true })
+    .eq("user_id", session.user.id);
+
+  if (error)
+    throw new Error(`Failed to read all notifications: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/notifications");
+};
+
+export const readNotifications = async (
+  notifications: Tables<"notifications">[],
+) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const ids = notifications.map((notification) => notification.id);
+
+  const { error } = await supabase
+    .from("notifications")
+    .update({ is_read: true })
+    .eq("user_id", session.user.id)
+    .in("id", ids);
+
+  if (error)
+    throw new Error(`Failed to read notifications: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/notifications");
+};
+
+export const clearMessages = async () => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { error } = await supabase
+    .from("messages")
+    .delete()
+    .eq("sender_id", session.user.id);
+
+  if (error)
+    throw new Error(`Failed to clear messages: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/messages");
 };

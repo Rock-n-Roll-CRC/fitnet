@@ -4,7 +4,7 @@
 .chat-main {
   @include flex-shorthand(column, nowrap, $whitespace-8);
 
-  block-size: 100%;
+  flex: 1;
   padding: $whitespace-7 0;
   overflow: scroll;
   scrollbar-gutter: auto;

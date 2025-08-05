@@ -1,0 +1,9 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.mark-as-read-btn {
+  @include remove-button-styles;
+
+  font-size: $font-size-3;
+  color: $color-neutral-7;
+}

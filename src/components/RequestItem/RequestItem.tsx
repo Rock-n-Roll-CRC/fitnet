@@ -29,14 +29,21 @@ const RequestItem = ({
 
   const today = new Date();
   const inviteDate = new Date(request.created_at);
-  const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-  today.setHours(0, 0, 0, 0);
-  inviteDate.setHours(0, 0, 0, 0);
-
-  const diffInDays = Math.floor(
-    (today.getTime() - inviteDate.getTime()) / MS_PER_DAY,
+  const differenceInHr = Math.floor(
+    (today.getTime() - inviteDate.getTime()) / (1000 * 60 * 60),
   );
+  const differenceInDays = Math.floor(
+    Math.abs(today.getTime() - inviteDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  const differenceStr =
+    differenceInHr < 1
+      ? `just now`
+      : differenceInDays < 1
+        ? `${differenceInHr.toString()} hours ago`
+        : differenceInDays < 7
+          ? `${differenceInDays.toString()} days ago`
+          : `${Math.floor(differenceInDays / 7).toString()} weeks ago`;
 
   async function handleAcceptRequest() {
     await acceptConnectionRequest(request);
@@ -70,7 +77,7 @@ const RequestItem = ({
           {profile.full_name}
         </span>
         <span className={styles["request-item__invite-date"]}>
-          Request sent {diffInDays} days ago
+          Request sent {differenceStr}
         </span>
       </div>
 

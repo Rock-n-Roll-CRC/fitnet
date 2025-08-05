@@ -24,14 +24,21 @@ const ProfileItem = ({
 }) => {
   const today = new Date();
   const date = new Date(testDate);
-  const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-  today.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
-
-  const diffInDays = Math.floor(
-    (today.getTime() - date.getTime()) / MS_PER_DAY,
+  const differenceInHr = Math.floor(
+    (today.getTime() - date.getTime()) / (1000 * 60 * 60),
   );
+  const differenceInDays = Math.floor(
+    Math.abs(today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  const differenceStr =
+    differenceInHr < 1
+      ? `just now`
+      : differenceInDays < 1
+        ? `${differenceInHr.toString()} hours ago`
+        : differenceInDays < 7
+          ? `${differenceInDays.toString()} days ago`
+          : `${Math.floor(differenceInDays / 7).toString()} weeks ago`;
 
   async function handleDeleteProfile(userId: string) {
     await deleteSavedProfile(userId);
@@ -61,7 +68,7 @@ const ProfileItem = ({
           {profile.full_name}
         </span>
         <span className={styles["profile-item__date"]}>
-          {type === "saved" ? "Added" : "Blocked"} {diffInDays} days ago
+          {type === "saved" ? "Added" : "Blocked"} {differenceStr}
         </span>
       </div>
 
@@ -74,6 +81,12 @@ const ProfileItem = ({
             >
               Delete
             </button>
+            <Link
+              href={`/messages/${profile.user_id}`}
+              className={`${styles["profile-item__button"] ?? ""} ${styles["profile-item__button--green"] ?? ""}`}
+            >
+              Start Chat
+            </Link>
             <button
               onClick={() => void handleBlockProfile(profile.user_id)}
               className={`${styles["profile-item__button"] ?? ""} ${styles["profile-item__button--red"] ?? ""}`}

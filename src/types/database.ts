@@ -267,21 +267,21 @@ export type Database = {
         Row: {
           content: string;
           created_at: string;
-          id: number;
+          id: string;
           receiver_id: string;
           sender_id: string;
         };
         Insert: {
           content: string;
           created_at?: string;
-          id?: number;
+          id?: string;
           receiver_id: string;
           sender_id: string;
         };
         Update: {
           content?: string;
           created_at?: string;
-          id?: number;
+          id?: string;
           receiver_id?: string;
           sender_id?: string;
         };
@@ -296,6 +296,41 @@ export type Database = {
           {
             foreignKeyName: "messages_sender_id_fkey";
             columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+        ];
+      };
+      notifications: {
+        Row: {
+          created_at: string;
+          entity_id: string;
+          id: string;
+          is_read: boolean;
+          type: Database["public"]["Enums"]["notification_type"];
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          entity_id: string;
+          id?: string;
+          is_read?: boolean;
+          type: Database["public"]["Enums"]["notification_type"];
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          entity_id?: string;
+          id?: string;
+          is_read?: boolean;
+          type?: Database["public"]["Enums"]["notification_type"];
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey";
+            columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["user_id"];
@@ -562,7 +597,10 @@ export type Database = {
       };
     };
     Enums: {
-      [_ in never]: never;
+      notification_type:
+        | "NEW_MESSAGE"
+        | "REQUEST_RECEIVED"
+        | "REQUEST_ACCEPTED";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -698,6 +736,12 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      notification_type: [
+        "NEW_MESSAGE",
+        "REQUEST_RECEIVED",
+        "REQUEST_ACCEPTED",
+      ],
+    },
   },
 } as const;

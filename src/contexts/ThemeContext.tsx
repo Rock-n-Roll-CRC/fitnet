@@ -41,7 +41,12 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <ThemeContext.Provider value={{ colorTheme, handleToggleColorTheme }}>
-      <div className={`theme--${colorTheme}`}>{children}</div>
+      <div
+        className={`theme--${colorTheme}`}
+        style={{ display: "flex", flexDirection: "column", flex: 1 }}
+      >
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };

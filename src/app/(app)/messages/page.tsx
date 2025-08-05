@@ -1,9 +1,8 @@
 import ActiveChats from "@/components/ActiveChats/ActiveChats";
+import EmptyChats from "@/components/EmptyChats/EmptyChats";
 
 import { auth } from "@/services/auth";
 import { getActiveChats } from "@/services/apiMessages";
-
-import styles from "./page.module.scss";
 
 export default async function Page() {
   const session = await auth();
@@ -13,8 +12,14 @@ export default async function Page() {
   const activeChats = await getActiveChats(session.user.id);
 
   return (
-    <main className={styles.main}>
-      <ActiveChats session={session} activeChats={activeChats} />
-    </main>
+    <>
+      {activeChats.length > 0 ? (
+        <ActiveChats session={session} activeChats={activeChats} />
+      ) : (
+        <EmptyChats />
+      )}
+    </>
   );
 }
+
+// Add "is_read" functionality for messages

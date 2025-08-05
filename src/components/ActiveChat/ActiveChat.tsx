@@ -36,7 +36,11 @@ export default function ActiveChat({
       </div>
 
       <p className={styles["active-chat__message-date"]}>
-        {`${new Date(lastMessage.created_at).getHours().toString()}:${new Date(lastMessage.created_at).getMinutes().toString()}`}
+        {new Date(lastMessage.created_at).toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        })}
       </p>
     </Link>
   );

@@ -1,0 +1,60 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.notifications-menu {
+  $this: &;
+
+  z-index: 10000;
+
+  &--visible {
+    #{$this}__body {
+      /* stylelint-disable-next-line plugin/use-defensive-css */
+      display: flex;
+    }
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include size-shorthand(5rem, 5rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    text-decoration: none;
+    cursor: pointer;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-circle;
+    box-shadow: 0 0 1rem $color-neutral-5;
+  }
+
+  &__icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-neutral-9;
+  }
+
+  &__body {
+    @include flex-shorthand(column, nowrap, null, center, null);
+
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    display: none;
+    inline-size: 100%;
+  }
+
+  &__menu-button {
+    @include remove-button-styles;
+
+    inline-size: 100%;
+    padding: $whitespace-5;
+    color: $color-neutral-10;
+    cursor: pointer;
+    background-color: $color-neutral-2;
+    border-block-end: 0.1rem solid $color-neutral-5;
+
+    &:first-child {
+      color: $color-accent-3;
+      border-start-start-radius: $border-radius-extra-large;
+      border-start-end-radius: $border-radius-extra-large;
+    }
+  }
+}

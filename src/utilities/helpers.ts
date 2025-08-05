@@ -1,3 +1,5 @@
+import { format, isThisWeek, isToday, isYesterday } from "date-fns";
+
 export const calculateDistance = (
   position1: { lat: number; lng: number },
   position2: { lat: number; lng: number },
@@ -20,4 +22,12 @@ export const calculateDistance = (
   const distance = R * c;
 
   return distance;
+};
+
+export const getDateGroupLabel = (date: Date) => {
+  if (isToday(date)) return "Today";
+  if (isYesterday(date)) return "Yesterday";
+  if (isThisWeek(date)) return format(date, "EEEE");
+
+  return format(date, "MMMM d, yyyy");
 };

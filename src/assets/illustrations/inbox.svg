@@ -1,0 +1,14 @@
+<svg id="inbox" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210.47 244.25" width="105" height="121.844">
+  <linearGradient id="inbox-gradient" x1="0" y1="0" x2="210.47" y2="0" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#4b45bd"/>
+    <stop offset="1" stop-color="#58caea"/>
+  </linearGradient>
+  <linearGradient id="inbox-flag" x1="98.5" y1="0" x2="136.04" y2="0" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#f8b14b"/>
+    <stop offset="1" stop-color="#f71d69"/>
+  </linearGradient>
+  <path fill="url(#inbox-gradient)" d="M106.26,234.62l49.92,9.63V161.09h54.29V86.62s-2.62-36.78-48.16-43.79c-34.83-5.35-88.66-.66-112.24-.16-10.38.22-19.39,3.54-28.33,8.38-6.23,3.37-21.44,22.27-21.44,30.9v79.14l104.89.87Z"/>
+  <path fill="#000" opacity="0.1" d="M0.3,161.09l91.59.76V93.76a50.7,50.7,0,0,0-7.67-27c-6.63-10.51-18.37-21.87-38.28-22.23C8.66,43.83,0,83.09,0,83.09Z"/>
+  <polygon fill="#000" opacity="0.1" points="109.2 160.97 156.48 180.95 156.48 160.97 109.2 160.97"/>
+  <polygon fill="url(#inbox-flag)" points="98.5 0 136.04 0 136.04 86.32 128.65 86.32 128.06 23.35 98.5 24.35 98.5 0"/>
+</svg>

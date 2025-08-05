@@ -1,0 +1,116 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.notifications-header {
+  $this: &;
+
+  @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  padding: $whitespace-5;
+  background-color: $color-neutral-1;
+
+  &__top-container {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include size-shorthand(5rem, 5rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    text-decoration: none;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-circle;
+    box-shadow: 0 0 0.8rem $color-neutral-4;
+  }
+
+  &__icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-neutral-9;
+  }
+
+  &__heading {
+    font-size: $font-size-6;
+    color: $color-neutral-10;
+  }
+
+  &__bottom-container {
+    @include flex-shorthand(row, nowrap, $whitespace-5, center, space-between);
+  }
+
+  &__filter-container {
+    position: relative;
+    inline-size: 20rem;
+    padding: $whitespace-5;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-pill;
+    box-shadow: 0 0 0.8rem $color-neutral-4;
+
+    &--visible {
+      #{$this}__filter-body {
+        block-size: auto;
+      }
+    }
+  }
+
+  &__filter-display {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__filter-label {
+    color: $color-neutral-7;
+  }
+
+  &__filter-icon {
+    @include size-shorthand(2rem, 2rem);
+  }
+
+  &__filter-body {
+    @include absolute-shorthand(auto, 0, -1rem, 0);
+
+    z-index: 1000;
+    block-size: 0;
+    overflow: hidden;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-large;
+    box-shadow: 0 0 0.8rem $color-neutral-4;
+    transform: translateY(100%);
+    transition: block-size 0.15s;
+  }
+
+  &__filter-list {
+    @include remove-list-styles;
+  }
+
+  &__filter-button {
+    @include remove-button-styles;
+
+    inline-size: 100%;
+    padding: $whitespace-3;
+    color: $color-neutral-7;
+    cursor: pointer;
+    background-color: $color-neutral-1;
+    border-block-end: 0.1rem solid $color-neutral-3;
+    transition:
+      color 0.15s,
+      background-color 0.15s;
+
+    @media (hover: hover) {
+      &:hover {
+        color: $color-neutral-1;
+        background-color: $color-neutral-7;
+      }
+    }
+  }
+
+  &__filter-input-wrapper {
+    @include flex-shorthand(row, nowrap, $whitespace-4, center, center);
+
+    inline-size: 100%;
+    padding: $whitespace-4;
+    color: $color-neutral-7;
+    background-color: $color-neutral-1;
+    border-block-end: 0.1rem solid $color-neutral-3;
+  }
+}

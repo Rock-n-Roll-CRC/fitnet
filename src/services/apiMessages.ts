@@ -63,3 +63,20 @@ export const getMessages = async (userId: string) => {
 
   return data;
 };
+
+export const getMessage = async (id: string) => {
+  const { data, error } = await (await import("@/services/supabase")).supabase
+    .from("messages")
+    .select(
+      "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
+    )
+    .eq("id", id)
+    .single();
+
+  if (error)
+    throw new Error(`Failed to get the message: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  return data;
+};

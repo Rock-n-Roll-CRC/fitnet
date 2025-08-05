@@ -43,5 +43,4 @@ const Page = async ({
 
 export default Page;
 
-// Request history page
 // Rating (stars) system

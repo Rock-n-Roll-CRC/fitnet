@@ -1,0 +1,27 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.notification-group {
+  @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  &__header {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__label {
+    font-size: $font-size-6;
+    color: $color-neutral-9;
+  }
+
+  &__button {
+    @include remove-button-styles;
+
+    font-size: $font-size-3;
+    color: $color-neutral-7;
+  }
+
+  &__body {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-5);
+  }
+}

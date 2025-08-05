@@ -1,0 +1,68 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.notification {
+  @include flex-shorthand(row, nowrap, $whitespace-5, center);
+
+  max-inline-size: 35rem;
+  padding: $whitespace-4 $whitespace-3;
+  background-image: linear-gradient(to right, $color-neutral-2, white);
+  border: 0.2rem solid white;
+  border-radius: $border-radius-large;
+  box-shadow: 0 0 0.5rem $color-neutral-3;
+
+  &__container {
+    @include flex-shorthand(row, nowrap, $whitespace-5, center);
+  }
+
+  &__icon-wrapper {
+    @include size-shorthand(6rem, 6rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    position: relative;
+    background-image: linear-gradient(to right, $color-neutral-2, white);
+    border: 0.2rem solid white;
+    border-radius: $border-radius-circle;
+  }
+
+  &__icon {
+    @include size-shorthand(3rem, 3rem);
+
+    color: $color-neutral-10;
+  }
+
+  &__message-count {
+    @include absolute-shorthand(0, 0, auto, auto);
+    @include size-shorthand(2rem, 2rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    font-size: $font-size-2;
+    color: $color-primary-10;
+    background-color: $color-primary-4;
+    border-radius: $border-radius-circle;
+    transform: translateY(-50%);
+  }
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-2);
+
+    flex: 1;
+    max-inline-size: 22rem;
+  }
+
+  &__title {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-9;
+  }
+
+  &__message {
+    font-size: $font-size-3;
+    color: $color-neutral-7;
+  }
+
+  &__date {
+    align-self: flex-start;
+    color: $color-neutral-7;
+  }
+}

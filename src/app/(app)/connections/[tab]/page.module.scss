@@ -4,7 +4,7 @@
 .main {
   @include flex-shorthand(column, nowrap, $whitespace-5);
 
-  block-size: 73.5rem;
+  flex: 1;
   overflow: scroll;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
