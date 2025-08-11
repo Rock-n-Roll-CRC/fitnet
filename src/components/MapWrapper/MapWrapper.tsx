@@ -5,8 +5,9 @@ import type { Tables } from "@/types/database";
 import dynamic from "next/dynamic";
 
 import styles from "./MapWrapper.module.scss";
-import type { Dispatch, SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
+import SearchFilter from "@/components/SearchFilter/SearchFilter";
 
 interface Coordinates {
   lat: number;
@@ -35,8 +36,15 @@ const MapWrapper = ({
   setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
   session: Session;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleClick() {
+    setIsOpen((isOpen) => !isOpen);
+  }
+
   return (
     <div className={styles["map-wrapper"]}>
+      <SearchFilter isOpen={isOpen} handleClick={handleClick} />
       <Map
         coaches={coaches}
         blockedProfiles={blockedProfiles}
@@ -44,6 +52,7 @@ const MapWrapper = ({
         userCoords={userCoordsProp}
         setUserCoords={setUserCoordsProp}
         session={session}
+        isFilterOpen={isOpen}
       />
     </div>
   );

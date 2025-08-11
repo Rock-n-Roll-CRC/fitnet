@@ -3,6 +3,8 @@ import type { Tables } from "@/types/database";
 import Link from "next/link";
 import Image from "next/image";
 
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
+
 import styles from "./ActiveChat.module.scss";
 
 export default function ActiveChat({
@@ -13,6 +15,9 @@ export default function ActiveChat({
     lastMessage: Tables<"messages">;
   };
 }) {
+  const onlineUsers = useOnlineUsers();
+  const isOnline = onlineUsers.includes(profile.user_id);
+
   return (
     <Link
       href={`/messages/${profile.user_id}`}
@@ -32,6 +37,9 @@ export default function ActiveChat({
           <p className={styles["active-chat__message"]}>
             {lastMessage.content}
           </p>
+          {isOnline && (
+            <span className={styles["active-chat__online-status"]}></span>
+          )}
         </div>
       </div>
 

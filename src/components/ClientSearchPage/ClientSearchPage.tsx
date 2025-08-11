@@ -18,8 +18,6 @@ const ClientSearchPage = ({
 }) => {
   return (
     <>
-      <SearchFilter />
-
       <MapWrapper
         coaches={coaches}
         blockedProfiles={blockedProfiles}

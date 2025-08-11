@@ -2,5 +2,9 @@
 @use "../../styles/tools" as *;
 
 .map-wrapper {
-  @include size-shorthand(100%, 40rem);
+  @include flex-shorthand(column);
+
+  position: relative;
+  flex: 1;
+  overflow: hidden;
 }

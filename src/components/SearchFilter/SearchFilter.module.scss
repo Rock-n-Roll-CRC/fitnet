@@ -2,21 +2,180 @@
 @use "../../styles/tools" as *;
 
 .search-filter {
-  @include grid-shorthand(null, 1fr, $whitespace-7, $whitespace-5);
+  $this: &;
 
-  &__input-wrapper {
-    @include flex-shorthand(row, nowrap, $whitespace-3, center);
+  &--open {
+    #{$this}__body {
+      transform: translateY(0);
+    }
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include size-shorthand(5rem, 5rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+    @include absolute-shorthand(2rem, 1rem, auto, auto);
+
+    z-index: 999;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-large;
+    box-shadow: 0 0 1.5rem $color-neutral-5;
+  }
+
+  &__icon {
+    @include size-shorthand(3rem, 3rem);
+
+    color: $color-primary-10;
+    fill: $color-primary-10;
+  }
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 9998;
+    block-size: 75rem;
+    padding: $whitespace-6 $whitespace-4;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-large;
+    transform: translateY(100%);
+    transition: transform 0.15s;
+  }
+
+  &__top-container {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__heading {
+    font-size: $font-size-6;
+    color: $color-neutral-9;
+  }
+
+  &__clear-button {
+    @include remove-button-styles;
+
+    font-weight: $font-weight-semi-bold;
+    color: $color-primary-10;
+  }
+
+  &__label {
+    font-size: $font-size-4;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-9;
   }
 
   &__input-group-wrapper {
-    @include flex-shorthand(row, nowrap, $whitespace-5, center);
+    @include flex-shorthand(column, nowrap, $whitespace-4);
+
+    position: relative;
+    padding-block-end: $whitespace-7;
+    overflow: visible;
+
+    &::after {
+      position: absolute;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      block-size: 0.2rem; /* tile height = dot diameter */
+      pointer-events: none;
+      content: "";
+
+      /* FIX: use absolute radius (half of dot-size) so dot won't scale with tile width */
+      background-image: radial-gradient(
+        circle at center,
+        $color-neutral-5 calc(0.2rem / 2),
+        transparent calc(0.2rem / 2 + 0.0001rem)
+      );
+      background-repeat: repeat-x;
+      background-position: left center;
+
+      /* tile width = dot + gap -> gap becomes actual empty space between dots */
+      background-size: calc(0.2rem + 0.4rem) 0.2rem;
+
+      /* vertically center the pseudo-element on the box edge */
+      transform: translateY(-50%);
+    }
+
+    &::after {
+      inset-block-end: 0;
+      transform: translateY(50%);
+    }
+  }
+
+  &__button-group {
+    @include flex-shorthand(row, nowrap, $whitespace-4);
+  }
+
+  &__option-button {
+    inline-size: 15rem;
+    padding: $whitespace-3 0;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+    background-color: $color-neutral-1;
+    border: 0.2rem solid $color-neutral-4;
+    border-radius: $border-radius-medium;
+    box-shadow: 0 0 0.5rem $color-neutral-3;
+
+    &--selected {
+      border-color: $color-primary-10;
+    }
+  }
+
+  &__range {
+    block-size: 0.4rem;
+    appearance: none;
+    background-color: $color-neutral-1;
+    border: 0.1rem solid $color-neutral-3;
+    border-radius: $border-radius-small;
+
+    &::-webkit-slider-thumb {
+      @include size-shorthand(2rem, 2rem);
+
+      appearance: none;
+      background-color: $color-neutral-1;
+      border: 0.2rem solid $color-primary-10;
+      border-radius: $border-radius-medium;
+      box-shadow: 0 0 0.1rem 0.1rem $color-neutral-5;
+    }
+  }
+
+  &__submit-button {
+    @include remove-button-styles;
+    @include absolute-shorthand(auto, auto, 10rem, 50%);
+
+    inline-size: 18rem;
+    padding: 1.25rem 0;
+    color: $color-neutral-1;
+    background-color: $color-primary-10;
+    border-radius: $border-radius-medium;
+    transform: translateX(-50%);
   }
 
   &__input-group {
-    @include flex-shorthand(column, nowrap, $whitespace-3, center);
+    position: relative;
+    margin-block-end: $whitespace-4;
   }
 
   &__input {
-    max-inline-size: 7rem;
+    @include remove-input-styles;
+
+    inline-size: 100%;
+    padding: $whitespace-6 $whitespace-5 $whitespace-2 $whitespace-5;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-large;
+  }
+
+  &__input-label {
+    @include flex-shorthand(row, nowrap, $whitespace-1, center);
+    @include absolute-shorthand(1rem, auto, auto, 1.8rem);
+
+    font-size: $font-size-2;
+    color: $color-primary-10;
+  }
+
+  &__input-label-icon {
+    @include size-shorthand(1.5rem, 1.5rem);
+
+    color: $color-primary-10;
   }
 }

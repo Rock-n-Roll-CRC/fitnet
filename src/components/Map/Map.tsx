@@ -80,6 +80,7 @@ const Map = ({
   userCoords: userCoordsProp,
   setUserCoords: setUserCoordsProp,
   session,
+  isFilterOpen,
 }: {
   coaches?: Tables<"profiles">[];
   blockedProfiles?: (Tables<"blocked_profiles"> & {
@@ -90,6 +91,7 @@ const Map = ({
   userCoords?: Coordinates;
   setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
   session: Session;
+  isFilterOpen: boolean;
 }) => {
   const searchParams = useSearchParams();
 
@@ -192,69 +194,82 @@ const Map = ({
           <button onClick={() => void handleFetchCityCoords()}>Submit</button>
         </div>
       )}
-      <MapContainer
-        center={mapCenter}
-        zoom={15}
-        zoomControl={false}
-        style={{ height: "100%", width: "100%" }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          filter: isFilterOpen ? "brightness(0.5)" : undefined,
+        }}
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {currentUserCoords && (
-          <Marker position={currentUserCoords}>
-            <Tooltip direction="top" offset={[-15, -20]} permanent>
-              You
-            </Tooltip>
-          </Marker>
-        )}
-        {filteredCoaches?.map((coach) => {
-          if (!coach.location) return null;
-
-          const { lat, lng } = coach.location as unknown as Coordinates;
-          const coachCoords = { lat, lng };
-          const icon = new Icon({
-            iconUrl: coach.avatar_url,
-            className: styles["map__marker-icon"],
-            iconAnchor: [30, 15],
-          });
-          const redIcon = new Icon({
-            iconUrl: coach.avatar_url,
-            className: `${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--red"] ?? ""}`,
-            iconAnchor: [30, 15],
-          });
-
-          return (
-            <Marker
-              key={coach.user_id}
-              position={coachCoords}
-              eventHandlers={{
-                click: () => {
-                  setSelectedCoach(coach);
-                },
-              }}
-              icon={blockedCoachesIDs.includes(coach.user_id) ? redIcon : icon}
-            >
+        <MapContainer
+          center={mapCenter}
+          zoom={15}
+          zoomControl={false}
+          style={{
+            flex: 1,
+          }}
+        >
+          <TileLayer
+            url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+            attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> contributors'
+          />
+          {currentUserCoords && (
+            <Marker position={currentUserCoords}>
               <Tooltip direction="top" offset={[-15, -20]} permanent>
-                {coach.full_name}
+                You
               </Tooltip>
             </Marker>
-          );
-        })}
-        <MapUpdater center={mapCenter} />
-        <ClickHandler onMapClick={handleMapClick} />
-      </MapContainer>
-      {selectedCoach && (
-        <CoachDetailsModal
-          coach={selectedCoach}
-          session={session}
-          blockedProfiles={blockedProfiles}
-          onClose={() => {
-            setSelectedCoach(undefined);
-          }}
-        />
-      )}
+          )}
+          {filteredCoaches?.map((coach) => {
+            if (!coach.location) return null;
+
+            const { lat, lng } = coach.location as unknown as Coordinates;
+            const coachCoords = { lat, lng };
+            const icon = new Icon({
+              iconUrl: coach.avatar_url,
+              className: styles["map__marker-icon"],
+              iconAnchor: [30, 15],
+            });
+            const redIcon = new Icon({
+              iconUrl: coach.avatar_url,
+              className: `${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--red"] ?? ""}`,
+              iconAnchor: [30, 15],
+            });
+
+            return (
+              <Marker
+                key={coach.user_id}
+                position={coachCoords}
+                eventHandlers={{
+                  click: () => {
+                    setSelectedCoach(coach);
+                  },
+                }}
+                icon={
+                  blockedCoachesIDs.includes(coach.user_id) ? redIcon : icon
+                }
+              >
+                <Tooltip direction="top" offset={[-15, -20]} permanent>
+                  {coach.full_name}
+                </Tooltip>
+              </Marker>
+            );
+          })}
+          <MapUpdater center={mapCenter} />
+          <ClickHandler onMapClick={handleMapClick} />
+        </MapContainer>
+        {selectedCoach && (
+          <CoachDetailsModal
+            coach={selectedCoach}
+            session={session}
+            blockedProfiles={blockedProfiles}
+            onClose={() => {
+              setSelectedCoach(undefined);
+            }}
+          />
+        )}
+      </div>
     </>
   );
 };

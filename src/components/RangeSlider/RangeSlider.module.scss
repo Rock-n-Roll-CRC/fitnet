@@ -1,0 +1,79 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.range-slider {
+  position: relative;
+  inline-size: 100%;
+  padding-block-end: 1.5rem;
+
+  &__thumb,
+  &__thumb::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  &__thumb::-webkit-slider-thumb {
+    @include size-shorthand(2rem, 2rem);
+
+    position: relative;
+    margin-block-start: $whitespace-2;
+    pointer-events: all;
+    cursor: pointer;
+    background-color: $color-neutral-1;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-medium;
+    box-shadow: 0 0 0.1rem 0.1rem $color-neutral-5;
+  }
+
+  &__thumb::-moz-range-thumb {
+    @include size-shorthand(2rem, 2rem);
+
+    position: relative;
+    margin-block-start: $whitespace-2;
+    pointer-events: all;
+    cursor: pointer;
+    background-color: $color-neutral-1;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-medium;
+    box-shadow: 0 0 0.1rem 0.1rem $color-neutral-5;
+  }
+
+  &__thumb {
+    position: absolute;
+    inline-size: 100%;
+    block-size: 0;
+    pointer-events: none;
+    outline: none;
+
+    &--min {
+      z-index: 3;
+    }
+
+    &--max {
+      z-index: 4;
+    }
+
+    &--z-index-5 {
+      z-index: 5;
+    }
+  }
+
+  &__track,
+  &__range {
+    position: absolute;
+    block-size: 0.4rem;
+    border-radius: $border-radius-small;
+  }
+
+  &__track {
+    z-index: 1;
+    inline-size: 100%;
+    background-color: $color-neutral-1;
+    border: 0.1rem solid $color-neutral-3;
+  }
+
+  &__range {
+    z-index: 2;
+    background-color: $color-primary-10;
+  }
+}

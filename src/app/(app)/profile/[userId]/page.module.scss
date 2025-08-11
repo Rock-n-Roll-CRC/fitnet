@@ -3,9 +3,8 @@
 
 .main {
   @include flex-shorthand(row, nowrap, null, center, center);
-  @include size-shorthand(100vi, 100vb);
 
-  block-size: 73.5rem;
+  flex: 1;
   overflow: scroll;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;

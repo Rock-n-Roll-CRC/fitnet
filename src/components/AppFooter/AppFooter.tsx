@@ -30,7 +30,14 @@ const AppFooter = ({ session }: { session: Session }) => {
               className={styles["app-footer__nav-link"]}
             >
               {pathname.startsWith("/connections") ? (
-                <PeopleSVG className={styles["app-footer__nav-link-icon"]} />
+                <>
+                  <PeopleSVG
+                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                  />
+                  <span
+                    className={styles["app-footer__nav-link-stroke"]}
+                  ></span>
+                </>
               ) : (
                 <PeopleOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
@@ -41,9 +48,14 @@ const AppFooter = ({ session }: { session: Session }) => {
           <li className={styles["app-footer__list-item"]}>
             <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
               {pathname.startsWith(`/messages`) ? (
-                <ChatbubbleEllipsesSVG
-                  className={styles["app-footer__nav-link-icon"]}
-                />
+                <>
+                  <ChatbubbleEllipsesSVG
+                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                  />
+                  <span
+                    className={styles["app-footer__nav-link-stroke"]}
+                  ></span>
+                </>
               ) : (
                 <ChatbubbleEllipsesOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
@@ -57,7 +69,14 @@ const AppFooter = ({ session }: { session: Session }) => {
               className={`${styles["app-footer__nav-link"] ?? ""} ${styles["app-footer__nav-link--circled"] ?? ""}`}
             >
               {pathname === "/search" ? (
-                <CompassSVG className={styles["app-footer__nav-link-icon"]} />
+                <>
+                  <CompassSVG
+                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                  />
+                  <span
+                    className={styles["app-footer__nav-link-stroke"]}
+                  ></span>
+                </>
               ) : (
                 <CompassOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
@@ -72,9 +91,14 @@ const AppFooter = ({ session }: { session: Session }) => {
               className={styles["app-footer__nav-link"]}
             >
               {pathname.startsWith("/notifications") ? (
-                <NotificationsSVG
-                  className={styles["app-footer__nav-link-icon"]}
-                />
+                <>
+                  <NotificationsSVG
+                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                  />
+                  <span
+                    className={styles["app-footer__nav-link-stroke"]}
+                  ></span>
+                </>
               ) : (
                 <NotificationsOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
@@ -88,7 +112,14 @@ const AppFooter = ({ session }: { session: Session }) => {
               className={styles["app-footer__nav-link"]}
             >
               {pathname === `/profile/${session.user.id}` ? (
-                <PersonSVG className={styles["app-footer__nav-link-icon"]} />
+                <>
+                  <PersonSVG
+                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                  />
+                  <span
+                    className={styles["app-footer__nav-link-stroke"]}
+                  ></span>
+                </>
               ) : (
                 <PersonOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}

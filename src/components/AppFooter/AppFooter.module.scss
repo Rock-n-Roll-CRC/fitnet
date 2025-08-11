@@ -4,11 +4,11 @@
 .app-footer {
   position: sticky;
   inset-block-end: 0;
-  inset-inline-start: 50%;
   z-index: 9999;
   inline-size: max-content;
   padding: $whitespace-5 $whitespace-6;
   margin: 0 auto;
+  overflow: hidden;
   background-color: $color-neutral-1;
   border-start-start-radius: $border-radius-extra-large;
   border-start-end-radius: $border-radius-extra-large;
@@ -18,7 +18,13 @@
 
   &__list {
     @include remove-list-styles;
-    @include flex-shorthand(row, nowrap, $whitespace-6, center, center);
+    @include flex-shorthand(row, nowrap, $whitespace-6, null, center);
+  }
+
+  &__list-item {
+    @include flex-shorthand(row, nowrap, null, center);
+
+    position: relative;
   }
 
   &__nav-link {
@@ -26,19 +32,28 @@
       @include flex-shorthand;
 
       padding: $whitespace-3 $whitespace-6;
-      background-color: $color-neutral-4;
+      background-color: $color-neutral-3;
       border-radius: $border-radius-pill;
     }
   }
 
   &__nav-link-icon {
-    @include size-shorthand(2.5rem, 2.5rem);
+    @include size-shorthand(100%, 2.5rem);
 
     color: $color-neutral-8;
     fill: $color-neutral-8;
 
     &--filled {
-      fill: $color-neutral-8;
+      color: $color-primary-10;
+      fill: $color-primary-10;
     }
+  }
+
+  &__nav-link-stroke {
+    @include size-shorthand(100%, 0.7rem);
+    @include absolute-shorthand(-2rem, auto, auto, 2%);
+
+    background-color: $color-primary-10;
+    border-radius: $border-radius-pill;
   }
 }
