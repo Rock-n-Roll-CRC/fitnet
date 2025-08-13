@@ -8,6 +8,7 @@ import CoachSearch from "@/components/CoachSearch/CoachSearch";
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
 import { updateProfileLocation } from "@/services/actions";
+import type { Tables } from "@/types/database";
 
 interface Coordinates {
   lat: number;
@@ -17,9 +18,11 @@ interface Coordinates {
 const CoachSearchPage = ({
   session,
   isSearching,
+  userProfile,
 }: {
   session: Session;
   isSearching: boolean;
+  userProfile: Tables<"profiles">;
 }) => {
   const [isSelectingPosition, setIsSelectingPosition] = useState(false);
   const [userCoords, setUserCoords] = useState<Coordinates>();
@@ -72,6 +75,7 @@ const CoachSearchPage = ({
         userCoords={userCoords}
         setUserCoords={setUserCoords}
         session={session}
+        userProfile={userProfile}
       />
     </>
   );

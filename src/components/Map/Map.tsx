@@ -17,15 +17,16 @@ import {
   useMap,
   useMapEvent,
 } from "react-leaflet";
-import { Icon } from "leaflet";
+import { divIcon, Icon } from "leaflet";
 
 import CoachDetailsModal from "@/components/CoachDetailsModal/CoachDetailsModal";
 
-import { calculateDistance } from "@/utilities/helpers";
+import { calculateAge, calculateDistance } from "@/utilities/helpers";
 
 import styles from "./Map.module.scss";
 import { updateProfileLocation } from "@/services/actions";
 import type { Session } from "next-auth";
+import navigateUrl from "@/assets/icons/navigate.svg?url";
 
 interface Coordinates {
   lat: number;
@@ -77,8 +78,8 @@ const Map = ({
   coaches,
   blockedProfiles,
   isSelectingPosition,
-  userCoords: userCoordsProp,
-  setUserCoords: setUserCoordsProp,
+  userCoords,
+  setUserCoords,
   session,
   isFilterOpen,
 }: {
@@ -88,42 +89,51 @@ const Map = ({
     blockedProfile: Tables<"profiles">;
   })[];
   isSelectingPosition?: boolean;
-  userCoords?: Coordinates;
-  setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
+  userCoords: { lat: number; lng: number };
+  setUserCoords: Dispatch<
+    SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
   session: Session;
   isFilterOpen: boolean;
 }) => {
   const searchParams = useSearchParams();
 
-  const [userCoords, setUserCoords] = useState<Coordinates>();
-  const [cityCoords, setCityCoords] = useState<Coordinates>();
-  const [inputCity, setInputCity] = useState("");
-  const [isPositionDenied, setIsPositionDenied] = useState(false);
   const [selectedCoach, setSelectedCoach] = useState<Tables<"profiles">>();
 
-  const currentUserCoords = userCoordsProp ?? userCoords;
-  const currentSetUserCoords = setUserCoordsProp ?? setUserCoords;
-  const mapCenter = currentUserCoords ??
-    cityCoords ?? { lat: 51.5074, lng: -0.1278 };
+  const markerIcon = new divIcon({
+    html: `<img src="${navigateUrl.src}" class="${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--me"] ?? ""}" />`,
+    className: styles.map__marker,
+    iconAnchor: [30, 15],
+  });
+
   const filteredCoaches = coaches?.filter((coach) => {
     if (!coach.isSearching) return false;
-
-    if (!currentUserCoords || !coach.location) return true;
 
     const coachPosition = coach.location as unknown as Coordinates;
     const coachCoords = {
       lat: coachPosition.lat,
       lng: coachPosition.lng,
     };
+    const distance = calculateDistance(userCoords, coachCoords);
+    const age = coach.birthdate
+      ? calculateAge(new Date(coach.birthdate))
+      : undefined;
 
-    const distance = calculateDistance(currentUserCoords, coachCoords);
-    const minDistance = searchParams.get("minDistance");
-    const maxDistance = searchParams.get("maxDistance");
+    const distanceFilter = searchParams.get("distance");
+    const genderFilter = searchParams.get("gender");
+    const minAgeFilter = searchParams.get("minAge");
+    const maxAgeFilter = searchParams.get("maxAge");
 
-    if (minDistance && maxDistance)
-      return distance >= +minDistance && distance <= +maxDistance;
-    if (minDistance) return distance >= +minDistance;
-    if (maxDistance) return distance <= +maxDistance;
+    if (distanceFilter && distance > +distanceFilter) return false;
+
+    if (genderFilter && coach.gender !== genderFilter) return false;
+
+    if (minAgeFilter && age && age < +minAgeFilter) return false;
+
+    if (maxAgeFilter && age && age > +maxAgeFilter) return false;
 
     return true;
   });
@@ -135,65 +145,16 @@ const Map = ({
       }, [])
     : [];
 
-  async function handleFetchCityCoords() {
-    try {
-      if (!inputCity) throw new Error("The city must be defined.");
-
-      const response = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${inputCity}&count=1`,
-      );
-      const data = (await response.json()) as OpenMeteoData;
-
-      const city = data.results?.at(0);
-
-      if (!city) throw new Error("The city could not be found.");
-
-      setCityCoords({ lat: city.latitude, lng: city.longitude });
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(`Failed to fetch city's coordinates: ${error.message}`);
-        throw new Error(`Failed to fetch city's coordinates: ${error.message}`);
-      }
-    }
-  }
-
   function handleMapClick(event: LeafletMouseEvent) {
     if (isSelectingPosition)
-      currentSetUserCoords({ lat: event.latlng.lat, lng: event.latlng.lng });
+      setUserCoords({
+        lat: event.latlng.lat,
+        lng: event.latlng.lng,
+      });
   }
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude: lat, longitude: lng } }) => {
-        currentSetUserCoords({ lat, lng });
-        void (async () => {
-          await updateProfileLocation(session.user.id, { lat, lng });
-        })();
-      },
-      () => {
-        setIsPositionDenied(true);
-      },
-      { enableHighAccuracy: true },
-    );
-  }, [currentSetUserCoords, session.user.id]);
 
   return (
     <>
-      {isPositionDenied && (
-        <div>
-          <label htmlFor="city">Your city:</label>
-          <input
-            type="text"
-            name="city"
-            id="city"
-            value={inputCity}
-            onChange={(event) => {
-              setInputCity(event.target.value);
-            }}
-          />
-          <button onClick={() => void handleFetchCityCoords()}>Submit</button>
-        </div>
-      )}
       <div
         style={{
           display: "flex",
@@ -203,9 +164,14 @@ const Map = ({
         }}
       >
         <MapContainer
-          center={mapCenter}
+          center={userCoords}
           zoom={15}
           zoomControl={false}
+          scrollWheelZoom={false}
+          doubleClickZoom={false}
+          touchZoom={false}
+          boxZoom={false}
+          keyboard={false}
           style={{
             flex: 1,
           }}
@@ -214,13 +180,13 @@ const Map = ({
             url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> contributors'
           />
-          {currentUserCoords && (
-            <Marker position={currentUserCoords}>
-              <Tooltip direction="top" offset={[-15, -20]} permanent>
-                You
-              </Tooltip>
-            </Marker>
-          )}
+
+          <Marker
+            position={userCoords}
+            icon={markerIcon}
+            zIndexOffset={1000}
+          ></Marker>
+
           {filteredCoaches?.map((coach) => {
             if (!coach.location) return null;
 
@@ -228,7 +194,8 @@ const Map = ({
             const coachCoords = { lat, lng };
             const icon = new Icon({
               iconUrl: coach.avatar_url,
-              className: styles["map__marker-icon"],
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              className: `${styles["map__marker-icon"] ?? ""} ${(selectedCoach?.user_id === coach.user_id && styles["map__marker-icon--selected"]) || ""}`,
               iconAnchor: [30, 15],
             });
             const redIcon = new Icon({
@@ -249,14 +216,10 @@ const Map = ({
                 icon={
                   blockedCoachesIDs.includes(coach.user_id) ? redIcon : icon
                 }
-              >
-                <Tooltip direction="top" offset={[-15, -20]} permanent>
-                  {coach.full_name}
-                </Tooltip>
-              </Marker>
+              ></Marker>
             );
           })}
-          <MapUpdater center={mapCenter} />
+          <MapUpdater center={userCoords} />
           <ClickHandler onMapClick={handleMapClick} />
         </MapContainer>
         {selectedCoach && (

@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
+    "dev2": "next dev",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",

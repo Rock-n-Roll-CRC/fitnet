@@ -2,9 +2,10 @@
 @use "../../styles/tools" as *;
 
 .coach-details-modal {
-  position: fixed;
-  inset: 50% auto auto 50%;
-  z-index: 9999;
-  background-color: burlywood;
-  transform: translate(-50%, -50%);
+  @include absolute-shorthand(auto, 0, 0, 0);
+
+  z-index: 1000;
+  background-color: $color-neutral-1;
+  box-shadow: 0 0 1.5rem $color-neutral-5;
+  transition: transform 0.15s;
 }

@@ -5,9 +5,10 @@ import type { Tables } from "@/types/database";
 import dynamic from "next/dynamic";
 
 import styles from "./MapWrapper.module.scss";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
 import SearchFilter from "@/components/SearchFilter/SearchFilter";
+import { getProfileByUserId } from "@/services/apiProfiles";
 
 interface Coordinates {
   lat: number;
@@ -22,9 +23,8 @@ const MapWrapper = ({
   coaches,
   blockedProfiles,
   isSelectingPosition,
-  userCoords: userCoordsProp,
-  setUserCoords: setUserCoordsProp,
   session,
+  userProfile,
 }: {
   coaches?: Tables<"profiles">[];
   blockedProfiles?: (Tables<"blocked_profiles"> & {
@@ -35,22 +35,39 @@ const MapWrapper = ({
   userCoords?: Coordinates;
   setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
   session: Session;
+  userProfile: Tables<"profiles">;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [userCoords, setUserCoords] = useState<{
+    lat: number;
+    lng: number;
+  }>({ lat: 0, lng: 0 });
 
   function handleClick() {
     setIsOpen((isOpen) => !isOpen);
   }
 
+  useEffect(() => {
+    if (userProfile.location)
+      setUserCoords(userProfile.location as unknown as Coordinates);
+  }, [userProfile.location]);
+
   return (
     <div className={styles["map-wrapper"]}>
-      <SearchFilter isOpen={isOpen} handleClick={handleClick} />
+      <SearchFilter
+        session={session}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        userCoords={userCoords}
+        setUserCoords={setUserCoords}
+        handleClick={handleClick}
+      />
       <Map
         coaches={coaches}
         blockedProfiles={blockedProfiles}
         isSelectingPosition={isSelectingPosition}
-        userCoords={userCoordsProp}
-        setUserCoords={setUserCoordsProp}
+        userCoords={userCoords}
+        setUserCoords={setUserCoords}
         session={session}
         isFilterOpen={isOpen}
       />

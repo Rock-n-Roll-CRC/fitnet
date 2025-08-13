@@ -4,7 +4,7 @@ export const calculateDistance = (
   position1: { lat: number; lng: number },
   position2: { lat: number; lng: number },
 ) => {
-  const R = 6371000;
+  const R = 6371;
 
   const lat1Rad = position1.lat * (Math.PI / 180);
   const long1Rad = position1.lng * (Math.PI / 180);
@@ -30,4 +30,21 @@ export const getDateGroupLabel = (date: Date) => {
   if (isThisWeek(date)) return format(date, "EEEE");
 
   return format(date, "MMMM d, yyyy");
+};
+
+export const calculateAge = (dateOfBirth: Date) => {
+  const currentDate = new Date();
+
+  let age = currentDate.getFullYear() - dateOfBirth.getFullYear();
+
+  const hasHadBirthdayThisYear =
+    currentDate.getMonth() > dateOfBirth.getMonth() ||
+    (currentDate.getMonth() === dateOfBirth.getMonth() &&
+      currentDate.getDate() >= dateOfBirth.getDate());
+
+  if (!hasHadBirthdayThisYear) {
+    age--;
+  }
+
+  return age;
 };

@@ -8,6 +8,7 @@ const ClientSearchPage = ({
   coaches,
   blockedProfiles,
   session,
+  userProfile,
 }: {
   coaches: Tables<"profiles">[];
   blockedProfiles: (Tables<"blocked_profiles"> & {
@@ -15,6 +16,7 @@ const ClientSearchPage = ({
     blockedProfile: Tables<"profiles">;
   })[];
   session: Session;
+  userProfile: Tables<"profiles">;
 }) => {
   return (
     <>
@@ -22,6 +24,7 @@ const ClientSearchPage = ({
         coaches={coaches}
         blockedProfiles={blockedProfiles}
         session={session}
+        userProfile={userProfile}
       />
     </>
   );

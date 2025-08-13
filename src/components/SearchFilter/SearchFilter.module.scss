@@ -152,6 +152,8 @@
   }
 
   &__input-group {
+    @include flex-shorthand(row, nowrap, null, null, null);
+
     position: relative;
     margin-block-end: $whitespace-4;
   }
@@ -163,6 +165,8 @@
     padding: $whitespace-6 $whitespace-5 $whitespace-2 $whitespace-5;
     border: 0.2rem solid $color-primary-10;
     border-radius: $border-radius-large;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
   }
 
   &__input-label {
@@ -175,6 +179,62 @@
 
   &__input-label-icon {
     @include size-shorthand(1.5rem, 1.5rem);
+
+    color: $color-primary-10;
+  }
+
+  &__suggestions {
+    @include remove-list-styles;
+    @include absolute-shorthand(auto, 0, -$whitespace-3, 0);
+
+    z-index: 1000;
+    block-size: 0;
+    overflow: hidden;
+    border-radius: $border-radius-large;
+    box-shadow: 0 0 1.5rem $color-neutral-5;
+    transform: translateY(100%);
+    transition: block-size 0.15s;
+
+    &--open {
+      block-size: auto;
+    }
+  }
+
+  &__suggestion {
+    @include remove-button-styles;
+
+    inline-size: 100%;
+    padding: $whitespace-3 $whitespace-5;
+    color: $color-primary-5;
+    text-align: start;
+    cursor: pointer;
+    background-color: $color-neutral-1;
+    transition:
+      color 0.15s,
+      background-color 0.15s;
+
+    @media (hover: hover) {
+      &:hover {
+        color: $color-neutral-1;
+        background-color: $color-primary-5;
+      }
+    }
+  }
+
+  &__locate-button {
+    @include remove-button-styles;
+
+    padding: $whitespace-3;
+    background-color: $color-neutral-1;
+    border: 0.2rem solid $color-primary-10;
+    border-inline-start: 0;
+    border-radius: $border-radius-large;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  &__locate-icon {
+    @include size-shorthand(2.5rem, 2.5rem);
 
     color: $color-primary-10;
   }

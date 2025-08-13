@@ -30,11 +30,13 @@ const Page = async ({
           coaches={coaches}
           blockedProfiles={blockedProfiles}
           session={session}
+          userProfile={userProfile}
         />
       ) : (
         <CoachSearchPage
           session={session}
           isSearching={userProfile.isSearching}
+          userProfile={userProfile}
         />
       )}
     </main>
@@ -44,3 +46,5 @@ const Page = async ({
 export default Page;
 
 // Rating (stars) system
+// Bottom list of nearby coaches
+// Fix bug when isSearching is true even though the coach closed the window
