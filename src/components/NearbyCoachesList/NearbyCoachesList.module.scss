@@ -1,0 +1,175 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.nearby-coaches-list {
+  $this: &;
+
+  @include absolute-shorthand(auto, 0, 0, 0);
+  @include flex-shorthand(column, nowrap, $whitespace-6, null, null);
+
+  z-index: 1000;
+  block-size: 20rem;
+  padding: $whitespace-6 $whitespace-5;
+  overflow: scroll;
+  background-color: $color-neutral-2;
+  border-start-start-radius: $border-radius-large;
+  border-start-end-radius: $border-radius-large;
+  box-shadow: 0 0 1.5rem $color-neutral-5;
+
+  &__count-box {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__count-label {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__count-body {
+    @include flex-shorthand(row, nowrap, null, null, null);
+  }
+
+  &__count-list {
+    @include flex-shorthand(row, nowrap, null, null, null);
+    @include remove-list-styles;
+  }
+
+  &__count-image {
+    @include size-shorthand(3rem, 3rem);
+
+    border-radius: $border-radius-medium;
+
+    &:not(:first-child) {
+      margin-inline-start: -$whitespace-4;
+    }
+  }
+
+  &__list {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-7, null, null);
+  }
+
+  &__coach {
+    @include flex-shorthand(
+      row,
+      nowrap,
+      $whitespace-3,
+      flex-start,
+      space-between
+    );
+
+    padding: 0 0 0 $whitespace-4;
+    overflow: hidden;
+    background-color: $color-neutral-1;
+    border-radius: $border-radius-extra-large;
+    box-shadow: 0 0 0.5rem $color-neutral-5;
+
+    &--online {
+      #{$this}__coach-name {
+        position: relative;
+
+        /* stylelint-disable-next-line max-nesting-depth */
+        &::after {
+          @include absolute-shorthand(0.2rem, -1.2rem, auto, auto);
+          @include size-shorthand(0.8rem, 0.8rem);
+
+          content: "";
+          background-color: $color-accent-2;
+          border-radius: $border-radius-circle;
+          box-shadow: 0 0 0.5rem $color-accent-2;
+        }
+      }
+    }
+  }
+
+  &__coach-body {
+    @include flex-shorthand(column, nowrap, $whitespace-5, flex-start, null);
+  }
+
+  &__coach-info-box {
+    @include flex-shorthand(column, nowrap, $whitespace-2, flex-start, null);
+
+    padding: $whitespace-4 0 0 0;
+  }
+
+  &__coach-name {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
+  }
+
+  &__coach-image {
+    @include size-shorthand(100%, 100%);
+
+    border-radius: $border-radius-large;
+  }
+
+  &__details-box {
+    @include flex-shorthand(row, nowrap, $whitespace-5, center, null);
+  }
+
+  &__detail {
+    @include flex-shorthand(row, nowrap, $whitespace-2, center, null);
+  }
+
+  &__detail-icon {
+    @include size-shorthand(2rem, 2rem);
+
+    color: $color-neutral-10;
+  }
+
+  &__detail-value {
+    font-size: $font-size-2;
+    color: $color-neutral-10;
+  }
+
+  &__phone-box {
+    padding: $whitespace-2 $whitespace-4;
+    margin-inline-start: -$whitespace-5;
+    font-size: $font-size-3;
+    color: $color-neutral-1;
+    background-color: $color-neutral-10;
+    border-radius: $border-radius-medium;
+  }
+
+  &__image-wrapper {
+    position: relative;
+  }
+
+  &__image-link {
+    @include absolute-shorthand(auto, 0.5rem, 0.5rem, auto);
+    @include size-shorthand(3.5rem, 3.5rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    background-color: $color-primary-10;
+    border-radius: $border-radius-medium;
+    border-end-end-radius: $border-radius-circle;
+  }
+
+  &__image-icon {
+    @include size-shorthand(2rem, 2rem);
+
+    color: $color-neutral-1;
+  }
+
+  &__empty-state {
+    @include flex-shorthand(column, nowrap, $whitespace-4, center, center);
+
+    text-align: center;
+  }
+
+  &__empty-message {
+    font-size: $font-size-5;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-8;
+  }
+
+  &__empty-illustration {
+    inline-size: 20rem;
+  }
+}

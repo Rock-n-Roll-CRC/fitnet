@@ -19,7 +19,7 @@ import {
 } from "react-leaflet";
 import { divIcon, Icon } from "leaflet";
 
-import CoachDetailsModal from "@/components/CoachDetailsModal/CoachDetailsModal";
+import NearbyCoachesList from "@/components/NearbyCoachesList/NearbyCoachesList";
 
 import { calculateAge, calculateDistance } from "@/utilities/helpers";
 
@@ -82,8 +82,9 @@ const Map = ({
   setUserCoords,
   session,
   isFilterOpen,
+  userProfile,
 }: {
-  coaches?: Tables<"profiles">[];
+  coaches?: (Tables<"profiles"> & { ratings: Tables<"ratings">[] })[];
   blockedProfiles?: (Tables<"blocked_profiles"> & {
     blockerProfile: Tables<"profiles">;
     blockedProfile: Tables<"profiles">;
@@ -98,6 +99,7 @@ const Map = ({
   >;
   session: Session;
   isFilterOpen: boolean;
+  userProfile: Tables<"profiles">;
 }) => {
   const searchParams = useSearchParams();
 
@@ -222,14 +224,13 @@ const Map = ({
           <MapUpdater center={userCoords} />
           <ClickHandler onMapClick={handleMapClick} />
         </MapContainer>
-        {selectedCoach && (
-          <CoachDetailsModal
-            coach={selectedCoach}
+
+        {userProfile.role === "client" && (
+          <NearbyCoachesList
             session={session}
-            blockedProfiles={blockedProfiles}
-            onClose={() => {
-              setSelectedCoach(undefined);
-            }}
+            coaches={filteredCoaches}
+            selectedCoach={selectedCoach}
+            blockedCoaches={blockedProfiles}
           />
         )}
       </div>

@@ -7,7 +7,7 @@ export type Json =
   | Json[];
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)";
@@ -22,10 +22,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          extensions?: Json;
           operationName?: string;
           query?: string;
           variables?: Json;
-          extensions?: Json;
         };
         Returns: Json;
       };
@@ -344,6 +344,8 @@ export type Database = {
           created_at: string;
           full_name: string;
           gender: string;
+          hourly_rate: number | null;
+          hourly_rate_currency: string | null;
           isSearching: boolean;
           location: Json | null;
           phone_number: string;
@@ -357,6 +359,8 @@ export type Database = {
           created_at?: string;
           full_name: string;
           gender: string;
+          hourly_rate?: number | null;
+          hourly_rate_currency?: string | null;
           isSearching?: boolean;
           location?: Json | null;
           phone_number: string;
@@ -370,6 +374,8 @@ export type Database = {
           created_at?: string;
           full_name?: string;
           gender?: string;
+          hourly_rate?: number | null;
+          hourly_rate_currency?: string | null;
           isSearching?: boolean;
           location?: Json | null;
           phone_number?: string;
@@ -437,6 +443,48 @@ export type Database = {
             isOneToOne: true;
             referencedRelation: "users_backup";
             referencedColumns: ["id"];
+          },
+        ];
+      };
+      ratings: {
+        Row: {
+          created_at: string;
+          id: string;
+          ratee_id: string;
+          rater_id: string;
+          rating: number;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          ratee_id: string;
+          rater_id: string;
+          rating: number;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          ratee_id?: string;
+          rater_id?: string;
+          rating?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ratings_ratee_id_fkey";
+            columns: ["ratee_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+          {
+            foreignKeyName: "ratings_rater_id_fkey";
+            columns: ["rater_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
           },
         ];
       };

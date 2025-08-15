@@ -107,3 +107,13 @@ export const getSuggestions = async (
 
   return mappedData;
 };
+
+export const getCityByCoords = async (coords: { lat: number; lng: number }) => {
+  const res = await fetch(
+    `https://photon.komoot.io/reverse?lat=${coords.lat.toString()}&lon=${coords.lng.toString()}&lang=en`,
+  );
+
+  const data = (await res.json()) as PhotonResponse;
+
+  return data.features[0]?.properties.city;
+};

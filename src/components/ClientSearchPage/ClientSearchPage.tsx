@@ -10,7 +10,7 @@ const ClientSearchPage = ({
   session,
   userProfile,
 }: {
-  coaches: Tables<"profiles">[];
+  coaches: (Tables<"profiles"> & { ratings: Tables<"ratings">[] })[];
   blockedProfiles: (Tables<"blocked_profiles"> & {
     blockerProfile: Tables<"profiles">;
     blockedProfile: Tables<"profiles">;

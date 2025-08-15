@@ -28,7 +28,10 @@ export const getCoachProfiles = async (filters?: {
 }) => {
   const client = (await import("@/services/supabase")).supabase;
 
-  let query = client.from("profiles").select("*").eq("role", "coach");
+  let query = client
+    .from("profiles")
+    .select("*, ratings: ratings!ratee_id(*)")
+    .eq("role", "coach");
 
   // if (filters?.gender) {
   //   query = query.eq("gender", filters.gender);

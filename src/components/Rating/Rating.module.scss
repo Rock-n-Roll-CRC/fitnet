@@ -1,0 +1,32 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.rating {
+  @include flex-shorthand(row, nowrap, $whitespace-2, center, null);
+
+  &__list {
+    @include remove-list-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-1, center, null);
+  }
+
+  &__star {
+    @include size-shorthand(2.25rem, 2.25rem);
+
+    color: $color-accent-1;
+    fill: $color-accent-1;
+  }
+
+  &__score {
+    @include flex-shorthand(row, nowrap, $whitespace-1, center, null);
+
+    font-size: $font-size-5;
+    font-weight: $font-weight-medium;
+    color: $color-neutral-10;
+  }
+
+  &__count {
+    font-size: $font-size-3;
+    font-weight: $font-weight-regular;
+    color: $color-neutral-10;
+  }
+}
