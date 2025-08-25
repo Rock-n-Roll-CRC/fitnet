@@ -1,0 +1,66 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.multiselect {
+  $this: &;
+
+  position: relative;
+
+  &--open {
+    #{$this}__body {
+      display: block;
+    }
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-3, center, space-between);
+
+    inline-size: 17rem;
+    padding: $whitespace-5;
+    font-size: $font-size-3;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-large;
+  }
+
+  &__value {
+    @include flex-shorthand(column, nowrap, $whitespace-3, flex-start);
+  }
+
+  &__icon {
+    @include size-shorthand(1.5rem, 1.5rem);
+
+    color: $color-primary-10;
+  }
+
+  &__body {
+    @include absolute-shorthand(auto, 0, -$whitespace-2, 0);
+    @include remove-list-styles;
+
+    z-index: 1000;
+    display: none;
+    background-color: $color-neutral-1;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-large;
+    transform: translateY(100%);
+  }
+
+  &__list-item {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+
+    inline-size: 100%;
+    padding: $whitespace-4;
+    font-size: $font-size-3;
+    border-block-end: 0.1rem solid $color-neutral-5;
+  }
+
+  &__option {
+    @include remove-button-styles;
+
+    inline-size: 100%;
+    padding: $whitespace-4;
+    font-size: $font-size-3;
+    border-block-end: 0.1rem solid $color-neutral-5;
+  }
+}

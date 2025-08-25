@@ -73,3 +73,19 @@ export const getConnectionRequest = async (id: string) => {
 
   return data;
 };
+
+export const isRequestSent = async (senderId: string, receiverId: string) => {
+  const { data, error } = await supabase
+    .from("connection_requests")
+    .select()
+    .eq("sender_id", senderId)
+    .eq("receiver_id", receiverId)
+    .maybeSingle();
+
+  if (error)
+    throw new Error(`Failed to get isRequestSent: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  return Boolean(data);
+};

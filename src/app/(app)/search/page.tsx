@@ -3,9 +3,9 @@ import CoachSearchPage from "@/components/CoachSearchPage/CoachSearchPage";
 
 import { auth } from "@/services/auth";
 import { getCoachProfiles, getProfileByUserId } from "@/services/apiProfiles";
+import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 
 import styles from "./page.module.scss";
-import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 
 const Page = async ({
   searchParams,
@@ -45,6 +45,7 @@ const Page = async ({
 
 export default Page;
 
-// Rating (stars) system
-// Bottom list of nearby coaches
 // Fix bug when isSearching is true even though the coach closed the window
+// Fix online statuses (sometimes disappear after some time has passed)
+// Fix notifications error (when deleting messages)
+// Add rating functionality

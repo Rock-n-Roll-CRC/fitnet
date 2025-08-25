@@ -2,67 +2,12 @@
 @use "../../../../styles/tools" as *;
 
 .main {
-  @include flex-shorthand(row, nowrap, null, center, center);
+  @include flex-shorthand(row, nowrap, null, center);
 
   flex: 1;
+  padding: $whitespace-5;
   overflow: scroll;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
-}
-
-.profile {
-  @include flex-shorthand(column, nowrap, $whitespace-7);
-
-  color: $color-neutral-10;
-
-  &__top-container {
-    @include flex-shorthand(column, nowrap, $whitespace-5, center);
-  }
-
-  &__avatar-wrapper {
-    @include size-shorthand(10rem, 10rem);
-
-    position: relative;
-    overflow: hidden;
-    border-radius: $border-radius-circle;
-  }
-
-  &__avatar {
-    object-fit: cover;
-    object-position: center;
-  }
-
-  &__full-name {
-    font-size: $font-size-6;
-    font-weight: $font-weight-bold;
-  }
-
-  &__bottom-container {
-    @include grid-shorthand(null, repeat(2, 1fr), $whitespace-8, $whitespace-8);
-
-    justify-items: center;
-  }
-
-  &__gender,
-  &__age {
-    font-size: $font-size-4;
-
-    span {
-      font-weight: $font-weight-semi-bold;
-    }
-  }
-
-  &__gender {
-    grid-column: 1;
-  }
-
-  &__age {
-    grid-column: 2;
-  }
-
-  &__phone-number {
-    grid-column: span 2;
-    font-size: $font-size-9;
-    color: $color-accent-1;
-  }
+  background-color: $color-neutral-1;
 }

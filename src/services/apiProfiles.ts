@@ -9,7 +9,7 @@ export const getProfileByUserId = async (
 
   const { data, error } = await client
     .from("profiles")
-    .select("*")
+    .select("*, ratings: ratings!ratee_id(*)")
     .eq("user_id", userId)
     .maybeSingle();
 

@@ -1,0 +1,41 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile-overview {
+  @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-5, center);
+  }
+
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
+
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius-extra-large;
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__info-container {
+    @include flex-shorthand(column, nowrap, $whitespace-3, center);
+  }
+
+  &__name {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__phone-number {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+}

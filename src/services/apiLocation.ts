@@ -117,3 +117,42 @@ export const getCityByCoords = async (coords: { lat: number; lng: number }) => {
 
   return data.features[0]?.properties.city;
 };
+
+export const getCitySuggestions = async (
+  query: string,
+  controllerRef: RefObject<AbortController | null>,
+) => {
+  controllerRef.current?.abort();
+  const ctrl = new AbortController();
+  controllerRef.current = ctrl;
+
+  const params = new URLSearchParams({
+    q: query,
+    limit: "5",
+    lang: "en",
+  });
+
+  const res = await fetch(
+    `https://photon.komoot.io/api/?${params.toString()}`,
+    { signal: ctrl.signal },
+  );
+
+  const data = (await res.json()) as PhotonResponse;
+
+  const mappedData = data.features
+    .filter((feature) => {
+      return (
+        feature.properties.name &&
+        feature.properties.country &&
+        feature.properties.type === "city"
+      );
+    })
+    .map((feature) => ({
+      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+      name: feature.properties.name as string,
+      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+      country: feature.properties.country as string,
+    }));
+
+  return mappedData;
+};

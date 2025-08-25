@@ -4,16 +4,10 @@ import type { Session } from "next-auth";
 
 import { useEffect, useState } from "react";
 
-import CoachSearch from "@/components/CoachSearch/CoachSearch";
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
 import { updateProfileLocation } from "@/services/actions";
 import type { Tables } from "@/types/database";
-
-interface Coordinates {
-  lat: number;
-  lng: number;
-}
 
 const CoachSearchPage = ({
   session,
@@ -25,7 +19,6 @@ const CoachSearchPage = ({
   userProfile: Tables<"profiles">;
 }) => {
   const [isSelectingPosition, setIsSelectingPosition] = useState(false);
-  const [userCoords, setUserCoords] = useState<Coordinates>();
 
   function handleSetLocation() {
     setIsSelectingPosition(true);
@@ -62,18 +55,8 @@ const CoachSearchPage = ({
         </div>
       )}
 
-      <CoachSearch
-        userCoords={userCoords}
-        isSelectingPosition={isSelectingPosition}
-        onSetLocation={handleSetLocation}
-        onSaveLocation={handleSaveLocation}
-        isSearching={isSearching}
-      />
-
       <MapWrapper
         isSelectingPosition={isSelectingPosition}
-        userCoords={userCoords}
-        setUserCoords={setUserCoords}
         session={session}
         userProfile={userProfile}
       />

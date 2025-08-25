@@ -1,0 +1,51 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile-actions {
+  @include grid-shorthand(null, auto auto);
+
+  gap: $whitespace-4;
+  justify-content: center;
+  justify-items: center;
+  inline-size: 100%;
+
+  &--fill {
+    justify-content: stretch;
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+
+    inline-size: 12rem;
+    padding: 1rem 2rem;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: $color-primary-10;
+    border-radius: $border-radius-medium;
+    transition: all 0.15s;
+
+    &--secondary {
+      color: $color-primary-10;
+      background-color: $color-neutral-1;
+      border: 0.1rem solid $color-neutral-5;
+    }
+
+    &--danger {
+      color: $color-neutral-1;
+      background-color: $color-accent-3;
+    }
+
+    &--fill {
+      grid-column: span 2;
+      inline-size: 100%;
+    }
+
+    &--spread {
+      grid-column: span 2;
+    }
+  }
+}

@@ -2,22 +2,29 @@
 @use "../../styles/tools" as *;
 
 .request-item {
-  @include flex-shorthand(column, nowrap, $whitespace-7);
+  @include flex-shorthand(column, nowrap, $whitespace-3);
 
-  padding: $whitespace-7 0;
+  padding: $whitespace-4 0;
   border-block: 0.2rem solid $color-neutral-2;
 
   &__body {
-    @include flex-shorthand(column, nowrap, $whitespace-3, center, center);
+    @include flex-shorthand(row, nowrap, $whitespace-5, null, null);
+  }
+
+  &__text-content {
+    @include flex-shorthand(column, nowrap, $whitespace-3, null, null);
   }
 
   &__button-container {
-    @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+    @include flex-shorthand(row, nowrap, $whitespace-3, null, null);
+
+    margin: auto 0;
   }
 
   &__image {
-    @include size-shorthand(7.5rem, 7.5rem);
+    @include size-shorthand(auto, 100%);
 
+    aspect-ratio: 1/1;
     border-radius: $border-radius-circle;
   }
 
@@ -53,6 +60,11 @@
 
     &--red {
       background-color: $color-accent-3;
+    }
+
+    &--blue {
+      color: $color-neutral-1;
+      background-color: $color-primary-10;
     }
   }
 }

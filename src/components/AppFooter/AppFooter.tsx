@@ -26,7 +26,7 @@ const AppFooter = ({ session }: { session: Session }) => {
         <ul className={styles["app-footer__list"]}>
           <li className={styles["app-footer__list-item"]}>
             <Link
-              href="/connections"
+              href="/connections/friends"
               className={styles["app-footer__nav-link"]}
             >
               {pathname.startsWith("/connections") ? (

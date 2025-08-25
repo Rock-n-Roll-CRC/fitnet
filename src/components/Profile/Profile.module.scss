@@ -1,0 +1,132 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile {
+  @include flex-shorthand(column, nowrap, $whitespace-9);
+
+  inline-size: 100%;
+
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
+
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius-extra-large;
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-9);
+
+    inline-size: 100%;
+  }
+
+  &__info-box {
+    @include flex-shorthand(column, nowrap, $whitespace-2, flex-start, null);
+
+    padding: $whitespace-4 0 0 0;
+  }
+
+  &__name {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__details-box {
+    @include flex-shorthand(column, nowrap, $whitespace-6);
+  }
+
+  &__detail {
+    @include flex-shorthand(row, nowrap, $whitespace-2, center, space-between);
+
+    padding-block-end: $whitespace-6;
+    border-block-end: 0.1rem solid $color-neutral-5;
+  }
+
+  &__detail-icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-neutral-10;
+  }
+
+  &__detail-value {
+    @include flex-shorthand(column, wrap, $whitespace-2);
+
+    font-size: $font-size-3;
+    color: $color-neutral-10;
+  }
+
+  &__top-container {
+    @include flex-shorthand(column, nowrap, $whitespace-3, center);
+  }
+
+  &__detail-label-box {
+    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+  }
+
+  &__detail-label {
+    font-size: $font-size-3;
+    color: $color-neutral-10;
+  }
+
+  &__phone-number {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__button-box {
+    @include grid-shorthand(null, auto auto);
+
+    gap: $whitespace-4;
+    justify-content: center;
+    justify-items: center;
+    inline-size: 100%;
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+
+    inline-size: 12rem;
+    padding: 1rem 2rem;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: $color-primary-10;
+    border-radius: $border-radius-medium;
+    transition: all 0.15s;
+
+    &--secondary {
+      color: $color-primary-10;
+      background-color: $color-neutral-1;
+      border: 0.1rem solid $color-neutral-5;
+    }
+
+    &--danger {
+      color: $color-neutral-1;
+      background-color: $color-accent-3;
+    }
+
+    &--fill {
+      inline-size: 100%;
+    }
+
+    &--spread {
+      grid-column: span 2;
+    }
+  }
+
+  &__top-box {
+    @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
+  }
+}

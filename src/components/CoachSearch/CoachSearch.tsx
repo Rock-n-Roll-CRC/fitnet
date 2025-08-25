@@ -1,7 +1,15 @@
 "use client";
 
-import { updateProfileIsSearching } from "@/services/actions";
+import type { Dispatch, SetStateAction } from "react";
+import type { Session } from "next-auth";
+
 import { useState } from "react";
+
+import LocationInput from "@/components/LocationInput/LocationInput";
+
+import { updateProfileIsSearching } from "@/services/actions";
+
+import styles from "./CoachSearch.module.scss";
 
 interface Coordinates {
   lat: number;
@@ -9,43 +17,38 @@ interface Coordinates {
 }
 
 const CoachSearch = ({
-  isSelectingPosition,
-  onSetLocation,
-  onSaveLocation,
+  session,
   userCoords,
+  setUserCoords,
   isSearching: isSearchingProp,
 }: {
-  isSelectingPosition: boolean;
-  onSetLocation: () => void;
-  onSaveLocation: () => void;
-  userCoords: Coordinates | undefined;
+  session: Session;
+  userCoords: Coordinates;
+  setUserCoords: Dispatch<
+    SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
   isSearching: boolean;
 }) => {
-  const [isSearching, setIsSearching] = useState(isSearchingProp);
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  async function handleToggleIsSearching() {
-    setIsDisabled(true);
-    await updateProfileIsSearching(!isSearching);
-    setIsSearching((isSearching) => !isSearching);
-    setTimeout(() => {
-      setIsDisabled(false);
-    }, 5000);
-  }
-
   return (
-    <div>
-      <button
-        onClick={handleToggleIsSearching}
-        disabled={isDisabled}
-      >{`${isSearching ? "Stop" : "Start"} Searching`}</button>
+    <div className={styles["coach-search"]}>
+      <div className={styles["coach-search__body"]}>
+        <LocationInput
+          session={session}
+          userCoords={userCoords}
+          setUserCoords={setUserCoords}
+        />
+      </div>
 
       <button
-        onClick={
-          isSelectingPosition && userCoords ? onSaveLocation : onSetLocation
-        }
+        onClick={() => {
+          void updateProfileIsSearching(!isSearchingProp);
+        }}
+        className={styles["coach-search__button"]}
       >
-        {isSelectingPosition && userCoords ? "Save location" : "Set location"}
+        {isSearchingProp ? "Stop Search" : "Start Search"}
       </button>
     </div>
   );

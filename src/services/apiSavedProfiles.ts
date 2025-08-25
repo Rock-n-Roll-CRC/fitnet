@@ -4,7 +4,7 @@ export const getSavedProfiles = async (userId: string) => {
   const { data, error } = await supabase
     .from("saved_profiles")
     .select(
-      "*, saverProfile: profiles!saver_user_id(*), savedProfile: profiles!saved_user_id(*)",
+      "*, saverProfile: profiles!saver_user_id(*, ratings: ratings!ratee_id(*)), savedProfile: profiles!saved_user_id(*, ratings: ratings!ratee_id(*))",
     )
     .or(`saver_user_id.eq.${userId},saved_user_id.eq.${userId}`);
 

@@ -14,6 +14,8 @@ import {
 import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 
 import styles from "./page.module.scss";
+import ProfilePreview from "@/components/ProfilePreview/ProfilePreview";
+import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
 
 export default async function Page({
   params,
@@ -32,8 +34,8 @@ export default async function Page({
 
   let savedProfiles:
     | (Tables<"saved_profiles"> & {
-        saverProfile: Tables<"profiles">;
-        savedProfile: Tables<"profiles">;
+        saverProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
+        savedProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
       })[]
     | undefined;
   let pendingRequests:
@@ -50,8 +52,8 @@ export default async function Page({
     | undefined;
   let blockedProfiles:
     | (Tables<"blocked_profiles"> & {
-        blockerProfile: Tables<"profiles">;
-        blockedProfile: Tables<"profiles">;
+        blockerProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
+        blockedProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
       })[]
     | undefined;
 
@@ -92,39 +94,110 @@ export default async function Page({
       />
 
       <div className={styles.main__content}>
-        {tab === "friends" &&
-          savedProfiles?.map(({ created_at, saverProfile, savedProfile }) => (
-            <ProfileItem
-              key={profile.user_id}
-              profile={
-                session.user.id === saverProfile.user_id
-                  ? savedProfile
-                  : saverProfile
-              }
-              date={created_at}
-              type="saved"
-            />
-          ))}
-
-        {tab === "requests"
-          ? profile.role === "coach"
-            ? pendingRequests?.map((request, index) => (
-                <RequestItem key={index} request={request} type="received" />
+        <ul className={styles["main__content-list"]}>
+          {tab === "friends" ? (
+            savedProfiles?.length > 0 ? (
+              savedProfiles?.map(({ saverProfile, savedProfile }) => (
+                <ProfilePreview
+                  key={savedProfile.user_id}
+                  profile={
+                    session.user.id === saverProfile.user_id
+                      ? savedProfile
+                      : saverProfile
+                  }
+                  type="saved"
+                />
               ))
-            : sentRequests?.map((request, index) => (
+            ) : (
+              <div className={styles["main__empty-state"]}>
+                <FeelingLonelySVG
+                  className={styles["main__empty-illustration"]}
+                />
+
+                <div className={styles["main__empty-content"]}>
+                  <p className={styles["main__empty-heading"]}>
+                    Looks like you have no friends!
+                  </p>
+                  <p className={styles["main__empty-description"]}>
+                    As you add friends, they will appear here.
+                  </p>
+                </div>
+              </div>
+            )
+          ) : null}
+
+          {tab === "requests" ? (
+            profile.role === "coach" ? (
+              pendingRequests?.length > 0 ? (
+                pendingRequests?.map((request, index) => (
+                  <RequestItem key={index} request={request} type="received" />
+                ))
+              ) : (
+                <div className={styles["main__empty-state"]}>
+                  <FeelingLonelySVG
+                    className={styles["main__empty-illustration"]}
+                  />
+
+                  <div className={styles["main__empty-content"]}>
+                    <p className={styles["main__empty-heading"]}>
+                      Looks like you have no pending requests!
+                    </p>
+                    <p className={styles["main__empty-description"]}>
+                      As you get sent connection requests, they will appear
+                      here.
+                    </p>
+                  </div>
+                </div>
+              )
+            ) : sentRequests?.length > 0 ? (
+              sentRequests?.map((request, index) => (
                 <RequestItem key={index} request={request} type="sent" />
               ))
-          : null}
+            ) : (
+              <div className={styles["main__empty-state"]}>
+                <FeelingLonelySVG
+                  className={styles["main__empty-illustration"]}
+                />
 
-        {tab === "blocked" &&
-          blockedProfiles?.map(({ created_at, blockedProfile }) => (
-            <ProfileItem
-              key={profile.user_id}
-              profile={blockedProfile}
-              date={created_at}
-              type="blocked"
-            />
-          ))}
+                <div className={styles["main__empty-content"]}>
+                  <p className={styles["main__empty-heading"]}>
+                    Looks like you have no sent requests!
+                  </p>
+                  <p className={styles["main__empty-description"]}>
+                    As you send connection requests, they will appear here.
+                  </p>
+                </div>
+              </div>
+            )
+          ) : null}
+
+          {tab === "blocked" ? (
+            blockedProfiles?.length > 0 ? (
+              blockedProfiles?.map(({ blockedProfile }) => (
+                <ProfilePreview
+                  key={blockedProfile.user_id}
+                  profile={blockedProfile}
+                  type="blocked"
+                />
+              ))
+            ) : (
+              <div className={styles["main__empty-state"]}>
+                <FeelingLonelySVG
+                  className={styles["main__empty-illustration"]}
+                />
+
+                <div className={styles["main__empty-content"]}>
+                  <p className={styles["main__empty-heading"]}>
+                    Looks like you have no blocked users!
+                  </p>
+                  <p className={styles["main__empty-description"]}>
+                    As you block users, they will appear here.
+                  </p>
+                </div>
+              </div>
+            )
+          ) : null}
+        </ul>
       </div>
     </main>
   );

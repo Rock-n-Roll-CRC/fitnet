@@ -1,24 +1,14 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
 
 import styles from "./SearchFilter.module.scss";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import OptionsSVG from "@/assets/icons/options.svg";
-import LocationOutlineSVG from "@/assets/icons/location-outline.svg";
 import MultiRangeSlider from "../MultiRangeSlider/MultiRangeSlider";
 import RangeSlider from "../RangeSlider/RangeSlider";
-import { getAddressByCoords, getSuggestions } from "@/services/apiLocation";
-import { updateProfileLocation } from "@/services/actions";
 import type { Session } from "next-auth";
-import LocateOutlineSVG from "@/assets/icons/locate-outline.svg";
+import LocationInput from "@/components/LocationInput/LocationInput";
 
 interface Inputs {
   gender: string;
@@ -76,17 +66,10 @@ const SearchFilter = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
-  const [locationSuggestions, setLocationSuggestions] = useState<
-    SelectedLocation[]
-  >([]);
-  const [locationName, setLocationName] = useState("");
   const [locationRange, setLocationRange] = useState<number>(1);
   const [gender, setGender] = useState<"man" | "woman">("man");
   const [minAge, setMinAge] = useState<number>(18);
   const [maxAge, setMaxAge] = useState<number>(100);
-
-  const controller = useRef<AbortController | null>(null);
 
   function onSubmit(event: SubmitEvent) {
     event.preventDefault();
@@ -109,26 +92,6 @@ const SearchFilter = ({
     setMinAge(18);
     setMaxAge(100);
   }
-
-  function locateUser() {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude: lat, longitude: lng } }) => {
-        setUserCoords({ lat, lng });
-        void (async () => {
-          await updateProfileLocation(session.user.id, { lat, lng });
-        })();
-      },
-    );
-  }
-
-  useEffect(() => {
-    async function fetchData() {
-      const name = await getAddressByCoords(userCoords);
-      setLocationName(name ?? "");
-    }
-
-    void fetchData();
-  }, [userCoords]);
 
   return (
     <div
@@ -153,84 +116,11 @@ const SearchFilter = ({
         </div>
 
         <div className={styles["search-filter__input-group-wrapper"]}>
-          <div className={styles["search-filter__input-group"]}>
-            <label
-              htmlFor="location"
-              className={styles["search-filter__input-label"]}
-            >
-              <LocationOutlineSVG
-                className={styles["search-filter__input-label-icon"]}
-              />
-              Location
-            </label>
-            <input
-              type="text"
-              name="location"
-              id="location"
-              autoComplete="off"
-              value={locationName}
-              onFocus={() => {
-                setIsSuggestionsOpen(true);
-              }}
-              onBlur={() => {
-                setIsSuggestionsOpen(false);
-              }}
-              onChange={(event) => {
-                async function fetchData() {
-                  setLocationName(event.target.value);
-
-                  const suggestions = await getSuggestions(
-                    event.target.value,
-                    controller,
-                  );
-                  setLocationSuggestions(suggestions);
-                }
-
-                void fetchData();
-              }}
-              className={styles["search-filter__input"]}
-            />
-            <button
-              type="button"
-              onClick={locateUser}
-              className={styles["search-filter__locate-button"]}
-            >
-              <LocateOutlineSVG
-                className={styles["search-filter__locate-icon"]}
-              />
-            </button>
-            <ul
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["search-filter__suggestions"] ?? ""} ${(isSuggestionsOpen && styles["search-filter__suggestions--open"]) || ""}`}
-            >
-              {locationSuggestions.map((suggestion, index) => (
-                <li key={index}>
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      async function fetchData() {
-                        setLocationName(suggestion.name);
-                        setUserCoords({
-                          lat: suggestion.lat,
-                          lng: suggestion.lon,
-                        });
-                        setIsSuggestionsOpen(false);
-                        await updateProfileLocation(session.user.id, {
-                          lat: suggestion.lat,
-                          lng: suggestion.lon,
-                        });
-                      }
-
-                      void fetchData();
-                    }}
-                    className={styles["search-filter__suggestion"]}
-                  >
-                    {suggestion.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <LocationInput
+            session={session}
+            userCoords={userCoords}
+            setUserCoords={setUserCoords}
+          />
 
           <span className={styles["search-filter__label"]}>
             Location range | {locationRange}km

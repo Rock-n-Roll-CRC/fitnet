@@ -12,4 +12,34 @@
   &__content {
     padding: 0 $whitespace-5;
   }
+
+  &__content-list {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+  }
+
+  &__empty-state {
+    @include flex-shorthand(column, nowrap, null, center, center);
+  }
+
+  &__empty-content {
+    @include flex-shorthand(column, nowrap, $whitespace-2, center, center);
+
+    text-align: center;
+  }
+
+  &__empty-illustration {
+    inline-size: 30rem;
+  }
+
+  &__empty-heading {
+    font-size: $font-size-5;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-9;
+  }
+
+  &__empty-description {
+    font-size: $font-size-4;
+    color: $color-neutral-7;
+  }
 }

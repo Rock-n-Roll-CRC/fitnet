@@ -1,0 +1,196 @@
+"use client";
+
+import type { Tables } from "@/types/database";
+
+import { useEffect, useState } from "react";
+
+import Image from "next/image";
+import Link from "next/link";
+
+import Rating from "@/components/Rating/Rating";
+
+import { getCityByCoords } from "@/services/apiLocation";
+
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
+
+import LocationOutlineSVG from "@/assets/icons/location-outline.svg";
+import CashOutlineSVG from "@/assets/icons/cash-outline.svg";
+import OpenOutlineSVG from "@/assets/icons/open-outline.svg";
+import MaleOutlineSVG from "@/assets/icons/male-outline.svg";
+import FemaleOutlineSVG from "@/assets/icons/female-outline.svg";
+import BarbellOutlineSVG from "@/assets/icons/barbell-outline.svg";
+import SparklesOutlineSVG from "@/assets/icons/sparkles-outline.svg";
+
+import styles from "./ProfilePreview.module.scss";
+import { calculateAge } from "@/utilities/helpers";
+import { deleteSavedProfile, unblockProfile } from "@/services/actions";
+
+export default function ProfilePreview({
+  profile,
+  type,
+}: {
+  profile: Tables<"profiles"> & {
+    ratings: Tables<"ratings">[];
+  };
+  type?: "saved" | "blocked";
+}) {
+  const [city, setCity] = useState<string>();
+
+  const onlineUsers = useOnlineUsers();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fetchedCity = await getCityByCoords(
+          profile.location as { lat: number; lng: number },
+        );
+
+        setCity(fetchedCity);
+      } catch (error) {
+        throw new Error(
+          `Failed to fetch the city: ${error instanceof Error ? error.message : "unknown error"}`,
+        );
+      }
+    }
+
+    void fetchData();
+  }, [profile.location]);
+
+  return (
+    <div
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      className={`${styles["profile-preview"] ?? ""} ${(onlineUsers.includes(profile.user_id) && styles["profile-preview--online"]) || ""}`}
+    >
+      <div className={styles["profile-preview__main-content"]}>
+        <div className={styles["profile-preview__body"]}>
+          <div className={styles["profile-preview__info-box"]}>
+            <p className={styles["profile-preview__name"]}>
+              {profile.full_name}
+            </p>
+            <div className={styles["profile-preview__rating-box"]}>
+              <Rating ratings={profile.ratings} />
+            </div>
+            <div className={styles["profile-preview__details-box"]}>
+              <div className={styles["profile-preview__detail"]}>
+                <LocationOutlineSVG
+                  className={styles["profile-preview__detail-icon"]}
+                />
+                <p className={styles["profile-preview__detail-value"]}>
+                  {city}
+                </p>
+              </div>
+              <div className={styles["profile-preview__detail"]}>
+                {profile.role === "coach" ? (
+                  <>
+                    <CashOutlineSVG
+                      className={styles["profile-preview__detail-icon"]}
+                    />
+                    <p className={styles["profile-preview__detail-value"]}>
+                      {profile.hourly_rate} {profile.hourly_rate_currency}/h
+                    </p>
+                  </>
+                ) : (
+                  <div className={styles["profile-preview__detail"]}>
+                    <BarbellOutlineSVG
+                      className={styles["profile-preview__detail-icon"]}
+                    />
+                    <p className={styles["profile-preview__detail-value"]}>
+                      {profile.fitness_goal?.replace(/\b\w/g, (c) =>
+                        c.toUpperCase(),
+                      ) ?? "Not specified"}
+                    </p>
+                  </div>
+                )}
+              </div>
+              {profile.role === "client" && (
+                <div className={styles["profile-preview__detail"]}>
+                  <SparklesOutlineSVG
+                    className={styles["profile-preview__detail-icon"]}
+                  />
+                  <p className={styles["profile-preview__detail-value"]}>
+                    {`${calculateAge(new Date(profile.birthdate))} years old`}
+                  </p>
+                </div>
+              )}
+              {profile.role === "client" &&
+                (profile.gender === "male" ? (
+                  <div className={styles["profile-preview__detail"]}>
+                    <MaleOutlineSVG
+                      className={styles["profile-preview__detail-icon"]}
+                    />
+                    <p className={styles["profile-preview__detail-value"]}>
+                      Man
+                    </p>
+                  </div>
+                ) : (
+                  <div className={styles["profile-preview__detail"]}>
+                    <FemaleOutlineSVG
+                      className={styles["profile-preview__detail-icon"]}
+                    />
+                    <p className={styles["profile-preview__detail-value"]}>
+                      Woman
+                    </p>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          <div className={styles["profile-preview__phone-box"]}>
+            <p className={styles["profile-preview__phone"]}>
+              {profile.phone_number}
+            </p>
+          </div>
+        </div>
+
+        <div className={styles["profile-preview__image-wrapper"]}>
+          <Image
+            src={profile.avatar_url}
+            alt={profile.full_name}
+            width={250}
+            height={250}
+            className={styles["profile-preview__image"]}
+            quality={100}
+          />
+          <Link
+            href={`/profile/${profile.user_id}`}
+            className={styles["profile-preview__image-link"]}
+          >
+            <OpenOutlineSVG className={styles["profile-preview__image-icon"]} />
+          </Link>
+        </div>
+      </div>
+
+      {type === "saved" && (
+        <div className={styles["profile-preview__button-container"]}>
+          <Link
+            href={`/messages/${profile.user_id}`}
+            className={styles["profile-preview__button"]}
+          >
+            Send a message
+          </Link>
+          <button
+            onClick={() => {
+              void deleteSavedProfile(profile.user_id);
+            }}
+            className={styles["profile-preview__button"]}
+          >
+            Remove as a friend
+          </button>
+        </div>
+      )}
+
+      {type === "blocked" && (
+        <div className={styles["profile-preview__button-container"]}>
+          <button
+            onClick={() => {
+              void unblockProfile(profile.user_id);
+            }}
+            className={styles["profile-preview__button"]}
+          >
+            Unblock
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,153 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile-preview {
+  @include flex-shorthand(column, nowrap, $whitespace-5, null, null);
+
+  $this: &;
+
+  overflow: hidden;
+  background-color: $color-neutral-1;
+  border-radius: $border-radius-extra-large;
+  box-shadow: 0 0 0.5rem $color-neutral-5;
+
+  &--online {
+    #{$this}__coach-name {
+      position: relative;
+
+      /* stylelint-disable-next-line max-nesting-depth */
+      &::after {
+        @include absolute-shorthand(0.2rem, -1.2rem, auto, auto);
+        @include size-shorthand(0.8rem, 0.8rem);
+
+        content: "";
+        background-color: $color-accent-2;
+        border-radius: $border-radius-circle;
+        box-shadow: 0 0 0.5rem $color-accent-2;
+      }
+    }
+  }
+
+  &__main-content {
+    @include flex-shorthand(
+      row,
+      nowrap,
+      $whitespace-3,
+      flex-start,
+      space-between
+    );
+
+    padding: 0 0 0 $whitespace-4;
+  }
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-5, flex-start, null);
+  }
+
+  &__info-box {
+    @include flex-shorthand(column, nowrap, $whitespace-2, flex-start, null);
+
+    padding: $whitespace-4 0 0 0;
+  }
+
+  &__name {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    border-radius: $border-radius-large;
+  }
+
+  &__details-box {
+    // @include flex-shorthand(row, nowrap, $whitespace-5, center, null);
+    @include grid-shorthand(null, auto auto, $whitespace-3, $whitespace-5);
+  }
+
+  &__detail {
+    @include flex-shorthand(row, nowrap, $whitespace-2, center, null);
+  }
+
+  &__detail-icon {
+    @include size-shorthand(2rem, 2rem);
+
+    color: $color-neutral-10;
+  }
+
+  &__detail-value {
+    font-size: $font-size-2;
+    color: $color-neutral-10;
+  }
+
+  &__phone-box {
+    padding: $whitespace-2 $whitespace-4;
+    margin-inline-start: -$whitespace-5;
+    font-size: $font-size-3;
+    color: $color-neutral-1;
+    background-color: $color-neutral-10;
+    border-radius: $border-radius-medium;
+  }
+
+  &__image-wrapper {
+    position: relative;
+  }
+
+  &__image-link {
+    @include absolute-shorthand(auto, 0.5rem, 0.5rem, auto);
+    @include size-shorthand(3.5rem, 3.5rem);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    background-color: $color-primary-10;
+    border-radius: $border-radius-medium;
+    border-end-end-radius: $border-radius-circle;
+  }
+
+  &__image-icon {
+    @include size-shorthand(2rem, 2rem);
+
+    color: $color-neutral-1;
+  }
+
+  &__empty-state {
+    @include flex-shorthand(column, nowrap, $whitespace-4, center, center);
+
+    text-align: center;
+  }
+
+  &__empty-message {
+    font-size: $font-size-5;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-8;
+  }
+
+  &__empty-illustration {
+    inline-size: 20rem;
+  }
+
+  &__button-container {
+    @include flex-shorthand(row, nowrap, null, null, null);
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    flex: 1;
+    padding: $whitespace-3 $whitespace-5;
+    color: $color-neutral-1;
+    text-align: center;
+    text-decoration: none;
+    background-color: $color-primary-10;
+
+    &:first-child {
+      border-inline-end: 0.1rem solid $color-neutral-5;
+    }
+  }
+}

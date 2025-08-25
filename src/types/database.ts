@@ -341,7 +341,10 @@ export type Database = {
         Row: {
           avatar_url: string;
           birthdate: string | null;
+          city: string;
           created_at: string;
+          expertise: Database["public"]["Enums"]["fitness_goal_type"][] | null;
+          fitness_goal: Database["public"]["Enums"]["fitness_goal_type"] | null;
           full_name: string;
           gender: string;
           hourly_rate: number | null;
@@ -356,7 +359,12 @@ export type Database = {
         Insert: {
           avatar_url?: string;
           birthdate?: string | null;
+          city: string;
           created_at?: string;
+          expertise?: Database["public"]["Enums"]["fitness_goal_type"][] | null;
+          fitness_goal?:
+            | Database["public"]["Enums"]["fitness_goal_type"]
+            | null;
           full_name: string;
           gender: string;
           hourly_rate?: number | null;
@@ -371,7 +379,12 @@ export type Database = {
         Update: {
           avatar_url?: string;
           birthdate?: string | null;
+          city?: string;
           created_at?: string;
+          expertise?: Database["public"]["Enums"]["fitness_goal_type"][] | null;
+          fitness_goal?:
+            | Database["public"]["Enums"]["fitness_goal_type"]
+            | null;
           full_name?: string;
           gender?: string;
           hourly_rate?: number | null;
@@ -645,6 +658,7 @@ export type Database = {
       };
     };
     Enums: {
+      fitness_goal_type: "muscle growth" | "weight loss" | "yoga";
       notification_type:
         | "NEW_MESSAGE"
         | "REQUEST_RECEIVED"
@@ -785,6 +799,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      fitness_goal_type: ["muscle growth", "weight loss", "yoga"],
       notification_type: [
         "NEW_MESSAGE",
         "REQUEST_RECEIVED",

@@ -9,6 +9,7 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
 import SearchFilter from "@/components/SearchFilter/SearchFilter";
 import { getProfileByUserId } from "@/services/apiProfiles";
+import CoachSearch from "@/components/CoachSearch/CoachSearch";
 
 interface Coordinates {
   lat: number;
@@ -32,8 +33,6 @@ const MapWrapper = ({
     blockedProfile: Tables<"profiles">;
   })[];
   isSelectingPosition?: boolean;
-  userCoords?: Coordinates;
-  setUserCoords?: Dispatch<SetStateAction<Coordinates | undefined>>;
   session: Session;
   userProfile: Tables<"profiles">;
 }) => {
@@ -54,14 +53,23 @@ const MapWrapper = ({
 
   return (
     <div className={styles["map-wrapper"]}>
-      <SearchFilter
-        session={session}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        userCoords={userCoords}
-        setUserCoords={setUserCoords}
-        handleClick={handleClick}
-      />
+      {userProfile.role === "client" ? (
+        <SearchFilter
+          session={session}
+          userCoords={userCoords}
+          isOpen={isOpen}
+          setUserCoords={setUserCoords}
+          setIsOpen={setIsOpen}
+          handleClick={handleClick}
+        />
+      ) : (
+        <CoachSearch
+          session={session}
+          userCoords={userCoords}
+          setUserCoords={setUserCoords}
+          isSearching={userProfile.isSearching}
+        />
+      )}
       <Map
         coaches={coaches}
         blockedProfiles={blockedProfiles}

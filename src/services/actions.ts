@@ -171,6 +171,8 @@ export const updateProfileIsSearching = async (value: boolean) => {
     });
   }
 
+  revalidatePath("/search");
+
   return data;
 };
 
@@ -225,6 +227,8 @@ export const sendConnectionRequest = async (userId: string) => {
       },
     );
   }
+
+  revalidatePath("/profile");
 
   return data;
 };
@@ -512,4 +516,24 @@ export const clearMessages = async () => {
     });
 
   revalidatePath("/messages");
+};
+
+export const updateProfile = async (newProfile: Tables<"profiles">) => {
+  const session = await auth();
+
+  if (!session) return;
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .update(newProfile)
+    .eq("user_id", session.user.id);
+
+  if (error)
+    throw new Error(`Failed to update profile: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/profile");
+
+  return data;
 };

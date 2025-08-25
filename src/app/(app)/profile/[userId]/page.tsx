@@ -1,13 +1,13 @@
-import Image from "next/image";
+import ProfileHeader from "@/components/ProfileHeader/ProfileHeader";
+import Profile from "@/components/Profile/Profile";
 
 import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
+import { isBlocked } from "@/services/apiBlockedProfiles";
+import { isConnected } from "@/services/apiSavedProfiles";
+import { isRequestSent } from "@/services/apiConnectionRequests";
 
 import styles from "./page.module.scss";
-import BlockButton from "@/components/BlockButton/BlockButton";
-import { isBlocked } from "@/services/apiBlockedProfiles";
-import ConnectButton from "@/components/ConnectButton/ConnectButton";
-import { isConnected } from "@/services/apiSavedProfiles";
 
 const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const session = await auth();
@@ -23,44 +23,32 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
     session.user.id,
     profile.user_id,
   );
+  const isRequestSentVar = await isRequestSent(
+    session.user.id,
+    profile.user_id,
+  );
 
   return (
-    <main className={styles.main}>
-      <div className={styles.profile}>
-        <div className={styles["profile__top-container"]}>
-          <div className={styles["profile__avatar-wrapper"]}>
-            <Image
-              src={profile.avatar_url}
-              alt={profile.full_name}
-              fill
-              className={styles.profile__avatar}
-            />
-          </div>
-          <p className={styles["profile__full-name"]}>{profile.full_name}</p>
-        </div>
+    <>
+      <ProfileHeader session={session} profile={profile} />
 
-        <div className={styles["profile__bottom-container"]}>
-          <p className={styles.profile__gender}>
-            <span>Gender:</span> {profile.gender}
-          </p>
-          <p className={styles.profile__age}>
-            <span>Age:</span> {profile.age}
-          </p>
-          <p className={styles["profile__phone-number"]}>
-            {profile.phone_number}
-          </p>
-        </div>
-      </div>
-
-      {session.user.id !== profile.user_id && (
-        <BlockButton initialIsBlocked={isProfileBlocked} profile={profile} />
-      )}
-
-      {profile.role === "coach" &&
-        session.user.id !== profile.user_id &&
-        !isProfileConnected && <ConnectButton profile={profile} />}
-    </main>
+      <main className={styles.main}>
+        <Profile
+          session={session}
+          profile={profile}
+          isProfileConnected={isProfileConnected}
+          isProfileBlocked={isProfileBlocked}
+          isRequestSent={isRequestSentVar}
+        />
+      </main>
+    </>
   );
 };
 
 export default Page;
+
+// online marker
+// reviews
+// rate functionality
+// who can rate?
+// tabs?

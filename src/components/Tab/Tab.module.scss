@@ -25,10 +25,10 @@
   }
 
   &--selected {
-    color: $color-accent-1;
+    color: $color-primary-10;
 
     #{$this}__icon-wrapper {
-      background-color: $color-accent-1;
+      background-color: $color-primary-10;
     }
   }
 }

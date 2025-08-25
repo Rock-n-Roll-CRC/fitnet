@@ -114,6 +114,9 @@ const Map = ({
   const filteredCoaches = coaches?.filter((coach) => {
     if (!coach.isSearching) return false;
 
+    if (blockedProfiles?.map((el) => el.blocked_id).includes(coach.user_id))
+      return false;
+
     const coachPosition = coach.location as unknown as Coordinates;
     const coachCoords = {
       lat: coachPosition.lat,
