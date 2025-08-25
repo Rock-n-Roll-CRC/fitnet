@@ -5,6 +5,7 @@
   $this: &;
 
   position: relative;
+  inline-size: 17rem;
 
   &--open {
     #{$this}__body {
@@ -12,11 +13,19 @@
     }
   }
 
+  &--type-hourly-rate {
+    inline-size: max-content;
+
+    #{$this}__button {
+      border: 0;
+    }
+  }
+
   &__button {
     @include remove-button-styles;
     @include flex-shorthand(row, nowrap, $whitespace-3, center, space-between);
 
-    inline-size: 17rem;
+    inline-size: 100%;
     padding: $whitespace-5;
     font-size: $font-size-3;
     border: 0.2rem solid $color-primary-10;

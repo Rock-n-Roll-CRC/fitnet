@@ -16,6 +16,7 @@ import { calculateAge } from "@/utilities/helpers";
 
 import styles from "./ProfileDetails.module.scss";
 import Select from "../Select/Select";
+import InputHourlyRate from "../InputHourlyRate/InputHourlyRate";
 
 export default function ProfileDetails({
   profile,
@@ -41,8 +42,13 @@ export default function ProfileDetails({
         </div>
         {isEditing ? (
           <InputCity
-            editedProfile={editedProfile}
-            setEditedProfile={setEditedProfile}
+            value={editedProfile.city}
+            onChange={(val: string) => {
+              setEditedProfile((editedProfile) => ({
+                ...editedProfile,
+                city: val,
+              }));
+            }}
           />
         ) : (
           <p className={styles["profile-details__detail-value"]}>
@@ -63,7 +69,17 @@ export default function ProfileDetails({
               </p>
             </div>
             {isEditing ? (
-              <p>test</p>
+              <InputHourlyRate
+                rate={editedProfile.hourly_rate}
+                currency={editedProfile.hourly_rate_currency}
+                onChange={(rate: number, currency: string) => {
+                  setEditedProfile((editedProfile) => ({
+                    ...editedProfile,
+                    hourly_rate: rate,
+                    hourly_rate_currency: currency,
+                  }));
+                }}
+              />
             ) : (
               <p className={styles["profile-details__detail-value"]}>
                 {profile.hourly_rate} {profile.hourly_rate_currency}/h
@@ -83,11 +99,11 @@ export default function ProfileDetails({
             {isEditing ? (
               <MultiSelect
                 options={["muscle growth", "weight loss", "yoga"]}
-                defaultValue={profile.expertise}
-                onSelect={(val) => {
+                value={editedProfile.expertise}
+                onChange={(val: string[]) => {
                   setEditedProfile((editedProfile) => ({
                     ...editedProfile,
-                    expertise: val.length > 0 ? val : profile.expertise,
+                    expertise: val.length > 0 ? val : editedProfile.expertise,
                   }));
                 }}
               />
@@ -116,8 +132,8 @@ export default function ProfileDetails({
             {isEditing ? (
               <Select
                 options={["muscle growth", "weight loss", "yoga"]}
-                defaultValue={profile.fitness_goal}
-                onSelect={(fitnessGoal) => {
+                value={editedProfile.fitness_goal}
+                onChange={(fitnessGoal) => {
                   setEditedProfile({
                     ...editedProfile,
                     fitness_goal: fitnessGoal,
@@ -151,8 +167,8 @@ export default function ProfileDetails({
         {isEditing ? (
           <Select
             options={["male", "female"]}
-            defaultValue={profile.gender}
-            onSelect={(gender) => {
+            value={editedProfile.gender}
+            onChange={(gender) => {
               setEditedProfile({
                 ...editedProfile,
                 gender,
@@ -177,11 +193,11 @@ export default function ProfileDetails({
         </div>
         {isEditing ? (
           <InputDate
-            defaultValue={profile.birthdate}
-            onChange={(date: Date) => {
+            value={editedProfile.birthdate}
+            onChange={(date: string) => {
               setEditedProfile({
                 ...editedProfile,
-                birthdate: date.toDateString(),
+                birthdate: date,
               });
             }}
           />

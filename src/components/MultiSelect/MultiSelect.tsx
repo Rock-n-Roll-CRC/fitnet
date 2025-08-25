@@ -7,14 +7,13 @@ import styles from "./MultiSelect.module.scss";
 
 export default function MultiSelect({
   options,
-  defaultValue,
-  onSelect,
+  value,
+  onChange,
 }: {
   options: string[];
-  defaultValue?: string[] | null;
-  onSelect: (value: string[]) => void;
+  value: string[];
+  onChange: (value: string[]) => void;
 }) {
-  const [currValue, setCurValue] = useState<string[]>(defaultValue ?? []);
   const [isOpen, setIsOpen] = useState(false);
 
   const Icon = isOpen ? ChevronUpOutlineSVG : ChevronDownOutlineSVG;
@@ -24,12 +23,11 @@ export default function MultiSelect({
   }
 
   function handleSelectOption(option: string) {
-    setCurValue((currValue) =>
-      currValue.includes(option)
-        ? currValue.filter((el) => el !== option)
-        : [...currValue, option],
+    onChange(
+      value.includes(option)
+        ? value.filter((el) => el !== option)
+        : [...value, option],
     );
-    onSelect(currValue);
   }
 
   return (
@@ -42,7 +40,7 @@ export default function MultiSelect({
         className={styles.multiselect__button}
       >
         <p className={styles.multiselect__value}>
-          {currValue.map((val) => (
+          {value.map((val) => (
             <span key={val}>
               {val.replace(/\b\w/g, (c) => c.toUpperCase())}
             </span>
@@ -59,8 +57,8 @@ export default function MultiSelect({
               type="checkbox"
               name={option}
               id={option}
-              checked={currValue.includes(option)}
-              onChange={(event) => {
+              checked={value.includes(option)}
+              onChange={() => {
                 handleSelectOption(option);
               }}
             />

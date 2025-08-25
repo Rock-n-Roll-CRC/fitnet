@@ -9,14 +9,15 @@ import styles from "./Select.module.scss";
 
 export default function Select({
   options,
-  defaultValue,
-  onSelect,
+  value,
+  onChange,
+  type,
 }: {
   options: string[];
-  defaultValue?: string | null;
-  onSelect: (option: string) => void;
+  value: string;
+  onChange: (option: string) => void;
+  type?: "hourly-rate";
 }) {
-  const [currValue, setCurValue] = useState(defaultValue ?? "");
   const [isOpen, setIsOpen] = useState(false);
 
   const Icon = isOpen ? ChevronUpOutlineSVG : ChevronDownOutlineSVG;
@@ -26,18 +27,17 @@ export default function Select({
   }
 
   function handleSelectOption(option: string) {
-    setCurValue(option);
     setIsOpen(false);
-    onSelect(option);
+    onChange(option);
   }
 
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles.select ?? ""} ${(isOpen && styles["select--open"]) || ""}`}
+      className={`${styles.select ?? ""} ${(isOpen && styles["select--open"]) || ""} ${(type && styles["select--type-hourly-rate"]) || ""}`}
     >
       <button onClick={handleToggleIsOpen} className={styles.select__button}>
-        {currValue.replace(/\b\w/g, (c) => c.toUpperCase())}
+        {value.replace(/\b\w/g, (c) => c.toUpperCase())}
 
         <Icon className={styles.select__icon} />
       </button>

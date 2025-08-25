@@ -1,25 +1,20 @@
-import { useState } from "react";
-
 import styles from "./InputDate.module.scss";
 
 export default function InputDate({
-  defaultValue,
+  value,
   onChange,
 }: {
-  defaultValue: string;
-  onChange: (date: Date) => void;
+  value: string;
+  onChange: (date: string) => void;
 }) {
-  const [currValue, setCurrValue] = useState(defaultValue);
-
   return (
     <input
       type="date"
       name="date"
       id="date"
-      value={currValue}
+      value={value}
       onChange={(event) => {
-        setCurrValue(event.target.value);
-        onChange(new Date(event.target.value));
+        onChange(event.target.value);
       }}
       className={styles["input-date"]}
     />

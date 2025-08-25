@@ -1,10 +1,6 @@
-import type { Tables } from "@/types/database";
-
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useRef, useState } from "react";
 
 import { getCitySuggestions } from "@/services/apiLocation";
-
-import LocationOutlineSVG from "@/assets/icons/location-outline.svg";
 
 import styles from "./InputCity.module.scss";
 
@@ -14,13 +10,12 @@ interface SelectedCity {
 }
 
 export default function InputCity({
-  editedProfile,
-  setEditedProfile,
+  value,
+  onChange,
 }: {
-  editedProfile: Tables<"profiles">;
-  setEditedProfile: Dispatch<SetStateAction<Tables<"profiles">>>;
+  value: string;
+  onChange: (val: string) => void;
 }) {
-  const [cityName, setCityName] = useState(editedProfile.city);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const [citySuggestions, setCitySuggestions] = useState<SelectedCity[]>([]);
 
@@ -33,7 +28,7 @@ export default function InputCity({
         name="city"
         id="city"
         autoComplete="off"
-        value={cityName}
+        value={value}
         onFocus={() => {
           setIsSuggestionsOpen(true);
         }}
@@ -42,7 +37,7 @@ export default function InputCity({
         }}
         onChange={(event) => {
           async function fetchData() {
-            setCityName(event.target.value);
+            onChange(event.target.value);
 
             const suggestions = await getCitySuggestions(
               event.target.value,
@@ -64,12 +59,8 @@ export default function InputCity({
           <li key={index}>
             <button
               type="button"
-              onClick={(event) => {
-                setCityName(suggestion.name);
-                setEditedProfile({
-                  ...editedProfile,
-                  city: suggestion.name,
-                });
+              onClick={() => {
+                onChange(suggestion.name);
                 setIsSuggestionsOpen(false);
               }}
               className={styles["city-input__suggestion"]}
