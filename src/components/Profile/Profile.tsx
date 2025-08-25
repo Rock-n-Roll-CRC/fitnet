@@ -16,6 +16,7 @@ export default function Profile({
   isProfileConnected,
   isProfileBlocked,
   isRequestSent,
+  tab,
 }: {
   session: Session;
   profile: Tables<"profiles"> & {
@@ -24,6 +25,7 @@ export default function Profile({
   isProfileConnected: boolean;
   isProfileBlocked: boolean;
   isRequestSent: boolean;
+  tab: "about" | "reviews";
 }) {
   const { ratings, ...initialEditedProfile } = profile;
 
@@ -49,6 +51,7 @@ export default function Profile({
         isEditing={isEditing}
         editedProfile={editedProfile}
         setEditedProfile={setEditedProfile}
+        tab={tab}
       />
     </div>
   );

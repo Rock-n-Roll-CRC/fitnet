@@ -45,7 +45,7 @@ export default function ProfileOverview({
             {profile.full_name} ({profile.role})
           </p>
 
-          <Rating ratings={profile.ratings} />
+          {profile.role === "coach" && <Rating ratings={profile.ratings} />}
 
           <p className={styles["profile-overview__phone-number"]}>
             {profile.phone_number}

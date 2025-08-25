@@ -1,28 +1,21 @@
+"use client";
+
 import type { Dispatch, SetStateAction } from "react";
 import type { Tables } from "@/types/database";
 
-import InputCity from "@/components/InputCity/InputCity";
-import InputDate from "@/components/InputDate/InputDate";
-import MultiSelect from "@/components/MultiSelect/MultiSelect";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import LocationOutlineSVG from "@/assets/icons/location-outline.svg";
-import CashOutlineSVG from "@/assets/icons/cash-outline.svg";
-import MaleOutlineSVG from "@/assets/icons/male-outline.svg";
-import FemaleOutlineSVG from "@/assets/icons/female-outline.svg";
-import BarbellOutlineSVG from "@/assets/icons/barbell-outline.svg";
-import SparklesOutlineSVG from "@/assets/icons/sparkles-outline.svg";
-
-import { calculateAge } from "@/utilities/helpers";
+import ProfileAbout from "@/components/ProfileAbout/ProfileAbout";
+import ProfileReviews from "@/components/ProfileReviews/ProfileReviews";
 
 import styles from "./ProfileDetails.module.scss";
-import Select from "../Select/Select";
-import InputHourlyRate from "../InputHourlyRate/InputHourlyRate";
 
 export default function ProfileDetails({
   profile,
   isEditing,
   editedProfile,
   setEditedProfile,
+  tab,
 }: {
   profile: Tables<"profiles"> & {
     ratings: Tables<"ratings">[];
@@ -30,183 +23,64 @@ export default function ProfileDetails({
   isEditing: boolean;
   editedProfile: Tables<"profiles">;
   setEditedProfile: Dispatch<SetStateAction<Tables<"profiles">>>;
+  tab: "about" | "reviews";
 }) {
+  const readonlySearchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  function handleSelectTab(tab: string) {
+    const searchParams = new URLSearchParams(readonlySearchParams);
+
+    searchParams.set("tab", tab);
+
+    router.replace(`${pathname}/?${searchParams.toString()}`);
+  }
+
   return (
     <div className={styles["profile-details"]}>
-      <div className={styles["profile-details__detail"]}>
-        <div className={styles["profile-details__detail-label-box"]}>
-          <LocationOutlineSVG
-            className={styles["profile-details__detail-icon"]}
-          />
-          <p className={styles["profile-details__detail-label"]}>City</p>
-        </div>
-        {isEditing ? (
-          <InputCity
-            value={editedProfile.city}
-            onChange={(val: string) => {
-              setEditedProfile((editedProfile) => ({
-                ...editedProfile,
-                city: val,
-              }));
-            }}
-          />
-        ) : (
-          <p className={styles["profile-details__detail-value"]}>
-            {profile.city}
-          </p>
-        )}
-      </div>
-
       {profile.role === "coach" ? (
         <>
-          <div className={styles["profile-details__detail"]}>
-            <div className={styles["profile-details__detail-label-box"]}>
-              <CashOutlineSVG
-                className={styles["profile-details__detail-icon"]}
-              />
-              <p className={styles["profile-details__detail-label"]}>
-                Hourly Rate
-              </p>
-            </div>
-            {isEditing ? (
-              <InputHourlyRate
-                rate={editedProfile.hourly_rate}
-                currency={editedProfile.hourly_rate_currency}
-                onChange={(rate: number, currency: string) => {
-                  setEditedProfile((editedProfile) => ({
-                    ...editedProfile,
-                    hourly_rate: rate,
-                    hourly_rate_currency: currency,
-                  }));
-                }}
-              />
-            ) : (
-              <p className={styles["profile-details__detail-value"]}>
-                {profile.hourly_rate} {profile.hourly_rate_currency}/h
-              </p>
-            )}
+          <div className={styles["profile-details__tabs"]}>
+            <button
+              onClick={() => {
+                handleSelectTab("about");
+              }}
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              className={`${styles["profile-details__tab"] ?? ""} ${(tab === "about" && styles["profile-details__tab--open"]) || ""}`}
+            >
+              About
+            </button>
+            <button
+              onClick={() => {
+                handleSelectTab("reviews");
+              }}
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              className={`${styles["profile-details__tab"] ?? ""} ${(tab === "reviews" && styles["profile-details__tab--open"]) || ""}`}
+            >
+              Reviews
+            </button>
           </div>
 
-          <div className={styles["profile-details__detail"]}>
-            <div className={styles["profile-details__detail-label-box"]}>
-              <BarbellOutlineSVG
-                className={styles["profile-details__detail-icon"]}
-              />
-              <p className={styles["profile-details__detail-label"]}>
-                Expertise
-              </p>
-            </div>
-            {isEditing ? (
-              <MultiSelect
-                options={["muscle growth", "weight loss", "yoga"]}
-                value={editedProfile.expertise}
-                onChange={(val: string[]) => {
-                  setEditedProfile((editedProfile) => ({
-                    ...editedProfile,
-                    expertise: val.length > 0 ? val : editedProfile.expertise,
-                  }));
-                }}
-              />
-            ) : (
-              <p className={styles["profile-details__detail-value"]}>
-                {profile.expertise?.map((el, i) => (
-                  <span key={i}>
-                    {el.replace(/\b\w/g, (c) => c.toUpperCase())}
-                  </span>
-                ))}
-              </p>
-            )}
-          </div>
-        </>
-      ) : (
-        <>
-          <div className={styles["profile-details__detail"]}>
-            <div className={styles["profile-details__detail-label-box"]}>
-              <BarbellOutlineSVG
-                className={styles["profile-details__detail-icon"]}
-              />
-              <p className={styles["profile-details__detail-label"]}>
-                Fitness Goal
-              </p>
-            </div>
-            {isEditing ? (
-              <Select
-                options={["muscle growth", "weight loss", "yoga"]}
-                value={editedProfile.fitness_goal}
-                onChange={(fitnessGoal) => {
-                  setEditedProfile({
-                    ...editedProfile,
-                    fitness_goal: fitnessGoal,
-                  });
-                }}
-              />
-            ) : (
-              <p className={styles["profile-details__detail-value"]}>
-                {profile.fitness_goal?.replace(/\b\w/g, (c) =>
-                  c.toUpperCase(),
-                ) ?? "Not specified"}
-              </p>
-            )}
-          </div>
-        </>
-      )}
-
-      <div className={styles["profile-details__detail"]}>
-        <div className={styles["profile-details__detail-label-box"]}>
-          {profile.gender === "male" ? (
-            <MaleOutlineSVG
-              className={styles["profile-details__detail-icon"]}
+          {tab === "about" ? (
+            <ProfileAbout
+              profile={profile}
+              isEditing={isEditing}
+              editedProfile={editedProfile}
+              setEditedProfile={setEditedProfile}
             />
           ) : (
-            <FemaleOutlineSVG
-              className={styles["profile-details__detail-icon"]}
-            />
+            <ProfileReviews />
           )}
-          <p className={styles["profile-details__detail-label"]}>Gender</p>
-        </div>
-        {isEditing ? (
-          <Select
-            options={["male", "female"]}
-            value={editedProfile.gender}
-            onChange={(gender) => {
-              setEditedProfile({
-                ...editedProfile,
-                gender,
-              });
-            }}
-          />
-        ) : (
-          <p className={styles["profile-details__detail-value"]}>
-            {profile.gender === "male" ? "Man" : "Woman"}
-          </p>
-        )}
-      </div>
-
-      <div className={styles["profile-details__detail"]}>
-        <div className={styles["profile-details__detail-label-box"]}>
-          <SparklesOutlineSVG
-            className={styles["profile-details__detail-icon"]}
-          />
-          <p className={styles["profile-details__detail-label"]}>
-            {isEditing ? "Birthdate" : "Age"}
-          </p>
-        </div>
-        {isEditing ? (
-          <InputDate
-            value={editedProfile.birthdate}
-            onChange={(date: string) => {
-              setEditedProfile({
-                ...editedProfile,
-                birthdate: date,
-              });
-            }}
-          />
-        ) : (
-          <p className={styles["profile-details__detail-value"]}>
-            {`${calculateAge(new Date(profile.birthdate))} years old`}
-          </p>
-        )}
-      </div>
+        </>
+      ) : (
+        <ProfileAbout
+          profile={profile}
+          isEditing={isEditing}
+          editedProfile={editedProfile}
+          setEditedProfile={setEditedProfile}
+        />
+      )}
     </div>
   );
 }

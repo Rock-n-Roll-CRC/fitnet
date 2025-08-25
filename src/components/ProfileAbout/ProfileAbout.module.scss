@@ -1,0 +1,35 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile-about {
+  @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  &__detail {
+    @include flex-shorthand(row, nowrap, $whitespace-2, center, space-between);
+
+    padding-block-end: $whitespace-6;
+    border-block-end: 0.1rem solid $color-neutral-5;
+  }
+
+  &__detail-icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-neutral-10;
+  }
+
+  &__detail-value {
+    @include flex-shorthand(column, wrap, $whitespace-2);
+
+    font-size: $font-size-3;
+    color: $color-neutral-10;
+  }
+
+  &__detail-label-box {
+    @include flex-shorthand(row, nowrap, $whitespace-4, center);
+  }
+
+  &__detail-label {
+    font-size: $font-size-3;
+    color: $color-neutral-10;
+  }
+}

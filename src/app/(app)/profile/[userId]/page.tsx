@@ -9,7 +9,13 @@ import { isRequestSent } from "@/services/apiConnectionRequests";
 
 import styles from "./page.module.scss";
 
-const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
+const Page = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ userId: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) => {
   const session = await auth();
 
   if (!session) return;
@@ -17,6 +23,8 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
   const profile = await getProfileByUserId((await params).userId);
 
   if (!profile) return;
+
+  const tab = (await searchParams).tab ?? "about";
 
   const isProfileBlocked = await isBlocked(session.user.id, profile.user_id);
   const isProfileConnected = await isConnected(
@@ -39,6 +47,7 @@ const Page = async ({ params }: { params: Promise<{ userId: string }> }) => {
           isProfileConnected={isProfileConnected}
           isProfileBlocked={isProfileBlocked}
           isRequestSent={isRequestSentVar}
+          tab={tab}
         />
       </main>
     </>
