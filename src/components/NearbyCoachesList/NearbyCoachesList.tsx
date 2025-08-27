@@ -18,7 +18,7 @@ export default function NearbyCoachesList({
   blockedCoaches,
 }: {
   session: Session;
-  coaches: (Tables<"profiles"> & { ratings: Tables<"ratings">[] })[];
+  coaches: (Tables<"profiles"> & { ratings: Tables<"reviews">[] })[];
   selectedCoach: Tables<"profiles">;
   blockedCoaches: (Tables<"blocked_profiles"> & {
     blockerProfile: Tables<"profiles">;

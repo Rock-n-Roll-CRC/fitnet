@@ -25,7 +25,7 @@ export default function ProfileAbout({
   setEditedProfile,
 }: {
   profile: Tables<"profiles"> & {
-    ratings: Tables<"ratings">[];
+    ratings: Tables<"reviews">[];
   };
   isEditing: boolean;
   editedProfile: Tables<"profiles">;

@@ -4,6 +4,8 @@
 .profile-overview {
   @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
 
+  padding: $whitespace-5;
+
   &__body {
     @include flex-shorthand(column, nowrap, $whitespace-5, center);
   }

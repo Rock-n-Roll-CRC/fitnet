@@ -1,6 +1,7 @@
 "use client";
 
 import type { Dispatch, SetStateAction } from "react";
+import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -11,19 +12,25 @@ import ProfileReviews from "@/components/ProfileReviews/ProfileReviews";
 import styles from "./ProfileDetails.module.scss";
 
 export default function ProfileDetails({
+  session,
   profile,
   isEditing,
   editedProfile,
   setEditedProfile,
   tab,
+  sort,
 }: {
+  session: Session;
   profile: Tables<"profiles"> & {
-    ratings: Tables<"ratings">[];
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
   };
   isEditing: boolean;
   editedProfile: Tables<"profiles">;
   setEditedProfile: Dispatch<SetStateAction<Tables<"profiles">>>;
   tab: "about" | "reviews";
+  sort: "asc" | "desc";
 }) {
   const readonlySearchParams = useSearchParams();
   const router = useRouter();
@@ -70,7 +77,12 @@ export default function ProfileDetails({
               setEditedProfile={setEditedProfile}
             />
           ) : (
-            <ProfileReviews />
+            <ProfileReviews
+              session={session}
+              profile={profile}
+              reviews={profile.ratings}
+              sort={sort}
+            />
           )}
         </>
       ) : (

@@ -34,8 +34,8 @@ export default async function Page({
 
   let savedProfiles:
     | (Tables<"saved_profiles"> & {
-        saverProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
-        savedProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
+        saverProfile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
+        savedProfile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
       })[]
     | undefined;
   let pendingRequests:
@@ -52,8 +52,8 @@ export default async function Page({
     | undefined;
   let blockedProfiles:
     | (Tables<"blocked_profiles"> & {
-        blockerProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
-        blockedProfile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
+        blockerProfile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
+        blockedProfile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
       })[]
     | undefined;
 

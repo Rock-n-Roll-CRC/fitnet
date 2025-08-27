@@ -537,3 +537,49 @@ export const updateProfile = async (newProfile: Tables<"profiles">) => {
 
   return data;
 };
+
+export const postReview = async (
+  raterId: string,
+  rateeId: string,
+  rating: number,
+  text: string,
+) => {
+  const { data, error: duplicateError } = await supabase
+    .from("reviews")
+    .select()
+    .eq("rater_id", raterId)
+    .eq("ratee_id", rateeId)
+    .maybeSingle();
+
+  if (duplicateError)
+    throw new Error(`Failed to post review: ${duplicateError.message}`, {
+      cause: duplicateError.cause,
+    });
+
+  if (data) {
+    const { error } = await supabase
+      .from("reviews")
+      .update({ rating, content: text })
+      .eq("rater_id", raterId)
+      .eq("ratee_id", rateeId);
+
+    if (error)
+      throw new Error(`Failed to post review: ${error.message}`, {
+        cause: error.cause,
+      });
+
+    revalidatePath("/profile");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("reviews")
+    .insert({ rater_id: raterId, ratee_id: rateeId, rating, content: text });
+
+  if (error)
+    throw new Error(`Failed to post review: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  revalidatePath("/profile");
+};

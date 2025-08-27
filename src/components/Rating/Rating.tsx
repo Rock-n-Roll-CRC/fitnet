@@ -5,7 +5,13 @@ import StarSVG from "@/assets/icons/star.svg";
 
 import styles from "./Rating.module.scss";
 
-export default function Rating({ ratings }: { ratings: Tables<"ratings">[] }) {
+export default function Rating({
+  ratings,
+  type,
+}: {
+  ratings: Tables<"reviews">[];
+  type?: "single";
+}) {
   const averageScore = (
     ratings.reduce((accum, rating) => accum + rating.rating, 0) / ratings.length
   ).toFixed(1);
@@ -25,10 +31,13 @@ export default function Rating({ ratings }: { ratings: Tables<"ratings">[] }) {
               </li>
             ))}
           </ul>
-          <p className={styles.rating__score}>
-            {averageScore}{" "}
-            <span className={styles.rating__count}>({ratings.length})</span>
-          </p>
+
+          {type !== "single" && (
+            <p className={styles.rating__score}>
+              {averageScore}{" "}
+              <span className={styles.rating__count}>({ratings.length})</span>
+            </p>
+          )}
         </>
       ) : (
         <p className={styles.rating__score}>Not reviewed yet</p>

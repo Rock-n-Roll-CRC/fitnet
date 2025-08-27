@@ -1,0 +1,112 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.review-modal {
+  @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  position: fixed;
+  inset: auto 0 0;
+  block-size: 60rem;
+  padding: $whitespace-7 $whitespace-6;
+  background-color: $color-neutral-2;
+  border-radius: $border-radius-extra-large;
+  transform: translateY(100%);
+  transition: transform 0.15s;
+
+  &--open {
+    transform: translateY(0);
+  }
+
+  &__heading-container {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__heading {
+    font-size: $font-size-6;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-10;
+  }
+
+  &__button {
+    @include remove-button-styles;
+  }
+
+  &__button-icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-neutral-10;
+  }
+
+  &__ratee-overview {
+    @include flex-shorthand(row, nowrap, $whitespace-3, center);
+
+    padding: $whitespace-4;
+    background-color: $color-neutral-4;
+    border-radius: $border-radius-medium;
+  }
+
+  &__ratee-image-wrapper {
+    @include size-shorthand(3.5rem, 3.5rem);
+
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius-medium;
+  }
+
+  &__ratee-image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__ratee-name {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__rating-container {
+    @include flex-shorthand(column, nowrap, $whitespace-3);
+  }
+
+  &__label {
+    font-size: $font-size-3;
+    color: $color-neutral-8;
+  }
+
+  &__star-container {
+    @include flex-shorthand(row, nowrap, null, center, space-between);
+  }
+
+  &__star-details {
+    padding: $whitespace-3;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+    background-color: $color-accent-4;
+    border-radius: $border-radius-medium;
+  }
+
+  &__text-container {
+    @include flex-shorthand(column, nowrap, $whitespace-3);
+  }
+
+  &__text {
+    padding: $whitespace-4;
+    font-size: $font-size-3;
+    border-color: $color-neutral-7;
+    border-radius: $border-radius-medium;
+  }
+
+  &__post-button {
+    @include remove-button-styles;
+
+    padding: $whitespace-4;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    background-color: $color-accent-1;
+    border-radius: $border-radius-pill;
+  }
+}

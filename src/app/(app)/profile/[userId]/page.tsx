@@ -25,6 +25,7 @@ const Page = async ({
   if (!profile) return;
 
   const tab = (await searchParams).tab ?? "about";
+  const sort = (await searchParams).sort ?? "desc";
 
   const isProfileBlocked = await isBlocked(session.user.id, profile.user_id);
   const isProfileConnected = await isConnected(
@@ -48,6 +49,7 @@ const Page = async ({
           isProfileBlocked={isProfileBlocked}
           isRequestSent={isRequestSentVar}
           tab={tab}
+          sort={sort}
         />
       </main>
     </>
@@ -57,7 +59,3 @@ const Page = async ({
 export default Page;
 
 // online marker
-// reviews
-// rate functionality
-// who can rate?
-// tabs?

@@ -17,15 +17,17 @@ export default function Profile({
   isProfileBlocked,
   isRequestSent,
   tab,
+  sort,
 }: {
   session: Session;
   profile: Tables<"profiles"> & {
-    ratings: Tables<"ratings">[];
+    ratings: Tables<"reviews">[];
   };
   isProfileConnected: boolean;
   isProfileBlocked: boolean;
   isRequestSent: boolean;
   tab: "about" | "reviews";
+  sort: "asc" | "desc";
 }) {
   const { ratings, ...initialEditedProfile } = profile;
 
@@ -47,11 +49,13 @@ export default function Profile({
       />
 
       <ProfileDetails
+        session={session}
         profile={profile}
         isEditing={isEditing}
         editedProfile={editedProfile}
         setEditedProfile={setEditedProfile}
         tab={tab}
+        sort={sort}
       />
     </div>
   );

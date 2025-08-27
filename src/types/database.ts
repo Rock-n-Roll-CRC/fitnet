@@ -501,6 +501,48 @@ export type Database = {
           },
         ];
       };
+      reviews: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: string;
+          ratee_id: string;
+          rater_id: string;
+          rating: number;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          ratee_id: string;
+          rater_id: string;
+          rating: number;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          ratee_id?: string;
+          rater_id?: string;
+          rating?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reviews_ratee_id_fkey";
+            columns: ["ratee_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+          {
+            foreignKeyName: "reviews_rater_id_fkey";
+            columns: ["rater_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
+        ];
+      };
       saved_profiles: {
         Row: {
           created_at: string;

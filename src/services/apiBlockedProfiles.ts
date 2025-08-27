@@ -20,7 +20,7 @@ export const getBlockedProfiles = async (userId: string) => {
   const { data, error } = await supabase
     .from("blocked_profiles")
     .select(
-      "*, blockerProfile: profiles!blocker_id(*, ratings: ratings!ratee_id(*)), blockedProfile: profiles!blocked_id(*, ratings: ratings!ratee_id(*))",
+      "*, blockerProfile: profiles!blocker_id(*, ratings: reviews!ratee_id(*)), blockedProfile: profiles!blocked_id(*, ratings: reviews!ratee_id(*))",
     )
     .eq("blocker_id", userId);
 

@@ -1,5 +1,107 @@
+import type { Session } from "next-auth";
+import type { Tables } from "@/types/database";
+
+import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import Review from "@/components/Review/Review";
+import ReviewModal from "@/components/ReviewModal/ReviewModal";
+
+import TrendingDownSVG from "@/assets/icons/trending-down-outline.svg";
+import TrendingUpSVG from "@/assets/icons/trending-up-outline.svg";
+import EmptySVG from "@/assets/illustrations/empty.svg";
+
 import styles from "./ProfileReviews.module.scss";
 
-export default function ProfileReviews() {
-  return null;
+export default function ProfileReviews({
+  session,
+  profile,
+  reviews,
+  sort,
+}: {
+  session: Session;
+  profile: Tables<"profiles">;
+  reviews: (Tables<"reviews"> & { raterProfile: Tables<"profiles"> })[];
+  sort: "asc" | "desc";
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const readonlySearchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const sortedReviews = reviews.sort((a, b) =>
+    sort === "asc"
+      ? new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      : new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
+
+  function handleToggleSort() {
+    const searchParams = new URLSearchParams(readonlySearchParams);
+
+    searchParams.set("sort", sort === "asc" ? "desc" : "asc");
+
+    router.push(`${pathname}?${searchParams}`);
+  }
+
+  return (
+    <div className={styles["profile-reviews"]}>
+      {reviews.length > 0 ? (
+        <>
+          <button
+            onClick={handleToggleSort}
+            className={styles["profile-reviews__button"]}
+          >
+            Most recent{" "}
+            {sort === "desc" ? (
+              <TrendingDownSVG
+                className={styles["profile-reviews__button-icon"]}
+              />
+            ) : (
+              <TrendingUpSVG
+                className={styles["profile-reviews__button-icon"]}
+              />
+            )}
+          </button>
+
+          <ul className={styles["profile-reviews__list"]}>
+            {sortedReviews.map((review) => (
+              <li
+                key={review.id}
+                className={styles["profile-reviews__list-item"]}
+              >
+                <Review review={review} />
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <>
+          <h2 className={styles["profile-reviews__heading"]}>
+            There are no reviews yet!
+          </h2>
+
+          <EmptySVG className={styles["profile-reviews__illustration"]} />
+        </>
+      )}
+
+      <button
+        onClick={() => {
+          setIsOpen(true);
+        }}
+        className={styles["profile-reviews__modal-button"]}
+      >
+        Write a Review
+      </button>
+
+      <ReviewModal
+        session={session}
+        rateeProfile={profile}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+        isOpen={isOpen}
+      />
+    </div>
+  );
 }

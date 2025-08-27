@@ -1,0 +1,62 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.review {
+  @include flex-shorthand(column, nowrap, $whitespace-5);
+
+  padding: $whitespace-5;
+  background-color: $color-neutral-1;
+  border-radius: $border-radius-extra-large;
+
+  &__top-container {
+    @include flex-shorthand(row, nowrap, $whitespace-5, center);
+  }
+
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
+
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius-extra-large;
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__detail-container {
+    @include flex-shorthand(column, nowrap, $whitespace-3);
+  }
+
+  &__author {
+    font-size: $font-size-4;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__date {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__bottom-container {
+    @include flex-shorthand(column, nowrap, $whitespace-3);
+  }
+
+  &__content {
+    font-size: $font-size-3;
+  }
+
+  &__button {
+    @include remove-button-styles;
+
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-primary-10;
+    text-align: start;
+  }
+}

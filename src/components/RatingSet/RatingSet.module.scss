@@ -1,0 +1,17 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.rating-set {
+  @include remove-list-styles;
+  @include flex-shorthand(row, nowrap, $whitespace-3, center);
+
+  &__list-item {
+  }
+
+  &__star {
+    @include size-shorthand(2.25rem, 2.25rem);
+
+    color: $color-accent-1;
+    fill: $color-accent-1;
+  }
+}

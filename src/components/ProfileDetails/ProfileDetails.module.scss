@@ -2,7 +2,7 @@
 @use "../../styles/tools" as *;
 
 .profile-details {
-  @include flex-shorthand(column, nowrap, $whitespace-8, null);
+  @include flex-shorthand(column, nowrap, $whitespace-4, null);
 
   &__tabs {
     @include flex-shorthand(row, nowrap, $whitespace-5, center, center);
@@ -12,7 +12,7 @@
     @include remove-button-styles;
 
     padding: $whitespace-3 $whitespace-7;
-    font-size: $font-size-4;
+    font-size: $font-size-3;
     font-weight: $font-weight-semi-bold;
     color: $color-neutral-10;
     background-color: $color-neutral-1;

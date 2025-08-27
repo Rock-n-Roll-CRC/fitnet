@@ -9,7 +9,9 @@ export const getProfileByUserId = async (
 
   const { data, error } = await client
     .from("profiles")
-    .select("*, ratings: ratings!ratee_id(*)")
+    .select(
+      "*, ratings: reviews!ratee_id(*, raterProfile: profiles!rater_id(*))",
+    )
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -30,7 +32,7 @@ export const getCoachProfiles = async (filters?: {
 
   let query = client
     .from("profiles")
-    .select("*, ratings: ratings!ratee_id(*)")
+    .select("*, ratings: reviews!ratee_id(*)")
     .eq("role", "coach");
 
   // if (filters?.gender) {

@@ -20,7 +20,7 @@ export default function ProfileOverview({
   setIsEditing,
 }: {
   session: Session;
-  profile: Tables<"profiles"> & { ratings: Tables<"ratings">[] };
+  profile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
   editedProfile: Tables<"profiles">;
   isEditing: boolean;
   isConnected: boolean;

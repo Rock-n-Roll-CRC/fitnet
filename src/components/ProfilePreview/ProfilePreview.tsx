@@ -30,7 +30,7 @@ export default function ProfilePreview({
   type,
 }: {
   profile: Tables<"profiles"> & {
-    ratings: Tables<"ratings">[];
+    ratings: Tables<"reviews">[];
   };
   type?: "saved" | "blocked";
 }) {
