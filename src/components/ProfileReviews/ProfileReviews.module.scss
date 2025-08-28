@@ -4,7 +4,11 @@
 .profile-reviews {
   @include flex-shorthand(column, nowrap, $whitespace-7);
 
+  max-block-size: 55rem;
   padding: $whitespace-5;
+  overflow: scroll;
+  scrollbar-gutter: auto;
+  overscroll-behavior: auto;
   background-color: $color-neutral-3;
 
   &__button {
@@ -50,7 +54,7 @@
     padding: $whitespace-4 $whitespace-7;
     font-size: $font-size-4;
     font-weight: $font-weight-semi-bold;
-    color: $color-neutral-10;
+    color: $color-neutral-1;
     background-color: $color-accent-1;
     border-radius: $border-radius-large;
   }

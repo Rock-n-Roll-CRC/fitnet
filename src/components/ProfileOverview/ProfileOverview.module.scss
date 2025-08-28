@@ -2,9 +2,27 @@
 @use "../../styles/tools" as *;
 
 .profile-overview {
+  $this: &;
+
   @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
 
   padding: $whitespace-5;
+
+  &--online {
+    #{$this}__image-wrapper {
+      position: relative;
+
+      &::after {
+        @include absolute-shorthand(0.2rem, -1.2rem, auto, auto);
+        @include size-shorthand(0.8rem, 0.8rem);
+
+        content: "";
+        background-color: $color-accent-2;
+        border-radius: $border-radius-circle;
+        box-shadow: 0 0 0.5rem $color-accent-2;
+      }
+    }
+  }
 
   &__body {
     @include flex-shorthand(column, nowrap, $whitespace-5, center);
@@ -14,7 +32,6 @@
     @include size-shorthand(10rem, 10rem);
 
     position: relative;
-    overflow: hidden;
     border-radius: $border-radius-extra-large;
   }
 
@@ -23,6 +40,7 @@
 
     object-fit: cover;
     object-position: center;
+    border-radius: $border-radius-extra-large;
   }
 
   &__info-container {

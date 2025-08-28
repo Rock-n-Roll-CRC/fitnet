@@ -8,6 +8,8 @@ import { useState } from "react";
 import ProfileOverview from "@/components/ProfileOverview/ProfileOverview";
 import ProfileDetails from "@/components/ProfileDetails/ProfileDetails";
 
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
+
 import styles from "./Profile.module.scss";
 
 export default function Profile({
@@ -31,6 +33,7 @@ export default function Profile({
 }) {
   const { ratings, ...initialEditedProfile } = profile;
 
+  const onlineUsers = useOnlineUsers();
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] =
     useState<Tables<"profiles">>(initialEditedProfile);
@@ -46,6 +49,7 @@ export default function Profile({
         isRequestSent={isRequestSent}
         isBlocked={isProfileBlocked}
         setIsEditing={setIsEditing}
+        isOnline={onlineUsers.includes(profile.user_id)}
       />
 
       <ProfileDetails

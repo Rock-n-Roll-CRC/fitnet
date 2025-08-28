@@ -305,29 +305,36 @@ export type Database = {
       notifications: {
         Row: {
           created_at: string;
-          entity_id: string;
           id: string;
           is_read: boolean;
+          sender_id: string;
           type: Database["public"]["Enums"]["notification_type"];
           user_id: string;
         };
         Insert: {
           created_at?: string;
-          entity_id: string;
           id?: string;
           is_read?: boolean;
+          sender_id: string;
           type: Database["public"]["Enums"]["notification_type"];
           user_id: string;
         };
         Update: {
           created_at?: string;
-          entity_id?: string;
           id?: string;
           is_read?: boolean;
+          sender_id?: string;
           type?: Database["public"]["Enums"]["notification_type"];
           user_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "notifications_sender_id_fkey";
+            columns: ["sender_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["user_id"];
+          },
           {
             foreignKeyName: "notifications_user_id_fkey";
             columns: ["user_id"];
@@ -704,7 +711,8 @@ export type Database = {
       notification_type:
         | "NEW_MESSAGE"
         | "REQUEST_RECEIVED"
-        | "REQUEST_ACCEPTED";
+        | "REQUEST_ACCEPTED"
+        | "NEW_REVIEW";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -846,6 +854,7 @@ export const Constants = {
         "NEW_MESSAGE",
         "REQUEST_RECEIVED",
         "REQUEST_ACCEPTED",
+        "NEW_REVIEW",
       ],
     },
   },

@@ -82,7 +82,10 @@ export default function ProfileAbout({
               />
             ) : (
               <p className={styles["profile-about__detail-value"]}>
-                {profile.hourly_rate} {profile.hourly_rate_currency}/h
+                {new Intl.NumberFormat("fr-FR")
+                  .format(profile.hourly_rate)
+                  .replace(/\u00A0/g, " ")}{" "}
+                {profile.hourly_rate_currency}/h
               </p>
             )}
           </div>

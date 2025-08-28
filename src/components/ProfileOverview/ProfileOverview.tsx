@@ -18,6 +18,7 @@ export default function ProfileOverview({
   isRequestSent,
   isBlocked,
   setIsEditing,
+  isOnline,
 }: {
   session: Session;
   profile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
@@ -27,9 +28,13 @@ export default function ProfileOverview({
   isRequestSent: boolean;
   isBlocked: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  isOnline: boolean;
 }) {
   return (
-    <article className={styles["profile-overview"]}>
+    <article
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      className={`${styles["profile-overview"] ?? ""} ${(isOnline && session.user.id !== profile.user_id && styles["profile-overview--online"]) || ""}`}
+    >
       <div className={styles["profile-overview__body"]}>
         <div className={styles["profile-overview__image-wrapper"]}>
           <Image

@@ -58,4 +58,4 @@ const Page = async ({
 
 export default Page;
 
-// online marker
+// Fix empty reviews design

@@ -9,7 +9,9 @@ import styles from "./NotificationList.module.scss";
 export default function NotificationList({
   notifications,
 }: {
-  notifications: Tables<"notifications">[];
+  notifications: (Tables<"notifications"> & {
+    senderProfile: Tables<"profiles">;
+  })[];
 }) {
   const notificationGroups = notifications
     .sort(
@@ -18,7 +20,12 @@ export default function NotificationList({
     )
     .reduce(
       (
-        accum: { label: string; notifications: Tables<"notifications">[] }[],
+        accum: {
+          label: string;
+          notifications: (Tables<"notifications"> & {
+            senderProfile: Tables<"profiles">;
+          })[];
+        }[],
         el,
       ) => {
         const dateGroupLabel = getDateGroupLabel(new Date(el.created_at));

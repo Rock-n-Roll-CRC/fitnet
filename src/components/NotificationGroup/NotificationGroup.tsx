@@ -10,14 +10,21 @@ export default function NotificationGroup({
 }: {
   notificationGroup: {
     label: string;
-    notifications: Tables<"notifications">[];
+    notifications: (Tables<"notifications"> & {
+      senderProfile: Tables<"profiles">;
+    })[];
   };
 }) {
   const numberOfMessages = notifications.filter(
     (notification) => notification.type === "NEW_MESSAGE",
   ).length;
   const transformedNotifications = notifications.reduce(
-    (accum: Tables<"notifications">[], el) => {
+    (
+      accum: (Tables<"notifications"> & {
+        senderProfile: Tables<"profiles">;
+      })[],
+      el,
+    ) => {
       return el.type === "NEW_MESSAGE" &&
         accum.filter((el) => el.type === "NEW_MESSAGE").length > 0
         ? accum

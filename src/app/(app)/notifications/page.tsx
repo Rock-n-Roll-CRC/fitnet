@@ -6,15 +6,16 @@ import NotificationsEmpty from "@/components/NotificationsEmpty/NotificationsEmp
 
 import { auth } from "@/services/auth";
 import { getNotifications } from "@/services/apiNotifications";
+import { getProfileByUserId } from "@/services/apiProfiles";
 
 const SearchParamsSchema = z.object({
   status: z.enum(["all", "unread", "read"]).default("all"),
   types: z
     .preprocess(
       (val) => (typeof val === "string" ? [val] : val),
-      z.array(z.enum(["requests", "messages"])),
+      z.array(z.enum(["requests", "messages", "reviews"])),
     )
-    .default(["requests", "messages"]),
+    .default(["requests", "messages", "reviews"]),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
 });
@@ -30,11 +31,15 @@ export default async function Page({
 
   if (!session) return;
 
+  const profile = await getProfileByUserId(session.user.id);
+
+  if (!profile) return;
+
   const notifications = await getNotifications(session.user.id, filters);
 
   return (
     <>
-      <NotificationsHeader filters={filters} />
+      <NotificationsHeader profile={profile} filters={filters} />
 
       {notifications.length > 0 ? (
         <NotificationList notifications={notifications} />

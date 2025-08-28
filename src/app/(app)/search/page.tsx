@@ -44,8 +44,3 @@ const Page = async ({
 };
 
 export default Page;
-
-// Fix bug when isSearching is true even though the coach closed the window
-// Fix online statuses (sometimes disappear after some time has passed)
-// Fix notifications error (when deleting messages)
-// Add rating functionality

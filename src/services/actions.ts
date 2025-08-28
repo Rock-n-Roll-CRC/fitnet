@@ -10,6 +10,7 @@ import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { revalidatePath } from "next/cache";
 import type { Tables } from "@/types/database";
+import { isBlocked } from "./apiBlockedProfiles";
 
 const SignUpFormSchema = z.object({
   firstName: z
@@ -212,20 +213,24 @@ export const sendConnectionRequest = async (userId: string) => {
     });
   }
 
-  const { error: notifError } = await supabase.from("notifications").insert({
-    user_id: userId,
-    type: "REQUEST_RECEIVED",
-    entity_id: data.id,
-  });
+  const isProfileBlocked = await isBlocked(userId, session.user.id);
 
-  if (notifError) {
-    console.error(notifError.message);
-    throw new Error(
-      `Failed to send connection request: ${notifError.message}`,
-      {
-        cause: notifError.cause,
-      },
-    );
+  if (!isProfileBlocked) {
+    const { error: notifError } = await supabase.from("notifications").insert({
+      user_id: userId,
+      type: "REQUEST_RECEIVED",
+      sender_id: session.user.id,
+    });
+
+    if (notifError) {
+      console.error(notifError.message);
+      throw new Error(
+        `Failed to send connection request: ${notifError.message}`,
+        {
+          cause: notifError.cause,
+        },
+      );
+    }
   }
 
   revalidatePath("/profile");
@@ -299,7 +304,7 @@ export const acceptConnectionRequest = async (
   const { error: notifError } = await supabase.from("notifications").insert({
     user_id: request.sender_id,
     type: "REQUEST_ACCEPTED",
-    entity_id: request.id,
+    sender_id: request.receiver_id,
   });
 
   if (notifError) {
@@ -371,7 +376,7 @@ export const blockProfile = async (userId: string) => {
   }
 
   await deleteSavedProfile(userId);
-  await deleteConnectionRequestByUserId(userId);
+  await declineConnectionRequestByIds(session.user.id, userId);
 
   revalidatePath("/search");
 };
@@ -397,16 +402,20 @@ export const unblockProfile = async (userId: string) => {
   revalidatePath("/search");
 };
 
-export const deleteConnectionRequestByUserId = async (userId: string) => {
+export const declineConnectionRequestByIds = async (
+  senderId: string,
+  receiverId: string,
+) => {
   const { error } = await supabase
     .from("connection_requests")
-    .delete()
-    .or(`and(sender_id.eq.${userId}),and(receiver_id.eq.${userId})`)
+    .update({ status: "declined" })
+    .eq("sender_id", senderId)
+    .eq("receiver_id", receiverId)
     .eq("status", "pending");
 
   if (error)
     throw new Error(
-      `Failed to delete connection request by user_id: ${error.message}`,
+      `Failed to decline connection request by user_id: ${error.message}`,
       { cause: error.cause },
     );
 };
@@ -432,7 +441,7 @@ export const sendMessage = async (userId: string, formData: FormData) => {
   const { error: notifError } = await supabase.from("notifications").insert({
     user_id: userId,
     type: "NEW_MESSAGE",
-    entity_id: data.id,
+    sender_id: session.user.id,
   });
 
   if (notifError)
@@ -544,7 +553,7 @@ export const postReview = async (
   rating: number,
   text: string,
 ) => {
-  const { data, error: duplicateError } = await supabase
+  const { data: oldReview, error: duplicateError } = await supabase
     .from("reviews")
     .select()
     .eq("rater_id", raterId)
@@ -556,29 +565,55 @@ export const postReview = async (
       cause: duplicateError.cause,
     });
 
-  if (data) {
-    const { error } = await supabase
+  if (oldReview) {
+    const { data: newReview, error } = await supabase
       .from("reviews")
       .update({ rating, content: text })
       .eq("rater_id", raterId)
-      .eq("ratee_id", rateeId);
+      .eq("ratee_id", rateeId)
+      .select()
+      .single();
 
     if (error)
       throw new Error(`Failed to post review: ${error.message}`, {
         cause: error.cause,
       });
 
+    const { error: notificationError } = await supabase
+      .from("notifications")
+      .insert({
+        user_id: rateeId,
+        sender_id: raterId,
+        type: "NEW_REVIEW",
+      });
+
+    if (notificationError)
+      throw new Error(`Failed to post review: ${notificationError.message}`, {
+        cause: notificationError.cause,
+      });
+
     revalidatePath("/profile");
     return;
   }
 
-  const { error } = await supabase
+  const { data: newReview, error } = await supabase
     .from("reviews")
-    .insert({ rater_id: raterId, ratee_id: rateeId, rating, content: text });
+    .insert({ rater_id: raterId, ratee_id: rateeId, rating, content: text })
+    .select()
+    .single();
 
   if (error)
     throw new Error(`Failed to post review: ${error.message}`, {
       cause: error.cause,
+    });
+
+  const { error: notificationError } = await supabase
+    .from("notifications")
+    .insert({ user_id: rateeId, sender_id: raterId, type: "NEW_REVIEW" });
+
+  if (notificationError)
+    throw new Error(`Failed to post review: ${notificationError.message}`, {
+      cause: notificationError.cause,
     });
 
   revalidatePath("/profile");

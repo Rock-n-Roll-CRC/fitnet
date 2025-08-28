@@ -12,7 +12,7 @@
   box-shadow: 0 0 0.5rem $color-neutral-5;
 
   &--online {
-    #{$this}__coach-name {
+    #{$this}__name {
       position: relative;
 
       /* stylelint-disable-next-line max-nesting-depth */

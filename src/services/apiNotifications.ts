@@ -5,12 +5,15 @@ export const getNotifications = async (
   userId: string,
   filters?: {
     status: "all" | "unread" | "read";
-    types: ("messages" | "requests")[];
+    types: ("messages" | "requests" | "reviews")[];
     startDate?: string | undefined;
     endDate?: string | undefined;
   },
 ) => {
-  let query = supabase.from("notifications").select().eq("user_id", userId);
+  let query = supabase
+    .from("notifications")
+    .select("*, senderProfile: profiles!sender_id(*)")
+    .eq("user_id", userId);
 
   if (filters?.status) {
     const filterStatuses =
@@ -27,7 +30,9 @@ export const getNotifications = async (
       (el): Tables<"notifications">["type"][] =>
         el === "messages"
           ? ["NEW_MESSAGE"]
-          : ["REQUEST_RECEIVED", "REQUEST_ACCEPTED"],
+          : el === "reviews"
+            ? ["NEW_REVIEW"]
+            : ["REQUEST_RECEIVED", "REQUEST_ACCEPTED"],
     );
 
     query = query.in("type", filterTypes);

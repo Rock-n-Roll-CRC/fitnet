@@ -1,5 +1,6 @@
 "use client";
 
+import type { Tables } from "@/types/database";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,11 +14,13 @@ import OptionsOutlineSVG from "@/assets/icons/options-outline.svg";
 import styles from "./NotificationsHeader.module.scss";
 
 export default function NotificationsHeader({
+  profile,
   filters,
 }: {
+  profile: Tables<"profiles">;
   filters: {
     status: "all" | "unread" | "read";
-    types: ("requests" | "messages")[];
+    types: ("requests" | "messages" | "reviews")[];
     startDate?: string;
     endDate?: string;
   };
@@ -233,6 +236,36 @@ export default function NotificationsHeader({
                   </label>
                 </div>
               </li>
+              {profile.role === "coach" && (
+                <li>
+                  <div
+                    className={
+                      styles["notifications-header__filter-input-wrapper"]
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      name="type-reviews"
+                      id="type-reviews"
+                      checked={types.includes("reviews")}
+                      onChange={(event) => {
+                        setTypes((types) =>
+                          event.target.checked
+                            ? [...types, "reviews"]
+                            : types.filter((type) => type !== "reviews"),
+                        );
+                      }}
+                      className={styles["notifications-header__filter-input"]}
+                    />
+                    <label
+                      htmlFor="type-reviews"
+                      className={styles["notifications-header__filter-label"]}
+                    >
+                      Reviews
+                    </label>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         </div>

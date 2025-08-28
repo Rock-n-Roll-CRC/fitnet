@@ -34,27 +34,13 @@ export default function ProfilePreview({
   };
   type?: "saved" | "blocked";
 }) {
-  const [city, setCity] = useState<string>();
-
   const onlineUsers = useOnlineUsers();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const fetchedCity = await getCityByCoords(
-          profile.location as { lat: number; lng: number },
-        );
-
-        setCity(fetchedCity);
-      } catch (error) {
-        throw new Error(
-          `Failed to fetch the city: ${error instanceof Error ? error.message : "unknown error"}`,
-        );
-      }
-    }
-
-    void fetchData();
-  }, [profile.location]);
+  console.log(
+    onlineUsers,
+    profile.user_id,
+    onlineUsers.includes(profile.user_id),
+  );
 
   return (
     <div
@@ -76,7 +62,7 @@ export default function ProfilePreview({
                   className={styles["profile-preview__detail-icon"]}
                 />
                 <p className={styles["profile-preview__detail-value"]}>
-                  {city}
+                  {profile.city}
                 </p>
               </div>
               <div className={styles["profile-preview__detail"]}>
@@ -86,7 +72,10 @@ export default function ProfilePreview({
                       className={styles["profile-preview__detail-icon"]}
                     />
                     <p className={styles["profile-preview__detail-value"]}>
-                      {profile.hourly_rate} {profile.hourly_rate_currency}/h
+                      {new Intl.NumberFormat("fr-FR")
+                        .format(profile.hourly_rate)
+                        .replace(/\u00A0/g, " ")}{" "}
+                      {profile.hourly_rate_currency}/h
                     </p>
                   </>
                 ) : (

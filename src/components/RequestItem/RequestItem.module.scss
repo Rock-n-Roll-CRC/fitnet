@@ -16,7 +16,7 @@
   }
 
   &__button-container {
-    @include flex-shorthand(row, nowrap, $whitespace-3, null, null);
+    @include flex-shorthand(row, wrap, $whitespace-3, null, null);
 
     margin: auto 0;
   }

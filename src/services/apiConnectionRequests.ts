@@ -64,7 +64,7 @@ export const getConnectionRequest = async (id: string) => {
       "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
     )
     .eq("id", id)
-    .single();
+    .maybeSingle();
 
   if (error)
     throw new Error(`Failed to get connection request: ${error.message}`, {
@@ -80,6 +80,7 @@ export const isRequestSent = async (senderId: string, receiverId: string) => {
     .select()
     .eq("sender_id", senderId)
     .eq("receiver_id", receiverId)
+    .eq("status", "pending")
     .maybeSingle();
 
   if (error)
