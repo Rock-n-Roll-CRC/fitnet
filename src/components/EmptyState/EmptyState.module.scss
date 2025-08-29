@@ -1,0 +1,27 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.empty-state {
+  @include flex-shorthand(column, nowrap, null, center, center);
+
+  &__content {
+    @include flex-shorthand(column, nowrap, $whitespace-2, center, center);
+
+    text-align: center;
+  }
+
+  &__illustration {
+    inline-size: 30rem;
+  }
+
+  &__heading {
+    font-size: $font-size-5;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-9;
+  }
+
+  &__description {
+    font-size: $font-size-4;
+    color: $color-neutral-7;
+  }
+}

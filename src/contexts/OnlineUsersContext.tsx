@@ -2,8 +2,11 @@
 
 import type { ReactNode } from "react";
 
-import { createContext, useEffect, useState } from "react";
-import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
+import { createContext, useEffect, useRef, useState } from "react";
+import {
+  REALTIME_SUBSCRIBE_STATES,
+  RealtimeChannel,
+} from "@supabase/supabase-js";
 
 import { supabaseClient } from "@/services/supabase.client";
 
@@ -18,36 +21,52 @@ export function OnlineUsersProvider({
 }) {
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
+  const channelRef = useRef<RealtimeChannel>(null);
+
   useEffect(() => {
-    const channel = supabaseClient.channel("online-users", {
-      config: {
-        presence: {
-          key: userId,
-        },
-      },
-    });
+    const cleanupPrevious = async () => {
+      if (channelRef.current) {
+        await channelRef.current.untrack();
+        await channelRef.current.unsubscribe();
+      }
 
-    channel
-      .on("presence", { event: "sync" }, () => {
+      channelRef.current = null;
+      setOnlineUsers([]);
+    };
+
+    const init = async () => {
+      await cleanupPrevious();
+
+      const channel = supabaseClient.channel(`presence:users`, {
+        config: { presence: { key: userId } },
+      });
+      channelRef.current = channel;
+
+      const syncOnlineFromChannel = () => {
         const state = channel.presenceState();
-
         setOnlineUsers(Object.keys(state));
-      })
-      .subscribe((status) => {
+      };
+
+      channel.on("presence", { event: "sync" }, syncOnlineFromChannel);
+      channel.on("presence", { event: "join" }, syncOnlineFromChannel);
+      channel.on("presence", { event: "leave" }, syncOnlineFromChannel);
+
+      channel.subscribe((status) => {
+        const func = async () => {
+          await channel.track({ userId });
+          syncOnlineFromChannel();
+        };
+
         if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
-          channel
-            .track({
-              user_id: userId,
-            })
-            .catch((error: unknown) => {
-              console.error(error);
-            });
+          void func();
         }
       });
+    };
+
+    void init();
 
     return () => {
-      void channel.untrack();
-      void channel.unsubscribe();
+      void cleanupPrevious();
     };
   }, [userId]);
 

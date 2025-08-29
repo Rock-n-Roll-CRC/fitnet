@@ -76,13 +76,13 @@ export default function ProfileReviews({
           </ul>
         </>
       ) : (
-        <>
+        <div className={styles["profile-reviews__empty-state-box"]}>
           <h2 className={styles["profile-reviews__heading"]}>
             There are no reviews yet!
           </h2>
 
           <EmptySVG className={styles["profile-reviews__illustration"]} />
-        </>
+        </div>
       )}
 
       <button

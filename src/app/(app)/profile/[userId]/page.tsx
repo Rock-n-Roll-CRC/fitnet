@@ -57,5 +57,3 @@ const Page = async ({
 };
 
 export default Page;
-
-// Fix empty reviews design

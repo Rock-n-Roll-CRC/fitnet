@@ -1,6 +1,10 @@
+"use client";
+
 import type { Tables } from "@/types/database";
 
 import Image from "next/image";
+
+import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 
 import styles from "./ChatHeader.module.scss";
 
@@ -9,8 +13,13 @@ export default function ChatHeader({
 }: {
   profile: Tables<"profiles">;
 }) {
+  const onlineUsers = useOnlineUsers();
+
   return (
-    <section className={styles["chat-header"]}>
+    <section
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      className={`${styles["chat-header"] ?? ""} ${(onlineUsers.includes(profile.user_id) && styles["chat-header--online"]) || ""}`}
+    >
       <Image
         src={profile.avatar_url}
         alt={profile.full_name}

@@ -36,12 +36,6 @@ export default function ProfilePreview({
 }) {
   const onlineUsers = useOnlineUsers();
 
-  console.log(
-    onlineUsers,
-    profile.user_id,
-    onlineUsers.includes(profile.user_id),
-  );
-
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
