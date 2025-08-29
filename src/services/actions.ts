@@ -4,7 +4,7 @@ import { hash } from "bcrypt";
 import { z, ZodError } from "zod/v4";
 
 import { supabase } from "@/services/supabase";
-import { auth, signIn } from "@/services/auth";
+import { auth, signIn, signOut } from "@/services/auth";
 import { getUserByEmail } from "@/services/apiUsers";
 import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -115,6 +115,10 @@ export const signUpWithCredentials = async (credentials: FormData) => {
       throw new Error(errorMessage);
     }
   }
+};
+
+export const logOut = async () => {
+  await signOut();
 };
 
 export const deleteSavedProfile = async (savedUserId: string) => {

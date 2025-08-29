@@ -9,6 +9,7 @@ import Link from "next/link";
 import {
   blockProfile,
   deleteSavedProfile,
+  logOut,
   sendConnectionRequest,
   unblockProfile,
   updateProfile,
@@ -66,12 +67,22 @@ export default function ProfileActions({
       className={`${styles["profile-actions"] ?? ""} ${(session.user.id === profile.user_id && styles["profile-actions--fill"]) || ""}`}
     >
       {session.user.id === profile.user_id ? (
-        <button
-          onClick={handleEditClick}
-          className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""}`}
-        >
-          {isEditing ? "Save changes" : "Edit"}
-        </button>
+        <>
+          <button
+            onClick={handleEditClick}
+            className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""}`}
+          >
+            {isEditing ? "Save changes" : "Edit"}
+          </button>
+          <button
+            onClick={() => {
+              void logOut();
+            }}
+            className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""} ${styles["profile-actions__button--danger"] ?? ""}`}
+          >
+            Sign Out
+          </button>
+        </>
       ) : (
         <>
           {!isBlocked && (
