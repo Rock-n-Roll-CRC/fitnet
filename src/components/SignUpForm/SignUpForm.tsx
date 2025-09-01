@@ -17,34 +17,29 @@ import {
 import styles from "./SignUpForm.module.scss";
 import toast from "react-hot-toast";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
+import Link from "next/link";
 
-const SignUpFormSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, "First name is required")
-    .max(50, "First name must contain less than 50 characters"),
-  lastName: z
-    .string()
-    .min(1, "Last name is required")
-    .max(50, "Last name must contain less than 50 characters"),
-  phoneNumber: z
-    .string()
-    .min(1, "Phone number is required")
-    .max(20, "Phone number must contain less than 20 characters")
-    .regex(
-      /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-      "Provided phone number is invalid",
-    ),
-  email: z
-    .email("Provided email is invalid")
-    .min(1, "Email is required")
-    .max(100, "Email must contain less than 100 characters"),
-  password: z
-    .string()
-    .min(1, "Password is required")
-    .min(8, "Password must contain at least 8 characters")
-    .max(20, "Password must contain less than 20 characters"),
-});
+const SignUpFormSchema = z
+  .object({
+    email: z
+      .email("Provided email is invalid")
+      .min(1, "Email is required")
+      .max(100, "Email must contain less than 100 characters"),
+    password: z
+      .string()
+      .min(1, "Password is required")
+      .min(8, "Password must contain at least 8 characters")
+      .max(20, "Password must contain less than 20 characters"),
+    confirmPassword: z
+      .string()
+      .min(1, "Password is required")
+      .min(8, "Password must contain at least 8 characters")
+      .max(20, "Password must contain less than 20 characters"),
+  })
+  .refine((d) => d.confirmPassword === d.password, {
+    path: ["confirmPassword"],
+    error: "Passwords must match!",
+  });
 
 const SignUpForm = () => {
   const {
@@ -104,10 +99,10 @@ const SignUpForm = () => {
         <h1 className={styles["signup-form__heading"]}>Sign Up</h1>
 
         <form
-          onSubmit={async (event) => {
+          onSubmit={(event) => {
             event.preventDefault();
 
-            await signInWithGoogle();
+            void handleSignInWithGoogle();
           }}
         >
           <button className={styles["signup-form__google-button"]}>
@@ -119,44 +114,6 @@ const SignUpForm = () => {
         <span className={styles["signup-form__separator"]}>or</span>
 
         <form noValidate onSubmit={handleSubmit(handleSignUpWithCredentials)}>
-          <div className={styles["signup-form__input-box"]}>
-            <label
-              htmlFor="firstName"
-              className={styles["signup-form__input-label"]}
-            >
-              First Name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              placeholder="Enter your first name"
-              {...register("firstName")}
-              className={styles["signup-form__input"]}
-            />
-            <p className={styles["signup-form__error-message"]}>
-              {errors.firstName?.message}
-            </p>
-          </div>
-
-          <div className={styles["signup-form__input-box"]}>
-            <label
-              htmlFor="lastName"
-              className={styles["signup-form__input-label"]}
-            >
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              placeholder="Enter your last name"
-              {...register("lastName")}
-              className={styles["signup-form__input"]}
-            />
-            <p className={styles["signup-form__error-message"]}>
-              {errors.lastName?.message}
-            </p>
-          </div>
-
           <div className={styles["signup-form__input-box"]}>
             <label
               htmlFor="email"
@@ -173,25 +130,6 @@ const SignUpForm = () => {
             />
             <p className={styles["signup-form__error-message"]}>
               {errors.email?.message}
-            </p>
-          </div>
-
-          <div className={styles["signup-form__input-box"]}>
-            <label
-              htmlFor="phoneNumber"
-              className={styles["signup-form__input-label"]}
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phoneNumber"
-              placeholder="Enter your phone number"
-              {...register("phoneNumber")}
-              className={styles["signup-form__input"]}
-            />
-            <p className={styles["signup-form__error-message"]}>
-              {errors.phoneNumber?.message}
             </p>
           </div>
 
@@ -214,11 +152,34 @@ const SignUpForm = () => {
             </p>
           </div>
 
+          <div className={styles["signup-form__input-box"]}>
+            <label
+              htmlFor="password"
+              className={styles["signup-form__input-label"]}
+            >
+              Password Confirmation
+            </label>
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="Confirm your password"
+              {...register("confirmPassword")}
+              className={styles["signup-form__input"]}
+            />
+            <p className={styles["signup-form__error-message"]}>
+              {errors.confirmPassword?.message}
+            </p>
+          </div>
+
           <button className={styles["signup-form__submit-button"]}>
             Create Account
           </button>
         </form>
       </div>
+
+      <p>
+        Already have an account? <Link href="/login?type=sign-in">Sign In</Link>
+      </p>
     </article>
   );
 };

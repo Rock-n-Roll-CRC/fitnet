@@ -1,0 +1,272 @@
+"use client";
+
+import type { Session } from "next-auth";
+
+import { useState } from "react";
+import Image from "next/image";
+import { z } from "zod/v4";
+import { useForm } from "react-hook-form";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+
+import Select from "@/components/Select/Select";
+import MultiSelect from "@/components/MultiSelect/MultiSelect";
+import InputText from "@/components/InputText/InputText";
+import InputTel from "@/components/InputTel/InputTel";
+import InputCity from "@/components/InputCity/InputCity";
+import InputDate from "@/components/InputDate/InputDate";
+import InputHourlyRate from "@/components/InputHourlyRate/InputHourlyRate";
+
+import { calculateAge } from "@/utilities/helpers";
+
+import CloudUploadOutlineSVG from "@/assets/icons/cloud-upload-outline.svg";
+
+import styles from "./ProfileSetup.module.scss";
+import { createProfile } from "@/services/actions";
+import { useRouter } from "next/navigation";
+
+const ProfileFormSchema = z.object({
+  fullName: z
+    .string()
+    .min(1, "Full Name is required")
+    .min(2, "Full Name must contain at least 2 characters")
+    .max(100, "Full Name must contain less than 100 characters")
+    .regex(/^[\p{L}.'’\- ]+$/u, "Full name contains invalid characters")
+    .refine(
+      (s) => s.trim().split(/\s+/).length >= 2,
+      "Full name must include at least first and last name",
+    ),
+
+  phoneNumber: z
+    .string()
+    .regex(
+      /^\+?[1-9]\d{6,14}$/,
+      "Phone number must include leading +, and have the length of 7-15",
+    ),
+
+  city: z
+    .string()
+    .min(1, "City is required")
+    .min(2, "City must contain at least 2 characters")
+    .max(100, "City must contain less than 100 characters")
+    .regex(/^[\p{L}0-9.'’\-\s]{2,100}$/u, "City contains invalid characters"),
+
+  birthdate: z.preprocess(
+    (val) => {
+      if (typeof val === "string" || val instanceof Date) return new Date(val);
+      return val;
+    },
+    z
+      .date("Birthdate is required")
+      .max(new Date(), "Birthdate must be in the past")
+      .refine((d) => {
+        const age = calculateAge(d);
+        return age >= 13 && age <= 120;
+      }, "Age must be between 13 and 120"),
+  ),
+});
+
+export default function ProfileSetup({ session }: { session: Session }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof ProfileFormSchema>>({
+    resolver: standardSchemaResolver(ProfileFormSchema),
+  });
+  const router = useRouter();
+  const [profile, setProfile] = useState<{
+    user_id: string;
+    role: "client" | "coach";
+    avatar_url: string;
+    full_name: string;
+    phone_number: string;
+    gender: "male" | "female";
+    city: string;
+    birthdate: string;
+    hourly_rate: number;
+    hourly_rate_currency: string;
+    fitness_goal: "muscle growth" | "weight loss" | "yoga";
+    expertise: ("muscle growth" | "weight loss" | "yoga")[];
+    isSearching: boolean;
+    location: null;
+  }>({
+    user_id: session.user.id,
+    role: "client",
+    avatar_url: "https://www.gravatar.com/avatar/?d=mp&f=y&s=200",
+    full_name: "",
+    phone_number: "",
+    gender: "male",
+    city: "",
+    birthdate: "",
+    hourly_rate: 0,
+    hourly_rate_currency: "$",
+    fitness_goal: "muscle growth",
+    expertise: ["muscle growth", "weight loss", "yoga"],
+    isSearching: false,
+    location: null,
+  });
+
+  async function handleFinishSetup() {
+    await createProfile(profile);
+
+    router.push("/search");
+  }
+
+  return (
+    <div className={styles["profile-setup"]}>
+      <div className={styles["profile-setup__top-container"]}>
+        <div className={styles["profile-setup__image-wrapper"]}>
+          <Image
+            src={profile.avatar_url}
+            alt={profile.full_name}
+            fill
+            className={styles["profile-setup__image"]}
+          />
+          <button className={styles["profile-setup__image-upload-button"]}>
+            <CloudUploadOutlineSVG
+              className={styles["profile-setup__image-upload-icon"]}
+            />
+          </button>
+        </div>
+
+        <div className={styles["profile-setup__text-content"]}>
+          <h1 className={styles["profile-setup__heading"]}>
+            Setup Your Profile
+          </h1>
+
+          <p className={styles["profile-setup__description"]}>
+            Get a more personalized experience
+          </p>
+        </div>
+      </div>
+
+      <form
+        onSubmit={handleSubmit(handleFinishSetup)}
+        className={styles["profile-setup__bottom-container"]}
+      >
+        <div className={styles["profile-setup__input-container"]}>
+          <Select
+            label="Role"
+            options={["client", "coach"]}
+            value={profile.role}
+            onChange={(role) => {
+              setProfile((editedProfile) => ({
+                ...editedProfile,
+                role,
+              }));
+            }}
+          />
+
+          <InputText
+            label="Full Name"
+            register={register("fullName")}
+            error={errors.fullName}
+            value={profile.full_name}
+            onChange={(val) => {
+              setProfile((editedProfile) => ({
+                ...editedProfile,
+                full_name: val,
+              }));
+            }}
+          />
+
+          <InputTel
+            label={true}
+            register={register("phoneNumber")}
+            error={errors.phoneNumber}
+            value={profile.phone_number}
+            onChange={(val) => {
+              setProfile((editedProfile) => ({
+                ...editedProfile,
+                phone_number: val,
+              }));
+            }}
+          />
+
+          <InputCity
+            label={true}
+            register={register("city")}
+            error={errors.city}
+            value={profile.city}
+            onChange={(val) => {
+              setProfile((editedProfile) => ({
+                ...editedProfile,
+                city: val,
+              }));
+            }}
+          />
+
+          <Select
+            label="Gender"
+            options={["male", "female"]}
+            value={profile.gender}
+            onChange={(gender) => {
+              setProfile((editedProfile) => ({
+                ...editedProfile,
+                gender,
+              }));
+            }}
+          />
+
+          <InputDate
+            label="Birthdate"
+            register={register("birthdate")}
+            error={errors.birthdate}
+            value={profile.birthdate}
+            onChange={(date) => {
+              setProfile((editedProfile) => ({
+                ...editedProfile,
+                birthdate: date,
+              }));
+            }}
+          />
+
+          {profile.role === "client" ? (
+            <Select
+              label="Fitness Goal"
+              options={["muscle growth", "weight loss", "yoga"]}
+              value={profile.fitness_goal}
+              onChange={(fitnessGoal) => {
+                setProfile((editedProfile) => ({
+                  ...editedProfile,
+                  fitness_goal: fitnessGoal,
+                }));
+              }}
+            />
+          ) : (
+            <>
+              <MultiSelect
+                label="Expertise"
+                options={["muscle growth", "weight loss", "yoga"]}
+                value={profile.expertise}
+                onChange={(val) => {
+                  setProfile((editedProfile) => ({
+                    ...editedProfile,
+                    expertise: val.length > 0 ? val : editedProfile.expertise,
+                  }));
+                }}
+              />
+
+              <InputHourlyRate
+                label={true}
+                rate={profile.hourly_rate}
+                currency={profile.hourly_rate_currency}
+                onChange={(rate: number, currency: string) => {
+                  setProfile((editedProfile) => ({
+                    ...editedProfile,
+                    hourly_rate: rate,
+                    hourly_rate_currency: currency,
+                  }));
+                }}
+              />
+            </>
+          )}
+        </div>
+
+        <button className={styles["profile-setup__button"]}>
+          Done & Dusted
+        </button>
+      </form>
+    </div>
+  );
+}

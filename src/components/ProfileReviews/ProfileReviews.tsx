@@ -85,14 +85,16 @@ export default function ProfileReviews({
         </div>
       )}
 
-      <button
-        onClick={() => {
-          setIsOpen(true);
-        }}
-        className={styles["profile-reviews__modal-button"]}
-      >
-        Write a Review
-      </button>
+      {session.user.id !== profile.user_id && (
+        <button
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className={styles["profile-reviews__modal-button"]}
+        >
+          Write a Review
+        </button>
+      )}
 
       <ReviewModal
         session={session}

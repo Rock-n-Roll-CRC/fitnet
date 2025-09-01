@@ -1,0 +1,87 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.profile-setup {
+  @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  flex: 1;
+  padding: $whitespace-9 $whitespace-5;
+  background-color: $color-neutral-1;
+
+  &__top-container {
+    @include flex-shorthand(column, nowrap, $whitespace-7, center);
+
+    padding-block-end: $whitespace-6;
+    border-block-end: 0.2rem solid $color-neutral-3;
+  }
+
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
+
+    position: relative;
+    outline: 0.3rem solid $color-primary-10;
+    border-radius: $border-radius-extra-large;
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
+    border-radius: $border-radius-extra-large;
+  }
+
+  &__image-upload-button {
+    @include remove-button-styles;
+    @include absolute-shorthand(auto, -1rem, -1rem, auto);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    padding: $whitespace-4;
+    background-color: $color-neutral-2;
+    border-radius: $border-radius-large;
+  }
+
+  &__image-upload-icon {
+    @include size-shorthand(2.5rem, 2.5rem);
+
+    color: $color-primary-10;
+  }
+
+  &__text-content {
+    @include flex-shorthand(column, nowrap, $whitespace-4, center);
+  }
+
+  &__heading {
+    font-size: $font-size-6;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-10;
+    letter-spacing: -0.05rem;
+  }
+
+  &__description {
+    font-size: $font-size-3;
+    color: $color-neutral-7;
+  }
+
+  &__bottom-container {
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+  }
+
+  &__input-container {
+    @include grid-shorthand(auto, 1fr, $whitespace-5, $whitespace-5);
+
+    justify-content: center;
+    justify-items: center;
+  }
+
+  &__button {
+    @include remove-button-styles;
+
+    padding: $whitespace-4 0;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    background-color: $color-primary-10;
+    border-radius: $border-radius-medium;
+  }
+}

@@ -7,15 +7,17 @@ import ChevronUpOutlineSVG from "@/assets/icons/chevron-up-outline.svg";
 
 import styles from "./Select.module.scss";
 
-export default function Select({
+export default function Select<T extends string>({
+  label,
   options,
   value,
   onChange,
   type,
 }: {
-  options: string[];
-  value: string;
-  onChange: (option: string) => void;
+  label?: string;
+  options: readonly T[];
+  value: T;
+  onChange: (option: T) => void;
   type?: "hourly-rate";
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +28,7 @@ export default function Select({
     setIsOpen((isOpen) => !isOpen);
   }
 
-  function handleSelectOption(option: string) {
+  function handleSelectOption(option: T) {
     setIsOpen(false);
     onChange(option);
   }
@@ -34,9 +36,24 @@ export default function Select({
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles.select ?? ""} ${(isOpen && styles["select--open"]) || ""} ${(type && styles["select--type-hourly-rate"]) || ""}`}
+      className={`${styles.select ?? ""} ${(isOpen && styles["select--open"]) || ""} ${(type && styles["select--type-hourly-rate"]) || ""} ${(label && styles["select--labeled"]) || ""}`}
     >
-      <button onClick={handleToggleIsOpen} className={styles.select__button}>
+      {label && (
+        <label
+          onClick={() => {
+            handleToggleIsOpen();
+          }}
+          className={styles.select__label}
+        >
+          {label}
+        </label>
+      )}
+
+      <button
+        type="button"
+        onClick={handleToggleIsOpen}
+        className={styles.select__button}
+      >
         {value.replace(/\b\w/g, (c) => c.toUpperCase())}
 
         <Icon className={styles.select__icon} />
@@ -46,6 +63,7 @@ export default function Select({
         {options.map((option) => (
           <li key={option} className={styles["select__list-item"]}>
             <button
+              type="button"
               onClick={() => {
                 handleSelectOption(option);
               }}

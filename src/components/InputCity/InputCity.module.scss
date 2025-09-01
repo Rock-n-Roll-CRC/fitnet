@@ -2,9 +2,33 @@
 @use "../../styles/tools" as *;
 
 .city-input {
-  @include flex-shorthand(row, nowrap, null, null, null);
+  $this: &;
 
-  position: relative;
+  @include flex-shorthand(column, nowrap, $whitespace-3, center);
+
+  text-align: center;
+
+  &--labeled {
+    #{$this}__input {
+      padding: $whitespace-6 $whitespace-5 $whitespace-4 $whitespace-5;
+    }
+  }
+
+  &--error {
+    #{$this}__input {
+      border-color: $color-accent-3;
+    }
+
+    #{$this}__label {
+      color: $color-accent-3;
+    }
+  }
+
+  &__container {
+    @include flex-shorthand(row, nowrap, null, null, null);
+
+    position: relative;
+  }
 
   &__input {
     @include remove-input-styles;
@@ -83,5 +107,11 @@
     @include size-shorthand(2.5rem, 2.5rem);
 
     color: $color-primary-10;
+  }
+
+  &__error-message {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-accent-3;
   }
 }

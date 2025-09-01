@@ -1,7 +1,7 @@
 @use "../../styles/settings" as *;
 @use "../../styles/tools" as *;
 
-.input-date {
+.input-tel {
   $this: &;
 
   @include flex-shorthand(column, nowrap, $whitespace-3, center);
@@ -25,7 +25,18 @@
   }
 
   &__container {
+    @include flex-shorthand(row, nowrap, null, null, null);
+
     position: relative;
+  }
+
+  &__input {
+    @include remove-input-styles;
+
+    inline-size: 17rem;
+    padding: $whitespace-5;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-large;
   }
 
   &__label {
@@ -36,14 +47,10 @@
     color: $color-primary-10;
   }
 
-  &__input {
-    @include remove-input-styles;
+  &__label-icon {
+    @include size-shorthand(1.5rem, 1.5rem);
 
-    inline-size: 17rem;
-    padding: $whitespace-5;
-    font-size: $font-size-3;
-    border: 0.2rem solid $color-primary-10;
-    border-radius: $border-radius-large;
+    color: $color-primary-10;
   }
 
   &__error-message {

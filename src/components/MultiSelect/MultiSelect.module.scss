@@ -12,6 +12,20 @@
     }
   }
 
+  &--labeled {
+    #{$this}__button {
+      padding: $whitespace-6 $whitespace-5 $whitespace-4 $whitespace-5;
+    }
+  }
+
+  &__label {
+    @include flex-shorthand(row, nowrap, $whitespace-1, center);
+    @include absolute-shorthand(1rem, auto, auto, 1.8rem);
+
+    font-size: $font-size-2;
+    color: $color-primary-10;
+  }
+
   &__button {
     @include remove-button-styles;
     @include flex-shorthand(row, nowrap, $whitespace-3, center, space-between);

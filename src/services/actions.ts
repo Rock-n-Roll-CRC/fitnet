@@ -12,33 +12,27 @@ import { revalidatePath } from "next/cache";
 import type { Tables } from "@/types/database";
 import { isBlocked } from "./apiBlockedProfiles";
 
-const SignUpFormSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, "First name is required")
-    .max(50, "First name must contain less than 50 characters"),
-  lastName: z
-    .string()
-    .min(1, "Last name is required")
-    .max(50, "Last name must contain less than 50 characters"),
-  phoneNumber: z
-    .string()
-    .min(1, "Phone number is required")
-    .max(20, "Phone number must contain less than 20 characters")
-    .regex(
-      /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-      "Provided phone number is invalid",
-    ),
-  email: z
-    .email("Provided email is invalid")
-    .min(1, "Email is required")
-    .max(100, "Email must contain less than 100 characters"),
-  password: z
-    .string()
-    .min(1, "Password is required")
-    .min(8, "Password must contain at least 8 characters")
-    .max(20, "Password must contain less than 20 characters"),
-});
+const SignUpFormSchema = z
+  .object({
+    email: z
+      .email("Provided email is invalid")
+      .min(1, "Email is required")
+      .max(100, "Email must contain less than 100 characters"),
+    password: z
+      .string()
+      .min(1, "Password is required")
+      .min(8, "Password must contain at least 8 characters")
+      .max(20, "Password must contain less than 20 characters"),
+    confirmPassword: z
+      .string()
+      .min(1, "Password is required")
+      .min(8, "Password must contain at least 8 characters")
+      .max(20, "Password must contain less than 20 characters"),
+  })
+  .refine((d) => d.confirmPassword === d.password, {
+    path: ["confirmPassword"],
+    error: "Passwords must match!",
+  });
 
 const SignInFormSchema = z.object({
   email: z
@@ -621,4 +615,28 @@ export const postReview = async (
     });
 
   revalidatePath("/profile");
+};
+
+export const createProfile = async (profile: {
+  user_id: string;
+  role: "client" | "coach";
+  avatar_url: string;
+  full_name: string;
+  phone_number: string;
+  gender: "male" | "female";
+  city: string;
+  birthdate: string;
+  hourly_rate: number;
+  hourly_rate_currency: string;
+  fitness_goal: "muscle growth" | "weight loss" | "yoga";
+  expertise: ("muscle growth" | "weight loss" | "yoga")[];
+  isSearching: boolean;
+  location: null;
+}) => {
+  const { error } = await supabase.from("profiles").insert(profile);
+
+  if (error)
+    throw new Error(`Failed to create profile: ${error.message}`, {
+      cause: error.cause,
+    });
 };

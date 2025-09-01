@@ -5,14 +5,16 @@ import ChevronUpOutlineSVG from "@/assets/icons/chevron-up-outline.svg";
 
 import styles from "./MultiSelect.module.scss";
 
-export default function MultiSelect({
+export default function MultiSelect<T extends string>({
+  label,
   options,
   value,
   onChange,
 }: {
-  options: string[];
-  value: string[];
-  onChange: (value: string[]) => void;
+  label?: string;
+  options: readonly T[];
+  value: T[];
+  onChange: (value: T[]) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,7 +24,7 @@ export default function MultiSelect({
     setIsOpen((isOpen) => !isOpen);
   }
 
-  function handleSelectOption(option: string) {
+  function handleSelectOption(option: T) {
     onChange(
       value.includes(option)
         ? value.filter((el) => el !== option)
@@ -33,9 +35,22 @@ export default function MultiSelect({
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles.multiselect ?? ""} ${(isOpen && styles["multiselect--open"]) || ""}`}
+      className={`${styles.multiselect ?? ""} ${(isOpen && styles["multiselect--open"]) || ""} ${(label && styles["multiselect--labeled"]) || ""}`}
     >
+      {label && (
+        <label
+          htmlFor={label.toLowerCase()}
+          onClick={() => {
+            handleToggleIsOpen();
+          }}
+          className={styles.multiselect__label}
+        >
+          {label}
+        </label>
+      )}
+
       <button
+        type="button"
         onClick={handleToggleIsOpen}
         className={styles.multiselect__button}
       >

@@ -1,8 +1,8 @@
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
-import styles from "./InputDate.module.scss";
+import styles from "./InputText.module.scss";
 
-export default function InputDate({
+export default function InputText({
   label,
   register,
   error,
@@ -13,25 +13,25 @@ export default function InputDate({
   register?: UseFormRegisterReturn;
   error?: FieldError;
   value: string;
-  onChange: (date: string) => void;
+  onChange: (val: string) => void;
 }) {
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles["input-date"] ?? ""} ${(label && styles["input-date--labeled"]) || ""} ${(error && styles["input-date--error"]) || ""}`}
+      className={`${styles["input-text"] ?? ""} ${(label && styles["input-text--labeled"]) || ""} ${(error && styles["input-text--error"]) || ""}`}
     >
-      <div className={styles["input-date__container"]}>
+      <div className={styles["input-text__container"]}>
         {label && (
           <label
             htmlFor={label.toLowerCase()}
-            className={styles["input-date__label"]}
+            className={styles["input-text__label"]}
           >
             {label}
           </label>
         )}
 
         <input
-          type="date"
+          type="text"
           id={label?.toLowerCase()}
           value={value}
           {...register}
@@ -39,12 +39,12 @@ export default function InputDate({
             onChange(event.target.value);
             void register?.onChange(event);
           }}
-          className={styles["input-date__input"]}
+          className={styles["input-text__input"]}
         />
       </div>
 
       {error && (
-        <p className={styles["input-date__error-message"]}>{error.message}</p>
+        <p className={styles["input-text__error-message"]}>{error.message}</p>
       )}
     </div>
   );

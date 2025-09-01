@@ -2,11 +2,28 @@
 @use "../../styles/tools" as *;
 
 .input-hourly-rate {
+  $this: &;
+
   @include flex-shorthand(row, nowrap, null, center);
 
+  position: relative;
   inline-size: 17rem;
   border: 0.2rem solid $color-primary-10;
   border-radius: $border-radius-large;
+
+  &--labeled {
+    #{$this}__input {
+      padding: $whitespace-6 $whitespace-5 $whitespace-4 $whitespace-5;
+    }
+  }
+
+  &__label {
+    @include flex-shorthand(row, nowrap, $whitespace-1, center);
+    @include absolute-shorthand(1rem, auto, auto, 1.8rem);
+
+    font-size: $font-size-2;
+    color: $color-primary-10;
+  }
 
   &__input {
     @include remove-input-styles;
