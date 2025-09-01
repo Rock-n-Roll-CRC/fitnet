@@ -2,6 +2,8 @@
 @use "../../styles/tools" as *;
 
 .login-form {
+  $this: &;
+
   @include flex-shorthand(column, nowrap, $whitespace-8);
 
   background-color: $color-neutral-1;
@@ -19,7 +21,6 @@
 
     inline-size: 100%;
     padding: $whitespace-4 0;
-    margin-block-end: $whitespace-5;
     font-size: $font-size-3;
     color: $color-neutral-8;
     cursor: pointer;
@@ -34,6 +35,7 @@
   &__separator {
     @include flex-shorthand(row, nowrap, $whitespace-4, center);
 
+    padding-block: $whitespace-5;
     color: $color-neutral-8;
 
     &::before,
@@ -56,19 +58,37 @@
     }
   }
 
+  &__input-box {
+    @include flex-shorthand(column, nowrap, $whitespace-3);
+
+    &--error {
+      #{$this}__input {
+        margin: 0;
+        border-color: $color-accent-3;
+      }
+
+      #{$this}__label {
+        color: $color-accent-3;
+      }
+    }
+  }
+
+  &__input-form {
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+  }
+
+  &__input-list {
+    @include flex-shorthand(column, nowrap, $whitespace-4);
+  }
+
   &__input {
     @include remove-input-styles;
 
     inline-size: 100%;
     padding: $whitespace-4 $whitespace-5;
-    margin-block-end: $whitespace-5;
     background-color: $color-neutral-1;
     border: 0.1rem solid $color-neutral-5;
     border-radius: $border-radius-medium;
-
-    &:last-child {
-      margin-block-end: $whitespace-7;
-    }
   }
 
   &__submit-button {
@@ -85,5 +105,11 @@
     background: linear-gradient(to right, $color-primary-9, $color-primary-5);
     border-radius: $border-radius-medium;
     transition: all 0.15s;
+  }
+
+  &__error-message {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-accent-3;
   }
 }

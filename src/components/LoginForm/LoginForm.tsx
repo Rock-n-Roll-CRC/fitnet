@@ -94,45 +94,61 @@ const LoginForm = () => {
 
         <span className={styles["login-form__separator"]}>or</span>
 
-        <form noValidate onSubmit={handleSubmit(handleSignInWithCredentials)}>
-          <div className={styles["login-form__input-box"]}>
-            <label
-              htmlFor="email"
-              className={styles["login-form__input-label"]}
+        <form
+          noValidate
+          onSubmit={handleSubmit(handleSignInWithCredentials)}
+          className={styles["login-form__input-form"]}
+        >
+          <div className={styles["login-form__input-list"]}>
+            <div
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              className={`${styles["login-form__input-box"] ?? ""} ${(errors.email && styles["login-form__input-box--error"]) || ""}`}
             >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              required
-              placeholder="Enter your email"
-              {...register("email")}
-              className={styles["login-form__input"]}
-            />
-            <p className={styles["login-form__error-message"]}>
-              {errors.email?.message}
-            </p>
-          </div>
+              <div className={styles["login-form__input-container"]}>
+                <label
+                  htmlFor="email"
+                  className={styles["login-form__input-label"]}
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  placeholder="Enter your email"
+                  {...register("email")}
+                  className={styles["login-form__input"]}
+                />
+              </div>
+              <p className={styles["login-form__error-message"]}>
+                {errors.email?.message}
+              </p>
+            </div>
 
-          <div className={styles["login-form__input-box"]}>
-            <label
-              htmlFor="password"
-              className={styles["login-form__input-label"]}
+            <div
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              className={`${styles["login-form__input-box"] ?? ""} ${(errors.password && styles["login-form__input-box--error"]) || ""}`}
             >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              required
-              placeholder="Enter your password"
-              {...register("password")}
-              className={styles["login-form__input"]}
-            />
-            <p className={styles["login-form__error-message"]}>
-              {errors.password?.message}
-            </p>
+              <div className={styles["login-form__input-container"]}>
+                <label
+                  htmlFor="password"
+                  className={styles["login-form__input-label"]}
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  required
+                  placeholder="Enter your password"
+                  {...register("password")}
+                  className={styles["login-form__input"]}
+                />
+              </div>
+              <p className={styles["login-form__error-message"]}>
+                {errors.password?.message}
+              </p>
+            </div>
           </div>
 
           <button className={styles["login-form__submit-button"]}>
