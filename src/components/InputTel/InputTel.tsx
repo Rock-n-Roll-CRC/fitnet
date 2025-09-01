@@ -8,17 +8,19 @@ export default function InputTel({
   error,
   value,
   onChange,
+  fill,
 }: {
   label?: boolean;
   register?: UseFormRegisterReturn;
   error?: FieldError;
   value: string;
   onChange: (val: string) => void;
+  fill?: boolean;
 }) {
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles["input-tel"] ?? ""} ${(label && styles["input-tel--labeled"]) || ""} ${(error && styles["input-tel--error"]) || ""}`}
+      className={`${styles["input-tel"] ?? ""} ${(label && styles["input-tel--labeled"]) || ""} ${(error && styles["input-tel--error"]) || ""} ${(fill && styles["input-tel--filled"]) || ""}`}
     >
       <div className={styles["input-tel__container"]}>
         {label && (

@@ -8,17 +8,19 @@ export default function InputText({
   error,
   value,
   onChange,
+  fill,
 }: {
   label?: string;
   register?: UseFormRegisterReturn;
   error?: FieldError;
   value: string;
   onChange: (val: string) => void;
+  fill?: boolean;
 }) {
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles["input-text"] ?? ""} ${(label && styles["input-text--labeled"]) || ""} ${(error && styles["input-text--error"]) || ""}`}
+      className={`${styles["input-text"] ?? ""} ${(label && styles["input-text--labeled"]) || ""} ${(error && styles["input-text--error"]) || ""} ${(fill && styles["input-text--filled"]) || ""}`}
     >
       <div className={styles["input-text__container"]}>
         {label && (

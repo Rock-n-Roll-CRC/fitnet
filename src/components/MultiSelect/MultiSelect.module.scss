@@ -18,6 +18,18 @@
     }
   }
 
+  &--filled {
+    inline-size: 100%;
+
+    #{$this}__container {
+      inline-size: 100%;
+    }
+
+    #{$this}__button {
+      inline-size: 100%;
+    }
+  }
+
   &__label {
     @include flex-shorthand(row, nowrap, $whitespace-1, center);
     @include absolute-shorthand(1rem, auto, auto, 1.8rem);

@@ -13,12 +13,14 @@ export default function Select<T extends string>({
   value,
   onChange,
   type,
+  fill,
 }: {
   label?: string;
   options: readonly T[];
   value: T;
   onChange: (option: T) => void;
   type?: "hourly-rate";
+  fill?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,7 +38,7 @@ export default function Select<T extends string>({
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles.select ?? ""} ${(isOpen && styles["select--open"]) || ""} ${(type && styles["select--type-hourly-rate"]) || ""} ${(label && styles["select--labeled"]) || ""}`}
+      className={`${styles.select ?? ""} ${(isOpen && styles["select--open"]) || ""} ${(type && styles["select--type-hourly-rate"]) || ""} ${(label && styles["select--labeled"]) || ""} ${(fill && styles["select--filled"]) || ""}`}
     >
       {label && (
         <label

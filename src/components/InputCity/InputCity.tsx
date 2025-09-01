@@ -17,12 +17,14 @@ export default function InputCity({
   error,
   value,
   onChange,
+  fill,
 }: {
   label?: boolean;
   register?: UseFormRegisterReturn;
   error?: FieldError;
   value: string;
   onChange: (val: string) => void;
+  fill?: boolean;
 }) {
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const [citySuggestions, setCitySuggestions] = useState<SelectedCity[]>([]);
@@ -32,7 +34,7 @@ export default function InputCity({
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles["city-input"] ?? ""} ${(label && styles["city-input--labeled"]) || ""} ${(error && styles["city-input--error"]) || ""}`}
+      className={`${styles["city-input"] ?? ""} ${(label && styles["city-input--labeled"]) || ""} ${(error && styles["city-input--error"]) || ""} ${(fill && styles["city-input--filled"]) || ""}`}
     >
       <div className={styles["city-input__container"]}>
         {label && (

@@ -8,17 +8,19 @@ export default function InputDate({
   error,
   value,
   onChange,
+  fill,
 }: {
   label?: string;
   register?: UseFormRegisterReturn;
   error?: FieldError;
   value: string;
   onChange: (date: string) => void;
+  fill?: boolean;
 }) {
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles["input-date"] ?? ""} ${(label && styles["input-date--labeled"]) || ""} ${(error && styles["input-date--error"]) || ""}`}
+      className={`${styles["input-date"] ?? ""} ${(label && styles["input-date--labeled"]) || ""} ${(error && styles["input-date--error"]) || ""} ${(fill && styles["input-date--filled"]) || ""}`}
     >
       <div className={styles["input-date__container"]}>
         {label && (

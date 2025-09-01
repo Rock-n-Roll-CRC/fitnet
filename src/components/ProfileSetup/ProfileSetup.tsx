@@ -146,6 +146,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
       >
         <div className={styles["profile-setup__input-container"]}>
           <Select
+            fill
             label="Role"
             options={["client", "coach"]}
             value={profile.role}
@@ -158,6 +159,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
           />
 
           <InputText
+            fill
             label="Full Name"
             register={register("fullName")}
             error={errors.fullName}
@@ -171,6 +173,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
           />
 
           <InputTel
+            fill
             label={true}
             register={register("phoneNumber")}
             error={errors.phoneNumber}
@@ -184,6 +187,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
           />
 
           <InputCity
+            fill
             label={true}
             register={register("city")}
             error={errors.city}
@@ -197,6 +201,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
           />
 
           <Select
+            fill
             label="Gender"
             options={["male", "female"]}
             value={profile.gender}
@@ -209,6 +214,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
           />
 
           <InputDate
+            fill
             label="Birthdate"
             register={register("birthdate")}
             error={errors.birthdate}
@@ -223,6 +229,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
 
           {profile.role === "client" ? (
             <Select
+              fill
               label="Fitness Goal"
               options={["muscle growth", "weight loss", "yoga"]}
               value={profile.fitness_goal}
@@ -236,6 +243,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
           ) : (
             <>
               <MultiSelect
+                fill
                 label="Expertise"
                 options={["muscle growth", "weight loss", "yoga"]}
                 value={profile.expertise}
@@ -248,6 +256,7 @@ export default function ProfileSetup({ session }: { session: Session }) {
               />
 
               <InputHourlyRate
+                fill
                 label={true}
                 rate={profile.hourly_rate}
                 currency={profile.hourly_rate_currency}

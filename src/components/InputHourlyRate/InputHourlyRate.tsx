@@ -7,16 +7,18 @@ export default function InputHourlyRate({
   rate,
   currency,
   onChange,
+  fill,
 }: {
   label?: boolean;
   rate: number;
   currency: string;
   onChange: (rate: number, currency: string) => void;
+  fill?: boolean;
 }) {
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles["input-hourly-rate"] ?? ""} ${(label && styles["input-hourly-rate--labeled"]) || ""}`}
+      className={`${styles["input-hourly-rate"] ?? ""} ${(label && styles["input-hourly-rate--labeled"]) || ""} ${(fill && styles["input-hourly-rate--filled"]) || ""}`}
     >
       {label && (
         <label

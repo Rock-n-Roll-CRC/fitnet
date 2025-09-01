@@ -10,11 +10,13 @@ export default function MultiSelect<T extends string>({
   options,
   value,
   onChange,
+  fill,
 }: {
   label?: string;
   options: readonly T[];
   value: T[];
   onChange: (value: T[]) => void;
+  fill?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +37,7 @@ export default function MultiSelect<T extends string>({
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      className={`${styles.multiselect ?? ""} ${(isOpen && styles["multiselect--open"]) || ""} ${(label && styles["multiselect--labeled"]) || ""}`}
+      className={`${styles.multiselect ?? ""} ${(isOpen && styles["multiselect--open"]) || ""} ${(label && styles["multiselect--labeled"]) || ""} ${(fill && styles["multiselect--filled"]) || ""}`}
     >
       {label && (
         <label
