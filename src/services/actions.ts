@@ -640,3 +640,22 @@ export const createProfile = async (profile: {
       cause: error.cause,
     });
 };
+
+export async function uploadAvatar(file: File, userId: string) {
+  // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+  const ext = file.name.split(".").pop() as string;
+  const path = `${userId}/${crypto.randomUUID()}.${ext}`;
+
+  const { data, error } = await supabase.storage
+    .from("avatars")
+    .upload(path, file);
+
+  if (error)
+    throw new Error(`Failed to upload avatar: ${error.message}`, {
+      cause: error.cause,
+    });
+
+  const { data: url } = supabase.storage.from("avatars").getPublicUrl(path);
+
+  return url.publicUrl;
+}

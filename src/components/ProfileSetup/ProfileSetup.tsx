@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 
-import { useState } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import Image from "next/image";
 import { z } from "zod/v4";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ import { calculateAge } from "@/utilities/helpers";
 import CloudUploadOutlineSVG from "@/assets/icons/cloud-upload-outline.svg";
 
 import styles from "./ProfileSetup.module.scss";
-import { createProfile } from "@/services/actions";
+import { createProfile, uploadAvatar } from "@/services/actions";
 import { useRouter } from "next/navigation";
 
 const ProfileFormSchema = z.object({
@@ -105,11 +105,22 @@ export default function ProfileSetup({ session }: { session: Session }) {
     isSearching: false,
     location: null,
   });
+  const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFinishSetup() {
     await createProfile(profile);
 
     router.push("/search");
+  }
+
+  async function handleUploadFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const url = await uploadAvatar(file, session.user.id);
+
+    setProfile((profile) => ({ ...profile, avatar_url: url }));
   }
 
   return (
@@ -122,7 +133,23 @@ export default function ProfileSetup({ session }: { session: Session }) {
             fill
             className={styles["profile-setup__image"]}
           />
-          <button className={styles["profile-setup__image-upload-button"]}>
+          <input
+            type="file"
+            name="avatar-upload"
+            id="avatar-upload"
+            ref={inputRef}
+            accept="image/*"
+            onChange={(event) => {
+              void handleUploadFile(event);
+            }}
+            hidden
+          />
+          <button
+            onClick={() => {
+              inputRef.current?.click();
+            }}
+            className={styles["profile-setup__image-upload-button"]}
+          >
             <CloudUploadOutlineSVG
               className={styles["profile-setup__image-upload-icon"]}
             />
