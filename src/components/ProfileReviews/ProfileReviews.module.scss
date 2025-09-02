@@ -60,6 +60,6 @@
   }
 
   &__empty-state-box {
-    @include flex-shorthand(column, nowrap, $whitespace-7);
+    @include flex-shorthand(column, nowrap, $whitespace-7, center);
   }
 }
