@@ -413,101 +413,6 @@ export type Database = {
           },
         ];
       };
-      profiles_backup: {
-        Row: {
-          age: number | null;
-          avatar: string | null;
-          created_at: string;
-          domains: Json[] | null;
-          full_name: string;
-          gender: string | null;
-          geolocation: Json | null;
-          id: string;
-          phone_number: string | null;
-          role: string;
-          updated_at: string;
-          user_id: string;
-        };
-        Insert: {
-          age?: number | null;
-          avatar?: string | null;
-          created_at?: string;
-          domains?: Json[] | null;
-          full_name: string;
-          gender?: string | null;
-          geolocation?: Json | null;
-          id?: string;
-          phone_number?: string | null;
-          role: string;
-          updated_at?: string;
-          user_id: string;
-        };
-        Update: {
-          age?: number | null;
-          avatar?: string | null;
-          created_at?: string;
-          domains?: Json[] | null;
-          full_name?: string;
-          gender?: string | null;
-          geolocation?: Json | null;
-          id?: string;
-          phone_number?: string | null;
-          role?: string;
-          updated_at?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "profiles_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: true;
-            referencedRelation: "users_backup";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      ratings: {
-        Row: {
-          created_at: string;
-          id: string;
-          ratee_id: string;
-          rater_id: string;
-          rating: number;
-          updated_at: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          ratee_id: string;
-          rater_id: string;
-          rating: number;
-          updated_at?: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          ratee_id?: string;
-          rater_id?: string;
-          rating?: number;
-          updated_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "ratings_ratee_id_fkey";
-            columns: ["ratee_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["user_id"];
-          },
-          {
-            foreignKeyName: "ratings_rater_id_fkey";
-            columns: ["rater_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["user_id"];
-          },
-        ];
-      };
       reviews: {
         Row: {
           content: string | null;
@@ -583,45 +488,6 @@ export type Database = {
           },
         ];
       };
-      saved_profiles_backup: {
-        Row: {
-          created_at: string;
-          id: string;
-          saved_profile_id: string;
-          saver_profile_id: string;
-          updated_at: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          saved_profile_id: string;
-          saver_profile_id: string;
-          updated_at?: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          saved_profile_id?: string;
-          saver_profile_id?: string;
-          updated_at?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "saved_profiles_saved_profile_id_fkey";
-            columns: ["saved_profile_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles_backup";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "saved_profiles_saver_profile_id_fkey";
-            columns: ["saver_profile_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles_backup";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
       users: {
         Row: {
           created_at: string;
@@ -642,36 +508,6 @@ export type Database = {
           email?: string;
           id?: string;
           password_hash?: string | null;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
-      users_backup: {
-        Row: {
-          created_at: string;
-          email: string;
-          full_name: string;
-          id: string;
-          password: string | null;
-          phone_number: string | null;
-          updated_at: string;
-        };
-        Insert: {
-          created_at?: string;
-          email: string;
-          full_name: string;
-          id?: string;
-          password?: string | null;
-          phone_number?: string | null;
-          updated_at?: string;
-        };
-        Update: {
-          created_at?: string;
-          email?: string;
-          full_name?: string;
-          id?: string;
-          password?: string | null;
-          phone_number?: string | null;
           updated_at?: string;
         };
         Relationships: [];
