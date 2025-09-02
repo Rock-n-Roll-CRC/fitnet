@@ -29,8 +29,8 @@ export default function ProfileDetails({
   isEditing: boolean;
   editedProfile: Tables<"profiles">;
   setEditedProfile: Dispatch<SetStateAction<Tables<"profiles">>>;
-  tab: "about" | "reviews";
-  sort: "asc" | "desc";
+  tab: string | string[];
+  sort: string | string[];
 }) {
   const readonlySearchParams = useSearchParams();
   const router = useRouter();

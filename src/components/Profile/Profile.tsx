@@ -23,13 +23,15 @@ export default function Profile({
 }: {
   session: Session;
   profile: Tables<"profiles"> & {
-    ratings: Tables<"reviews">[];
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
   };
   isProfileConnected: boolean;
   isProfileBlocked: boolean;
   isRequestSent: boolean;
-  tab: "about" | "reviews";
-  sort: "asc" | "desc";
+  tab: string | string[];
+  sort: string | string[];
 }) {
   const { ratings, ...initialEditedProfile } = profile;
 

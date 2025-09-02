@@ -85,7 +85,7 @@ export const signUpWithCredentials = async (credentials: FormData) => {
     if (existingUserByEmail)
       throw new Error("A user with this email already exists.");
 
-    const { data: user, error: usersError } = await supabase
+    const { error: usersError } = await supabase
       .from("users")
       .insert([
         {
@@ -283,7 +283,7 @@ export const acceptConnectionRequest = async (
 
   if (duplicate) return;
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("saved_profiles")
     .insert([
       { saver_user_id: request.receiver_id, saved_user_id: request.sender_id },
@@ -319,7 +319,7 @@ export const declineConnectionRequest = async (
     receiverProfile: Tables<"profiles">;
   },
 ) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("connection_requests")
     .update({ status: "declined" })
     .eq("id", request.id)
@@ -425,7 +425,7 @@ export const sendMessage = async (userId: string, formData: FormData) => {
 
   const content = formData.get("message") as string;
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("messages")
     .insert({ content, sender_id: session.user.id, receiver_id: userId })
     .select()
@@ -564,7 +564,7 @@ export const postReview = async (
     });
 
   if (oldReview) {
-    const { data: newReview, error } = await supabase
+    const { error } = await supabase
       .from("reviews")
       .update({ rating, content: text })
       .eq("rater_id", raterId)
@@ -594,7 +594,7 @@ export const postReview = async (
     return;
   }
 
-  const { data: newReview, error } = await supabase
+  const { error } = await supabase
     .from("reviews")
     .insert({ rater_id: raterId, ratee_id: rateeId, rating, content: text })
     .select()
@@ -646,9 +646,7 @@ export async function uploadAvatar(file: File, userId: string) {
   const ext = file.name.split(".").pop() as string;
   const path = `${userId}/${crypto.randomUUID()}.${ext}`;
 
-  const { data, error } = await supabase.storage
-    .from("avatars")
-    .upload(path, file);
+  const { error } = await supabase.storage.from("avatars").upload(path, file);
 
   if (error)
     throw new Error(`Failed to upload avatar: ${error.message}`, {

@@ -13,7 +13,6 @@ import {
   MapContainer,
   Marker,
   TileLayer,
-  Tooltip,
   useMap,
   useMapEvent,
 } from "react-leaflet";
@@ -24,34 +23,12 @@ import NearbyCoachesList from "@/components/NearbyCoachesList/NearbyCoachesList"
 import { calculateAge, calculateDistance } from "@/utilities/helpers";
 
 import styles from "./Map.module.scss";
-import { updateProfileLocation } from "@/services/actions";
 import type { Session } from "next-auth";
 import navigateUrl from "@/assets/icons/navigate.svg?url";
 
 interface Coordinates {
   lat: number;
   lng: number;
-}
-
-interface OpenMeteoCityItem {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-  elevation: number;
-  feature_code: string;
-  country_code: string;
-  admin1_id: number;
-  timezone: string;
-  population: number;
-  country_id: number;
-  country: string;
-  admin1: string;
-}
-
-interface OpenMeteoData {
-  results?: OpenMeteoCityItem[];
-  generationtime_ms: number;
 }
 
 const MapUpdater = ({ center }: { center: Coordinates }) => {
@@ -80,7 +57,6 @@ const Map = ({
   isSelectingPosition,
   userCoords,
   setUserCoords,
-  session,
   isFilterOpen,
   userProfile,
 }: {
@@ -105,43 +81,44 @@ const Map = ({
 
   const [selectedCoach, setSelectedCoach] = useState<Tables<"profiles">>();
 
-  const markerIcon = new divIcon({
+  const markerIcon = divIcon({
     html: `<img src="${navigateUrl.src}" class="${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--me"] ?? ""}" />`,
     className: styles.map__marker,
     iconAnchor: [30, 15],
   });
 
-  const filteredCoaches = coaches?.filter((coach) => {
-    if (!coach.isSearching) return false;
+  const filteredCoaches =
+    coaches?.filter((coach) => {
+      if (!coach.isSearching) return false;
 
-    if (blockedProfiles?.map((el) => el.blocked_id).includes(coach.user_id))
-      return false;
+      if (blockedProfiles?.map((el) => el.blocked_id).includes(coach.user_id))
+        return false;
 
-    const coachPosition = coach.location as unknown as Coordinates;
-    const coachCoords = {
-      lat: coachPosition.lat,
-      lng: coachPosition.lng,
-    };
-    const distance = calculateDistance(userCoords, coachCoords);
-    const age = coach.birthdate
-      ? calculateAge(new Date(coach.birthdate))
-      : undefined;
+      const coachPosition = coach.location as unknown as Coordinates;
+      const coachCoords = {
+        lat: coachPosition.lat,
+        lng: coachPosition.lng,
+      };
+      const distance = calculateDistance(userCoords, coachCoords);
+      const age = coach.birthdate
+        ? calculateAge(new Date(coach.birthdate))
+        : undefined;
 
-    const distanceFilter = searchParams.get("distance");
-    const genderFilter = searchParams.get("gender");
-    const minAgeFilter = searchParams.get("minAge");
-    const maxAgeFilter = searchParams.get("maxAge");
+      const distanceFilter = searchParams.get("distance");
+      const genderFilter = searchParams.get("gender");
+      const minAgeFilter = searchParams.get("minAge");
+      const maxAgeFilter = searchParams.get("maxAge");
 
-    if (distanceFilter && distance > +distanceFilter) return false;
+      if (distanceFilter && distance > +distanceFilter) return false;
 
-    if (genderFilter && coach.gender !== genderFilter) return false;
+      if (genderFilter && coach.gender !== genderFilter) return false;
 
-    if (minAgeFilter && age && age < +minAgeFilter) return false;
+      if (minAgeFilter && age && age < +minAgeFilter) return false;
 
-    if (maxAgeFilter && age && age > +maxAgeFilter) return false;
+      if (maxAgeFilter && age && age > +maxAgeFilter) return false;
 
-    return true;
-  });
+      return true;
+    }) ?? [];
   const blockedCoachesIDs = blockedProfiles
     ? blockedProfiles.reduce((accum: string[], item) => {
         return item.blockedProfile.role === "coach"
@@ -192,7 +169,7 @@ const Map = ({
             zIndexOffset={1000}
           ></Marker>
 
-          {filteredCoaches?.map((coach) => {
+          {filteredCoaches.map((coach) => {
             if (!coach.location) return null;
 
             const { lat, lng } = coach.location as unknown as Coordinates;
@@ -230,10 +207,8 @@ const Map = ({
 
         {userProfile.role === "client" && (
           <NearbyCoachesList
-            session={session}
             coaches={filteredCoaches}
-            selectedCoach={selectedCoach}
-            blockedCoaches={blockedProfiles}
+            blockedCoaches={blockedProfiles ?? []}
           />
         )}
       </div>

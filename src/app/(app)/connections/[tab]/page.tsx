@@ -1,7 +1,6 @@
 import type { Tables } from "@/types/database";
 
 import Tabs from "@/components/Tabs/Tabs";
-import ProfileItem from "@/components/ProfileItem/ProfileItem";
 import RequestItem from "@/components/RequestItem/RequestItem";
 
 import { auth } from "@/services/auth";
@@ -96,8 +95,8 @@ export default async function Page({
       <div className={styles.main__content}>
         <ul className={styles["main__content-list"]}>
           {tab === "friends" ? (
-            savedProfiles?.length > 0 ? (
-              savedProfiles?.map(({ saverProfile, savedProfile }) => (
+            savedProfiles && savedProfiles.length > 0 ? (
+              savedProfiles.map(({ saverProfile, savedProfile }) => (
                 <ProfilePreview
                   key={savedProfile.user_id}
                   profile={
@@ -128,8 +127,8 @@ export default async function Page({
 
           {tab === "requests" ? (
             profile.role === "coach" ? (
-              pendingRequests?.length > 0 ? (
-                pendingRequests?.map((request, index) => (
+              pendingRequests && pendingRequests.length > 0 ? (
+                pendingRequests.map((request, index) => (
                   <RequestItem key={index} request={request} type="received" />
                 ))
               ) : (
@@ -149,8 +148,8 @@ export default async function Page({
                   </div>
                 </div>
               )
-            ) : sentRequests?.length > 0 ? (
-              sentRequests?.map((request, index) => (
+            ) : sentRequests && sentRequests.length > 0 ? (
+              sentRequests.map((request, index) => (
                 <RequestItem key={index} request={request} type="sent" />
               ))
             ) : (
@@ -172,8 +171,8 @@ export default async function Page({
           ) : null}
 
           {tab === "blocked" ? (
-            blockedProfiles?.length > 0 ? (
-              blockedProfiles?.map(({ blockedProfile }) => (
+            blockedProfiles && blockedProfiles.length > 0 ? (
+              blockedProfiles.map(({ blockedProfile }) => (
                 <ProfilePreview
                   key={blockedProfile.user_id}
                   profile={blockedProfile}

@@ -10,8 +10,6 @@ import ActiveChat from "@/components/ActiveChat/ActiveChat";
 import { supabaseClient } from "@/services/supabase.client";
 import { getActiveChats } from "@/services/apiMessages";
 
-import styles from "./ActiveChats.module.scss";
-
 export default function ActiveChats({
   session,
   activeChats: initialActiveChats,

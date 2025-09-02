@@ -3,44 +3,17 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import styles from "./SearchFilter.module.scss";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useState,
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+} from "react";
 import OptionsSVG from "@/assets/icons/options.svg";
 import MultiRangeSlider from "../MultiRangeSlider/MultiRangeSlider";
 import RangeSlider from "../RangeSlider/RangeSlider";
 import type { Session } from "next-auth";
 import LocationInput from "@/components/LocationInput/LocationInput";
-
-interface Inputs {
-  gender: string;
-  minAge: string;
-  maxAge: string;
-  minDistance: string;
-  maxDistance: string;
-}
-
-interface PhotonFeature {
-  type: "Feature";
-  geometry: { type: "Point"; coordinates: [number, number] }; // [lon, lat]
-  properties: {
-    name?: string;
-    country?: string;
-    city?: string;
-    state?: string;
-    street?: string;
-    housenumber?: string;
-    postcode?: string;
-    osm_type?: string;
-    osm_id?: number;
-    [k: string]: any;
-  };
-}
-
-interface SelectedLocation {
-  name: string;
-  lat: number;
-  lon: number;
-  properties: PhotonFeature["properties"];
-}
 
 const SearchFilter = ({
   session,
@@ -71,7 +44,7 @@ const SearchFilter = ({
   const [minAge, setMinAge] = useState<number>(18);
   const [maxAge, setMaxAge] = useState<number>(100);
 
-  function onSubmit(event: SubmitEvent) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setIsOpen(false);
@@ -161,6 +134,7 @@ const SearchFilter = ({
               onClick={() => {
                 setGender("woman");
               }}
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
               className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "woman" && styles["search-filter__option-button--selected"]) || ""}`}
             >
               Woman

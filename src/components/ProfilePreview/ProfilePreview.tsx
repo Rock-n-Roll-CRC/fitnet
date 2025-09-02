@@ -2,14 +2,10 @@
 
 import type { Tables } from "@/types/database";
 
-import { useEffect, useState } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
 
 import Rating from "@/components/Rating/Rating";
-
-import { getCityByCoords } from "@/services/apiLocation";
 
 import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 
@@ -67,7 +63,7 @@ export default function ProfilePreview({
                     />
                     <p className={styles["profile-preview__detail-value"]}>
                       {new Intl.NumberFormat("fr-FR")
-                        .format(profile.hourly_rate)
+                        .format(profile.hourly_rate as number)
                         .replace(/\u00A0/g, " ")}{" "}
                       {profile.hourly_rate_currency}/h
                     </p>
@@ -91,7 +87,7 @@ export default function ProfilePreview({
                     className={styles["profile-preview__detail-icon"]}
                   />
                   <p className={styles["profile-preview__detail-value"]}>
-                    {`${calculateAge(new Date(profile.birthdate))} years old`}
+                    {`${calculateAge(new Date(profile.birthdate as string)).toString()} years old`}
                   </p>
                 </div>
               )}

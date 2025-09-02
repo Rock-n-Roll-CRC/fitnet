@@ -3,8 +3,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Session } from "next-auth";
 
-import { useState } from "react";
-
 import LocationInput from "@/components/LocationInput/LocationInput";
 
 import { updateProfileIsSearching } from "@/services/actions";

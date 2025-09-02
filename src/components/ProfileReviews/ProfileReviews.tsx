@@ -22,7 +22,7 @@ export default function ProfileReviews({
   session: Session;
   profile: Tables<"profiles">;
   reviews: (Tables<"reviews"> & { raterProfile: Tables<"profiles"> })[];
-  sort: "asc" | "desc";
+  sort: string | string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
 

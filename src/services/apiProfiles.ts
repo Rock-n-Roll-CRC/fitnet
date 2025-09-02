@@ -23,29 +23,13 @@ export const getProfileByUserId = async (
   return data;
 };
 
-export const getCoachProfiles = async (filters?: {
-  gender?: string;
-  minAge?: string;
-  maxAge?: string;
-}) => {
+export const getCoachProfiles = async () => {
   const client = (await import("@/services/supabase")).supabase;
 
-  let query = client
+  const query = client
     .from("profiles")
     .select("*, ratings: reviews!ratee_id(*)")
     .eq("role", "coach");
-
-  // if (filters?.gender) {
-  //   query = query.eq("gender", filters.gender);
-  // }
-
-  // if (filters?.minAge) {
-  //   query = query.gte("age", filters.minAge);
-  // }
-
-  // if (filters?.maxAge) {
-  //   query.lte("age", filters.maxAge);
-  // }
 
   const { data, error } = await query;
 

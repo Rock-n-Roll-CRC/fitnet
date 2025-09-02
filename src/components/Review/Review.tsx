@@ -15,8 +15,8 @@ export default function Review({
   const [isOpen, setIsOpen] = useState(false);
 
   const displayedContent =
-    !isOpen && review.content?.length > 150
-      ? review.content?.slice(0, 150).concat("...")
+    !isOpen && review.content && review.content.length > 150
+      ? review.content.slice(0, 150).concat("...")
       : review.content;
 
   function handleToggleIsOpen() {
@@ -51,11 +51,11 @@ export default function Review({
         </div>
       </div>
 
-      {displayedContent?.length > 0 && (
+      {displayedContent && displayedContent.length > 0 && (
         <div className={styles["review__bottom-container"]}>
           <p className={styles.review__content}>{displayedContent}</p>
 
-          {displayedContent?.length > 150 && (
+          {displayedContent.length > 150 && (
             <button
               onClick={handleToggleIsOpen}
               className={styles.review__button}

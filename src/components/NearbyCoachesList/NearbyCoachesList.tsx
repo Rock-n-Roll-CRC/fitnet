@@ -1,6 +1,5 @@
 "use client";
 
-import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
 import Image from "next/image";
@@ -12,14 +11,10 @@ import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
 import styles from "./NearbyCoachesList.module.scss";
 
 export default function NearbyCoachesList({
-  session,
   coaches,
-  selectedCoach,
   blockedCoaches,
 }: {
-  session: Session;
   coaches: (Tables<"profiles"> & { ratings: Tables<"reviews">[] })[];
-  selectedCoach: Tables<"profiles">;
   blockedCoaches: (Tables<"blocked_profiles"> & {
     blockerProfile: Tables<"profiles">;
     blockedProfile: Tables<"profiles">;

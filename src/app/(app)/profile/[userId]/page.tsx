@@ -39,7 +39,7 @@ const Page = async ({
 
   return (
     <>
-      <ProfileHeader session={session} profile={profile} />
+      <ProfileHeader />
 
       <main className={styles.main}>
         <Profile

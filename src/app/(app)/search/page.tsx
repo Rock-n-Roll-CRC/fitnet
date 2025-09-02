@@ -7,11 +7,7 @@ import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 
 import styles from "./page.module.scss";
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) => {
+const Page = async () => {
   const session = await auth();
 
   if (!session) return;
@@ -20,7 +16,7 @@ const Page = async ({
 
   if (!userProfile) return;
 
-  const coaches = await getCoachProfiles(await searchParams);
+  const coaches = await getCoachProfiles();
   const blockedProfiles = await getBlockedProfiles(session.user.id);
 
   return (
@@ -33,11 +29,7 @@ const Page = async ({
           userProfile={userProfile}
         />
       ) : (
-        <CoachSearchPage
-          session={session}
-          isSearching={userProfile.isSearching}
-          userProfile={userProfile}
-        />
+        <CoachSearchPage session={session} userProfile={userProfile} />
       )}
     </main>
   );

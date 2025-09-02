@@ -23,7 +23,7 @@ export default function Rating({
           <ul className={styles.rating__list}>
             {Array.from({ length: 5 }).map((_, index) => (
               <li key={index}>
-                {Math.abs(averageScore) >= index + 1 ? (
+                {Math.abs(+averageScore) >= index + 1 ? (
                   <StarSVG className={styles.rating__star} />
                 ) : (
                   <StarOutlineSVG className={styles.rating__star} />

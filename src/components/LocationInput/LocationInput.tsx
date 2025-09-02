@@ -26,7 +26,7 @@ interface PhotonFeature {
     postcode?: string;
     osm_type?: string;
     osm_id?: number;
-    [k: string]: any;
+    [k: string]: unknown;
   };
 }
 
@@ -129,7 +129,7 @@ export default function LocationInput({
           <li key={index}>
             <button
               type="button"
-              onClick={(event) => {
+              onClick={() => {
                 async function fetchData() {
                   setLocationName(suggestion.name);
                   setUserCoords({

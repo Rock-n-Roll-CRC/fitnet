@@ -5,10 +5,9 @@ import type { Tables } from "@/types/database";
 import dynamic from "next/dynamic";
 
 import styles from "./MapWrapper.module.scss";
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import type { Session } from "next-auth";
 import SearchFilter from "@/components/SearchFilter/SearchFilter";
-import { getProfileByUserId } from "@/services/apiProfiles";
 import CoachSearch from "@/components/CoachSearch/CoachSearch";
 
 interface Coordinates {

@@ -2,7 +2,6 @@
 
 import type { Tables } from "@/types/database";
 
-import Link from "next/link";
 import Image from "next/image";
 
 import {

@@ -1,7 +1,6 @@
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
-import SearchFilter from "@/components/SearchFilter/SearchFilter";
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
 const ClientSearchPage = ({

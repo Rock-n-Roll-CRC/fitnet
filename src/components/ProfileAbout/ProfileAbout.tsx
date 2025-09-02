@@ -70,8 +70,8 @@ export default function ProfileAbout({
             </div>
             {isEditing ? (
               <InputHourlyRate
-                rate={editedProfile.hourly_rate}
-                currency={editedProfile.hourly_rate_currency}
+                rate={editedProfile.hourly_rate as number}
+                currency={editedProfile.hourly_rate_currency as string}
                 onChange={(rate: number, currency: string) => {
                   setEditedProfile((editedProfile) => ({
                     ...editedProfile,
@@ -83,7 +83,7 @@ export default function ProfileAbout({
             ) : (
               <p className={styles["profile-about__detail-value"]}>
                 {new Intl.NumberFormat("fr-FR")
-                  .format(profile.hourly_rate)
+                  .format(profile.hourly_rate as number)
                   .replace(/\u00A0/g, " ")}{" "}
                 {profile.hourly_rate_currency}/h
               </p>
@@ -100,8 +100,16 @@ export default function ProfileAbout({
             {isEditing ? (
               <MultiSelect
                 options={["muscle growth", "weight loss", "yoga"]}
-                value={editedProfile.expertise}
-                onChange={(val: string[]) => {
+                value={
+                  editedProfile.expertise as (
+                    | "muscle growth"
+                    | "weight loss"
+                    | "yoga"
+                  )[]
+                }
+                onChange={(
+                  val: ("muscle growth" | "weight loss" | "yoga")[],
+                ) => {
                   setEditedProfile((editedProfile) => ({
                     ...editedProfile,
                     expertise: val.length > 0 ? val : editedProfile.expertise,
@@ -133,7 +141,12 @@ export default function ProfileAbout({
             {isEditing ? (
               <Select
                 options={["muscle growth", "weight loss", "yoga"]}
-                value={editedProfile.fitness_goal}
+                value={
+                  editedProfile.fitness_goal as
+                    | "muscle growth"
+                    | "weight loss"
+                    | "yoga"
+                }
                 onChange={(fitnessGoal) => {
                   setEditedProfile({
                     ...editedProfile,
@@ -192,7 +205,7 @@ export default function ProfileAbout({
         </div>
         {isEditing ? (
           <InputDate
-            value={editedProfile.birthdate}
+            value={editedProfile.birthdate as string}
             onChange={(date: string) => {
               setEditedProfile({
                 ...editedProfile,
@@ -202,7 +215,7 @@ export default function ProfileAbout({
           />
         ) : (
           <p className={styles["profile-about__detail-value"]}>
-            {`${calculateAge(new Date(profile.birthdate))} years old`}
+            {`${calculateAge(new Date(profile.birthdate as string)).toString()} years old`}
           </p>
         )}
       </div>
