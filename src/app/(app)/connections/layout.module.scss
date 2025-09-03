@@ -1,0 +1,20 @@
+@use "../../../styles/settings" as *;
+@use "../../../styles/tools" as *;
+
+.main {
+  @include flex-shorthand(column, nowrap, $whitespace-5);
+
+  flex: 1;
+  overflow: scroll;
+  scrollbar-gutter: auto;
+  overscroll-behavior: auto;
+
+  &__content {
+    padding: 0 $whitespace-5;
+  }
+
+  &__content-list {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+  }
+}

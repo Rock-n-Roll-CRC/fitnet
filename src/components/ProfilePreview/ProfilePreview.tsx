@@ -9,6 +9,10 @@ import Rating from "@/components/Rating/Rating";
 
 import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 
+import { deleteSavedProfile, unblockProfile } from "@/services/actions";
+
+import { calculateAge } from "@/utilities/helpers";
+
 import LocationOutlineSVG from "@/assets/icons/location-outline.svg";
 import CashOutlineSVG from "@/assets/icons/cash-outline.svg";
 import OpenOutlineSVG from "@/assets/icons/open-outline.svg";
@@ -18,8 +22,6 @@ import BarbellOutlineSVG from "@/assets/icons/barbell-outline.svg";
 import SparklesOutlineSVG from "@/assets/icons/sparkles-outline.svg";
 
 import styles from "./ProfilePreview.module.scss";
-import { calculateAge } from "@/utilities/helpers";
-import { deleteSavedProfile, unblockProfile } from "@/services/actions";
 
 export default function ProfilePreview({
   profile,

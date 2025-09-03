@@ -1,19 +1,23 @@
-import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
+import type { FC, ReactNode, SVGProps } from "react";
 
 import styles from "./EmptyState.module.scss";
 
-export default function EmptyState() {
+export default function EmptyState({
+  illustration: Illustration,
+  heading,
+  description,
+}: {
+  illustration: FC<SVGProps<SVGElement>>;
+  heading: ReactNode;
+  description: ReactNode;
+}) {
   return (
     <div className={styles["empty-state"]}>
-      <FeelingLonelySVG className={styles["empty-state__illustration"]} />
+      <Illustration className={styles["empty-state__illustration"]} />
 
       <div className={styles["empty-state__content"]}>
-        <p className={styles["empty-state__heading"]}>
-          Looks like you have no friends!
-        </p>
-        <p className={styles["empty-state__description"]}>
-          As you add friends, they will appear here.
-        </p>
+        <p className={styles["empty-state__heading"]}>{heading}</p>
+        <p className={styles["empty-state__description"]}>{description}</p>
       </div>
     </div>
   );
