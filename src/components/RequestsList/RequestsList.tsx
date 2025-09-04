@@ -7,7 +7,7 @@ import { useOptimistic } from "react";
 import RequestItem from "@/components/RequestItem/RequestItem";
 import EmptyState from "@/components/EmptyState/EmptyState";
 
-import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
+import EmptySVG from "@/assets/illustrations/empty.svg";
 
 export default function RequestsList({
   isCoach,
@@ -35,7 +35,7 @@ export default function RequestsList({
     ))
   ) : (
     <EmptyState
-      illustration={FeelingLonelySVG}
+      illustration={EmptySVG}
       heading={
         isCoach ? (
           <>Looks like you have no pending requests!</>
@@ -50,6 +50,7 @@ export default function RequestsList({
           <>As you send connection requests, they will appear here.</>
         )
       }
+      ctaText={<>Start searching</>}
     />
   );
 }

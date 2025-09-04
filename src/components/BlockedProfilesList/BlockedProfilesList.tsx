@@ -7,7 +7,7 @@ import { useOptimistic } from "react";
 import ProfilePreview from "@/components/ProfilePreview/ProfilePreview";
 import EmptyState from "@/components/EmptyState/EmptyState";
 
-import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
+import OffRoadSVG from "@/assets/illustrations/off-road.svg";
 
 export default function BlockedProfilesList({
   blockedProfiles,
@@ -41,7 +41,7 @@ export default function BlockedProfilesList({
     ))
   ) : (
     <EmptyState
-      illustration={FeelingLonelySVG}
+      illustration={OffRoadSVG}
       heading={<>Looks like you have no blocked users!</>}
       description={<>As you block users, they will appear here.</>}
     />

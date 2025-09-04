@@ -2,9 +2,13 @@
 @use "../../styles/tools" as *;
 
 .empty-state {
-  @include flex-shorthand(column, nowrap, null, center, center);
+  @include flex-shorthand(column, nowrap, $whitespace-8, center, center);
 
   max-inline-size: 30rem;
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+  }
 
   &__content {
     @include flex-shorthand(column, nowrap, $whitespace-2, center, center);
@@ -25,5 +29,31 @@
   &__description {
     font-size: $font-size-4;
     color: $color-neutral-7;
+  }
+
+  &__cta {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+
+    padding: 1rem 2rem;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    text-decoration: none;
+    cursor: pointer;
+    background: linear-gradient(to right, $color-primary-9, $color-primary-5);
+    border-radius: $border-radius-small;
+    box-shadow: get-shadow(small, $color-primary-5);
+    transition: all 0.15s;
+
+    @media (hover: hover) {
+      &:hover {
+        box-shadow: get-shadow(medium, $color-primary-5);
+      }
+    }
+
+    &:active {
+      box-shadow: get-shadow(small, $color-primary-5);
+    }
   }
 }

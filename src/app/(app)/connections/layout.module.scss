@@ -2,7 +2,7 @@
 @use "../../../styles/tools" as *;
 
 .main {
-  @include flex-shorthand(column, nowrap, $whitespace-5);
+  @include flex-shorthand(column, nowrap, $whitespace-8);
 
   flex: 1;
   overflow: scroll;
@@ -10,7 +10,7 @@
   overscroll-behavior: auto;
 
   &__content {
-    padding: 0 $whitespace-5;
+    padding: 0 $whitespace-7;
   }
 
   &__content-list {

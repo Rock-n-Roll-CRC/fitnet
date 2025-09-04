@@ -8,7 +8,7 @@ import { useOptimistic } from "react";
 import ProfilePreview from "@/components/ProfilePreview/ProfilePreview";
 import EmptyState from "@/components/EmptyState/EmptyState";
 
-import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
+import OnlineCommunitySVG from "@/assets/illustrations/online-community.svg";
 
 export default function SavedProfilesList({
   session,
@@ -47,9 +47,10 @@ export default function SavedProfilesList({
     ))
   ) : (
     <EmptyState
-      illustration={FeelingLonelySVG}
+      illustration={OnlineCommunitySVG}
       heading={<>Looks like you have no friends!</>}
       description={<>As you add friends, they will appear here.</>}
+      ctaText={<>Search for friends</>}
     />
   );
 }
