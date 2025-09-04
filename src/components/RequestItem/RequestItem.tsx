@@ -2,6 +2,7 @@
 
 import type { Tables } from "@/types/database";
 
+import { startTransition } from "react";
 import Image from "next/image";
 
 import {
@@ -16,12 +17,14 @@ import styles from "./RequestItem.module.scss";
 const RequestItem = ({
   request,
   type,
+  onRemove,
 }: {
   request: Tables<"connection_requests"> & {
     senderProfile: Tables<"profiles">;
     receiverProfile: Tables<"profiles">;
   };
   type: "sent" | "received";
+  onRemove?: (action: string) => void;
 }) => {
   const profile =
     type === "sent" ? request.receiverProfile : request.senderProfile;
@@ -50,18 +53,34 @@ const RequestItem = ({
             : `${Math.floor(differenceInDays / 7).toString()} weeks ago`;
 
   async function handleAcceptRequest() {
+    startTransition(() => {
+      onRemove?.(request.id);
+    });
+
     await acceptConnectionRequest(request);
   }
 
   async function handleDeclineRequest() {
+    startTransition(() => {
+      onRemove?.(request.id);
+    });
+
     await declineConnectionRequest(request);
   }
 
   async function handleDeleteRequest() {
+    startTransition(() => {
+      onRemove?.(request.id);
+    });
+
     await deleteConnectionRequest(request);
   }
 
   async function handleBlockProfile(userId: string) {
+    startTransition(() => {
+      onRemove?.(request.id);
+    });
+
     await blockProfile(userId);
   }
 
