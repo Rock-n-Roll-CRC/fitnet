@@ -2,6 +2,7 @@
 
 import type { Tables } from "@/types/database";
 
+import { startTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -35,6 +36,14 @@ export default function ProfilePreview({
   onRemoveProfile?: (action: string) => void;
 }) {
   const onlineUsers = useOnlineUsers();
+
+  async function handleRemoveProfile() {
+    startTransition(() => {
+      onRemoveProfile?.(profile.user_id);
+    });
+
+    await deleteSavedProfile(profile.user_id);
+  }
 
   return (
     <div
@@ -153,9 +162,7 @@ export default function ProfilePreview({
           </Link>
           <button
             onClick={() => {
-              onRemoveProfile?.(profile.user_id);
-
-              void deleteSavedProfile(profile.user_id);
+              void handleRemoveProfile();
             }}
             className={styles["profile-preview__button"]}
           >

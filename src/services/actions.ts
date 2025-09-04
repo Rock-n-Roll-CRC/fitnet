@@ -126,7 +126,7 @@ export const deleteSavedProfile = async (savedUserId: string) => {
       cause: error.cause,
     });
 
-  revalidatePath("/favourites");
+  revalidatePath("/connections");
 };
 
 export const updateProfileLocation = async (
