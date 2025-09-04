@@ -1,6 +1,10 @@
 @use "../../styles/settings" as *;
 @use "../../styles/tools" as *;
 
+.main {
+  flex: 1;
+}
+
 .loading {
   @include size-shorthand(10rem, 10rem);
   @include absolute-shorthand(50%, auto, auto, 50%);
