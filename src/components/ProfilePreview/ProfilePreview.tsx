@@ -45,6 +45,14 @@ export default function ProfilePreview({
     await deleteSavedProfile(profile.user_id);
   }
 
+  async function handleUnblockProfile() {
+    startTransition(() => {
+      onRemoveProfile?.(profile.user_id);
+    });
+
+    await unblockProfile(profile.user_id);
+  }
+
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -175,7 +183,7 @@ export default function ProfilePreview({
         <div className={styles["profile-preview__button-container"]}>
           <button
             onClick={() => {
-              void unblockProfile(profile.user_id);
+              void handleUnblockProfile();
             }}
             className={styles["profile-preview__button"]}
           >
