@@ -3,7 +3,7 @@
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
-import { useOptimistic } from "react";
+import { useOptimistic, useState } from "react";
 
 import ProfilePreview from "@/components/ProfilePreview/ProfilePreview";
 import EmptyState from "@/components/EmptyState/EmptyState";
@@ -12,7 +12,7 @@ import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
 
 export default function SavedProfilesList({
   session,
-  savedProfiles,
+  savedProfiles: initialSavedProfiles,
 }: {
   session: Session;
   savedProfiles: (Tables<"saved_profiles"> & {
@@ -24,6 +24,7 @@ export default function SavedProfilesList({
     };
   })[];
 }) {
+  const [savedProfiles] = useState(initialSavedProfiles);
   const [optimisticSavedProfiles, removeSavedProfile] = useOptimistic(
     savedProfiles,
     (state, userId: string) =>
