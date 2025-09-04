@@ -26,11 +26,13 @@ import styles from "./ProfilePreview.module.scss";
 export default function ProfilePreview({
   profile,
   type,
+  onRemoveProfile,
 }: {
   profile: Tables<"profiles"> & {
     ratings: Tables<"reviews">[];
   };
   type?: "saved" | "blocked";
+  onRemoveProfile?: (action: string) => void;
 }) {
   const onlineUsers = useOnlineUsers();
 
@@ -151,6 +153,8 @@ export default function ProfilePreview({
           </Link>
           <button
             onClick={() => {
+              onRemoveProfile?.(profile.user_id);
+
               void deleteSavedProfile(profile.user_id);
             }}
             className={styles["profile-preview__button"]}
