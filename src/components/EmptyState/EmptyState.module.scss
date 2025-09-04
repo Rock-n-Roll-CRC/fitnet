@@ -4,6 +4,8 @@
 .empty-state {
   @include flex-shorthand(column, nowrap, null, center, center);
 
+  max-inline-size: 30rem;
+
   &__content {
     @include flex-shorthand(column, nowrap, $whitespace-2, center, center);
 
@@ -11,7 +13,7 @@
   }
 
   &__illustration {
-    inline-size: 30rem;
+    @include size-shorthand(100%, 100%);
   }
 
   &__heading {
