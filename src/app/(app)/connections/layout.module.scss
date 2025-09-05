@@ -8,6 +8,7 @@
   overflow: scroll;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
+  background-color: $color-neutral-1;
 
   &__content {
     padding: 0 $whitespace-7;
