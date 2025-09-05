@@ -4,7 +4,7 @@ import EmptyState from "@/components/EmptyState/EmptyState";
 import { auth } from "@/services/auth";
 import { getSavedProfiles } from "@/services/apiSavedProfiles";
 
-import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
+import OnlineCommunitySVG from "@/assets/illustrations/online-community.svg";
 
 export default async function Page() {
   const session = await auth();
@@ -28,7 +28,7 @@ export default async function Page() {
         ))
       ) : (
         <EmptyState
-          illustration={FeelingLonelySVG}
+          illustration={OnlineCommunitySVG}
           heading={<>Looks like you have no friends!</>}
           description={<>As you add friends, they will appear here.</>}
         />

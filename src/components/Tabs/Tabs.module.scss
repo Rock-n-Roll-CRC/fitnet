@@ -4,5 +4,5 @@
 .tabs {
   @include flex-shorthand(row, nowrap, $whitespace-6, center, space-between);
 
-  padding: $whitespace-6;
+  padding: $whitespace-7 $whitespace-6;
 }

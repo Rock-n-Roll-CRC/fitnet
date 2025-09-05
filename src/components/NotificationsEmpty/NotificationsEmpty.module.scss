@@ -2,16 +2,12 @@
 @use "../../styles/tools" as *;
 
 .notifications-empty {
-  @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+  @include flex-shorthand(column, nowrap, $whitespace-7, center);
 
-  position: fixed;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
   flex: 1;
   inline-size: 100%;
   padding: 0 $whitespace-6;
   background-color: $color-neutral-1;
-  transform: translate(-50%, -50%);
 
   &__icon {
     @include size-shorthand(12.5rem, 12.5rem);

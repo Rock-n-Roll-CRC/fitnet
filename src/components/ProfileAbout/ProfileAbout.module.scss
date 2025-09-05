@@ -4,7 +4,7 @@
 .profile-about {
   @include flex-shorthand(column, nowrap, $whitespace-6);
 
-  padding: $whitespace-5;
+  padding: $whitespace-6;
 
   &__detail {
     @include flex-shorthand(row, nowrap, $whitespace-2, center, space-between);

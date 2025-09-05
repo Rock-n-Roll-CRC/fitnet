@@ -11,7 +11,7 @@
   block-size: 20rem;
   padding: $whitespace-6 $whitespace-5;
   overflow: scroll;
-  background-color: $color-neutral-2;
+  background-color: $color-neutral-1;
   border-start-start-radius: $border-radius-large;
   border-start-end-radius: $border-radius-large;
   box-shadow: 0 0 1.5rem $color-neutral-5;
@@ -166,7 +166,7 @@
   &__empty-message {
     font-size: $font-size-5;
     font-weight: $font-weight-bold;
-    color: $color-neutral-8;
+    color: $color-neutral-9;
   }
 
   &__empty-illustration {

@@ -2,17 +2,13 @@
 @use "../../styles/tools" as *;
 
 .empty-chats {
-  @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+  @include flex-shorthand(column, nowrap, $whitespace-7, center);
 
-  position: fixed;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
   flex: 1;
   inline-size: 100%;
   padding: 0 $whitespace-6;
   text-align: center;
   background-color: $color-neutral-1;
-  transform: translate(-50%, -50%);
 
   &__body {
     @include flex-shorthand(column, nowrap, $whitespace-6, center, center);

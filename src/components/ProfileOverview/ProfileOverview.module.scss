@@ -6,7 +6,7 @@
 
   @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
 
-  padding: $whitespace-5;
+  padding: $whitespace-6;
 
   &--online {
     #{$this}__image-wrapper {

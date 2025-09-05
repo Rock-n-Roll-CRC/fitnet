@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import MessagesHeader from "@/components/MessagesHeader/MessagesHeader";
 
-import styles from "./page.module.scss";
+import styles from "./layout.module.scss";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
