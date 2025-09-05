@@ -2,16 +2,16 @@
 @use "../../styles/tools" as *;
 
 .empty-state {
-  @include flex-shorthand(column, nowrap, $whitespace-8, center, center);
+  @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
   max-inline-size: 30rem;
 
   &__body {
-    @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+    @include flex-shorthand(column, nowrap, $whitespace-6, center, center);
   }
 
   &__content {
-    @include flex-shorthand(column, nowrap, $whitespace-2, center, center);
+    @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
 
     text-align: center;
   }
@@ -21,14 +21,17 @@
   }
 
   &__heading {
-    font-size: $font-size-5;
+    font-size: $font-size-7;
     font-weight: $font-weight-bold;
+    line-height: 1.2;
     color: $color-neutral-9;
+    letter-spacing: -0.1rem;
   }
 
   &__description {
     font-size: $font-size-4;
     color: $color-neutral-7;
+    text-align: center;
   }
 
   &__cta {

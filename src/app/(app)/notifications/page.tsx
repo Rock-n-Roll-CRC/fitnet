@@ -8,6 +8,8 @@ import { auth } from "@/services/auth";
 import { getNotifications } from "@/services/apiNotifications";
 import { getProfileByUserId } from "@/services/apiProfiles";
 
+import styles from "./page.module.scss";
+
 const SearchParamsSchema = z.object({
   status: z.enum(["all", "unread", "read"]).default("all"),
   types: z
@@ -38,7 +40,7 @@ export default async function Page({
   const notifications = await getNotifications(session.user.id, filters);
 
   return (
-    <>
+    <main className={styles.main}>
       <NotificationsHeader profile={profile} filters={filters} />
 
       {notifications.length > 0 ? (
@@ -46,6 +48,6 @@ export default async function Page({
       ) : (
         <NotificationsEmpty />
       )}
-    </>
+    </main>
   );
 }

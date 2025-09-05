@@ -2,15 +2,24 @@
 @use "../../styles/tools" as *;
 
 .empty-chats {
-  @include flex-shorthand(column, nowrap, $whitespace-10, center, center);
+  @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
+  position: fixed;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   flex: 1;
-  padding: 0 $whitespace-5;
+  inline-size: 100%;
+  padding: 0 $whitespace-6;
   text-align: center;
   background-color: $color-neutral-1;
+  transform: translate(-50%, -50%);
 
   &__body {
     @include flex-shorthand(column, nowrap, $whitespace-6, center, center);
+  }
+
+  &__text-content {
+    @include flex-shorthand(column, nowrap, $whitespace-5, center, center);
   }
 
   &__icon {
@@ -20,12 +29,14 @@
   &__heading {
     font-size: $font-size-7;
     font-weight: $font-weight-bold;
-    color: $color-neutral-10;
+    line-height: 1.2;
+    color: $color-neutral-9;
+    letter-spacing: -0.1rem;
   }
 
   &__description {
     font-size: $font-size-4;
-    color: $color-neutral-8;
+    color: $color-neutral-7;
     text-align: center;
   }
 

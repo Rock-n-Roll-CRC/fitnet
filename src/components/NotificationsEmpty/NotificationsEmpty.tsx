@@ -7,14 +7,16 @@ export default function NotificationsEmpty() {
     <div className={styles["notifications-empty"]}>
       <InboxSVG className={styles["notifications-empty__icon"]} />
 
-      <h2 className={styles["notifications-empty__heading"]}>
-        No notifications yet
-      </h2>
+      <div className={styles["notifications-empty__text-content"]}>
+        <h2 className={styles["notifications-empty__heading"]}>
+          No notifications yet
+        </h2>
 
-      <p className={styles["notifications-empty__description"]}>
-        Stay tuned! No updates at the moment, but exciting news could be just
-        around the corner.
-      </p>
+        <p className={styles["notifications-empty__description"]}>
+          Stay tuned! No updates at the moment, but exciting news could be just
+          around the corner.
+        </p>
+      </div>
     </div>
   );
 }
