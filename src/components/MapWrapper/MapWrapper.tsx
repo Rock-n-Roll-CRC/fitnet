@@ -39,7 +39,7 @@ const MapWrapper = ({
   const [userCoords, setUserCoords] = useState<{
     lat: number;
     lng: number;
-  }>({ lat: 0, lng: 0 });
+  }>({ lat: 51.5074, lng: 0.1278 });
 
   function handleClick() {
     setIsOpen((isOpen) => !isOpen);
