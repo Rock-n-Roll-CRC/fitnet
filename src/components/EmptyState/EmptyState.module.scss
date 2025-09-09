@@ -4,8 +4,14 @@
 .empty-state {
   @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
+  position: fixed;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   align-self: center;
-  max-inline-size: 30rem;
+  inline-size: 100%;
+  max-inline-size: 32.4rem;
+  padding: 0 2.4rem;
+  transform: translate(-50%, -50%);
 
   &__body {
     @include flex-shorthand(column, nowrap, $whitespace-6, center, center);
