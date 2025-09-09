@@ -2,7 +2,7 @@
 @use "../../../styles/tools" as *;
 
 .main {
-  @include flex-shorthand(column, nowrap, $whitespace-3);
+  @include flex-shorthand(column, nowrap, $whitespace-8);
 
   flex: 1;
   overflow: scroll;
