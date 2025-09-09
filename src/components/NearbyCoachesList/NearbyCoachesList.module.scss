@@ -158,7 +158,7 @@
   }
 
   &__empty-state {
-    @include flex-shorthand(column, nowrap, $whitespace-4, center, center);
+    @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
     text-align: center;
   }

@@ -2,30 +2,41 @@
 @use "../../styles/tools" as *;
 
 .request-item {
-  @include flex-shorthand(column, nowrap, $whitespace-3);
+  @include flex-shorthand(column, nowrap, $whitespace-6, center);
 
+  inline-size: 100%;
   padding: $whitespace-4 0;
   border-block: 0.2rem solid $color-neutral-2;
 
   &__body {
-    @include flex-shorthand(row, nowrap, $whitespace-5, null, null);
+    @include flex-shorthand(column, nowrap, $whitespace-5, center, null);
   }
 
   &__text-content {
-    @include flex-shorthand(column, nowrap, $whitespace-3, null, null);
+    @include flex-shorthand(column, nowrap, $whitespace-4, center, null);
+
+    text-align: center;
   }
 
   &__button-container {
-    @include flex-shorthand(row, wrap, $whitespace-3, null, null);
+    @include flex-shorthand(row, wrap, $whitespace-4, null, null);
 
     margin: auto 0;
   }
 
-  &__image {
-    @include size-shorthand(auto, 100%);
+  &__image-wrapper {
+    @include size-shorthand(10rem, 10rem);
 
-    aspect-ratio: 1/1;
+    position: relative;
+    overflow: hidden;
     border-radius: $border-radius-circle;
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
   }
 
   &__name {

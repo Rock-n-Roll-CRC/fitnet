@@ -86,15 +86,16 @@ const RequestItem = ({
 
   return (
     <div className={styles["request-item"]}>
-      <div className={styles["request-item__body"]}>
+      <div className={styles["request-item__image-wrapper"]}>
         <Image
           src={profile.avatar_url}
-          width={250}
-          height={250}
           alt={profile.full_name}
+          fill
           className={styles["request-item__image"]}
         />
+      </div>
 
+      <div className={styles["request-item__body"]}>
         <div className={styles["request-item__text-content"]}>
           <span className={styles["request-item__name"]}>
             {profile.full_name}
@@ -102,40 +103,40 @@ const RequestItem = ({
           <span className={styles["request-item__invite-date"]}>
             Request sent {differenceStr}
           </span>
+        </div>
 
-          <div className={styles["request-item__button-container"]}>
-            {type === "sent" ? (
-              <>
-                <button
-                  onClick={() => void handleDeleteRequest()}
-                  className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--red"] ?? ""}`}
-                >
-                  Withdraw
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() => void handleAcceptRequest()}
-                  className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--green"] ?? ""}`}
-                >
-                  Accept
-                </button>
-                <button
-                  onClick={() => void handleDeclineRequest()}
-                  className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--transparent"] ?? ""}`}
-                >
-                  Ignore
-                </button>
-                <button
-                  onClick={() => void handleBlockProfile(profile.user_id)}
-                  className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--red"] ?? ""}`}
-                >
-                  Block
-                </button>
-              </>
-            )}
-          </div>
+        <div className={styles["request-item__button-container"]}>
+          {type === "sent" ? (
+            <>
+              <button
+                onClick={() => void handleDeleteRequest()}
+                className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--red"] ?? ""}`}
+              >
+                Withdraw
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => void handleAcceptRequest()}
+                className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--green"] ?? ""}`}
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => void handleDeclineRequest()}
+                className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--transparent"] ?? ""}`}
+              >
+                Ignore
+              </button>
+              <button
+                onClick={() => void handleBlockProfile(profile.user_id)}
+                className={`${styles["request-item__button"] ?? ""} ${styles["request-item__button--red"] ?? ""}`}
+              >
+                Block
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

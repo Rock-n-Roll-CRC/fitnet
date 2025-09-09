@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import ProfilePreview from "@/components/ProfilePreview/ProfilePreview";
 
-import FeelingLonelySVG from "@/assets/illustrations/feeling-lonely.svg";
+import NotFoundSVG from "@/assets/illustrations/not-found.svg";
 
 import styles from "./NearbyCoachesList.module.scss";
 
@@ -78,7 +78,7 @@ export default function NearbyCoachesList({
             There are no coaches nearby. Try to adjust the filters!
           </p>
 
-          <FeelingLonelySVG
+          <NotFoundSVG
             className={styles["nearby-coaches-list__empty-illustration"]}
           />
         </div>
