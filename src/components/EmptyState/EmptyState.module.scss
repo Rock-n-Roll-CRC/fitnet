@@ -4,6 +4,7 @@
 .empty-state {
   @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
+  align-self: center;
   max-inline-size: 30rem;
 
   &__body {
