@@ -172,7 +172,7 @@ export default function ProfilePreview({
             onClick={() => {
               void handleRemoveProfile();
             }}
-            className={styles["profile-preview__button"]}
+            className={`${styles["profile-preview__button"] ?? ""} ${styles["profile-preview__button--danger"] ?? ""}`}
           >
             Remove as a friend
           </button>
@@ -185,7 +185,7 @@ export default function ProfilePreview({
             onClick={() => {
               void handleUnblockProfile();
             }}
-            className={styles["profile-preview__button"]}
+            className={`${styles["profile-preview__button"] ?? ""} ${styles["profile-preview__button--danger"] ?? ""}`}
           >
             Unblock
           </button>

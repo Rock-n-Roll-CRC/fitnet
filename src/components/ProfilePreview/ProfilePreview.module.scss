@@ -140,7 +140,8 @@
     @include flex-shorthand(row, nowrap, null, center, center);
 
     flex: 1;
-    padding: $whitespace-3 $whitespace-5;
+    padding: $whitespace-3 $whitespace-4;
+    font-size: $font-size-3;
     color: $color-neutral-1;
     text-align: center;
     text-decoration: none;
@@ -148,6 +149,10 @@
 
     &:first-child {
       border-inline-end: 0.1rem solid $color-neutral-5;
+    }
+
+    &--danger {
+      background-color: $color-accent-3;
     }
   }
 }
