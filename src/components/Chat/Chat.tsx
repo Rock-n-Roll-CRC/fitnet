@@ -12,6 +12,8 @@ import ChatFooter from "@/components/ChatFooter/ChatFooter";
 import { supabaseClient } from "@/services/supabase.client";
 import { getProfileByUserId } from "@/services/apiProfiles";
 
+import styles from "./Chat.module.scss";
+
 export default function Chat({
   session,
   profile,
@@ -69,12 +71,12 @@ export default function Chat({
   }, [session.user.id]);
 
   return (
-    <>
+    <div className={styles.chat}>
       <ChatHeader profile={profile} />
 
       <ChatMain session={session} messages={messages} />
 
       <ChatFooter profile={profile} />
-    </>
+    </div>
   );
 }

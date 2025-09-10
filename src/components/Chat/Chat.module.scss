@@ -1,0 +1,9 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.chat {
+  @include flex-shorthand(column);
+
+  flex: 1;
+  padding-block-start: $whitespace-6;
+}

@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <main className={styles.main}>
       <MessagesHeader />
 
-      {children}
+      <div className={styles.main__content}>{children}</div>
     </main>
   );
 }

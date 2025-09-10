@@ -1,0 +1,8 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.active-chats {
+  @include remove-list-styles;
+
+  padding-block-start: $whitespace-7;
+}

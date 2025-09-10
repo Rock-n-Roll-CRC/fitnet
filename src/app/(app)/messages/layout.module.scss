@@ -7,4 +7,10 @@
   flex: 1;
   padding: $whitespace-7 $whitespace-6;
   background-color: $color-neutral-1;
+
+  &__content {
+    @include flex-shorthand(column, nowrap);
+
+    flex: 1;
+  }
 }

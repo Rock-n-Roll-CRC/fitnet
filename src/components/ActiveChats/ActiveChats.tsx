@@ -10,6 +10,8 @@ import ActiveChat from "@/components/ActiveChat/ActiveChat";
 import { supabaseClient } from "@/services/supabase.client";
 import { getActiveChats } from "@/services/apiMessages";
 
+import styles from "./ActiveChats.module.scss";
+
 export default function ActiveChats({
   session,
   activeChats: initialActiveChats,
@@ -54,13 +56,12 @@ export default function ActiveChats({
   }, [session.user.id]);
 
   return (
-    <>
+    <ul className={styles["active-chats"]}>
       {activeChats.map((activeChat) => (
-        <ActiveChat
-          key={activeChat.chatPartnerProfile.user_id}
-          activeChat={activeChat}
-        />
+        <li key={activeChat.chatPartnerProfile.user_id}>
+          <ActiveChat activeChat={activeChat} />
+        </li>
       ))}
-    </>
+    </ul>
   );
 }

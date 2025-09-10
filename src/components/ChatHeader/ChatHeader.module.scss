@@ -7,7 +7,6 @@
   @include flex-shorthand(row, nowrap, $whitespace-4, center);
 
   position: sticky;
-  inset-block-start: 11rem;
   z-index: 999;
   align-self: center;
   inline-size: 100%;
