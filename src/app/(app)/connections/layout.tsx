@@ -27,9 +27,7 @@ export default function Page({ children }: { children: ReactNode }) {
         ]}
       />
 
-      <div className={styles.main__content}>
-        <ul className={styles["main__content-list"]}>{children}</ul>
-      </div>
+      <div className={styles.main__content}>{children}</div>
     </main>
   );
 }

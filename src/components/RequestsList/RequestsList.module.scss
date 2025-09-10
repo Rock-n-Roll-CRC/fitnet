@@ -1,0 +1,9 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.requests-list {
+  @include remove-list-styles;
+  @include flex-shorthand(column, nowrap, $whitespace-7, center);
+
+  padding-block-start: $whitespace-8;
+}

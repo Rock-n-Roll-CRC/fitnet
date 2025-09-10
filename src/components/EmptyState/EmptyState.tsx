@@ -6,18 +6,25 @@ import styles from "./EmptyState.module.scss";
 
 export default function EmptyState({
   illustration: Illustration,
+  illustrationType,
   heading,
   description,
   ctaText,
+  ctaLink,
 }: {
   illustration: FC<SVGProps<SVGElement>>;
+  illustrationType?: "shorter" | "short";
   heading: ReactNode;
   description: ReactNode;
   ctaText?: ReactNode;
+  ctaLink?: string;
 }) {
   return (
     <div className={styles["empty-state"]}>
-      <Illustration className={styles["empty-state__illustration"]} />
+      <Illustration
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        className={`${styles["empty-state__illustration"] ?? ""} ${(illustrationType && styles[`empty-state__illustration--${illustrationType}`]) || ""}`}
+      />
 
       <div className={styles["empty-state__body"]}>
         <div className={styles["empty-state__content"]}>
@@ -26,7 +33,10 @@ export default function EmptyState({
         </div>
 
         {ctaText && (
-          <Link href="/search" className={styles["empty-state__cta"]}>
+          <Link
+            href={ctaLink ?? "/search"}
+            className={styles["empty-state__cta"]}
+          >
             {ctaText}
           </Link>
         )}

@@ -1,8 +1,10 @@
 import ActiveChats from "@/components/ActiveChats/ActiveChats";
-import EmptyChats from "@/components/EmptyChats/EmptyChats";
+import EmptyState from "@/components/EmptyState/EmptyState";
 
 import { auth } from "@/services/auth";
 import { getActiveChats } from "@/services/apiMessages";
+
+import BubbleChatSVG from "@/assets/icons/bubble-chat.svg";
 
 export default async function Page() {
   const session = await auth();
@@ -16,7 +18,19 @@ export default async function Page() {
       {activeChats.length > 0 ? (
         <ActiveChats session={session} activeChats={activeChats} />
       ) : (
-        <EmptyChats />
+        <EmptyState
+          illustration={BubbleChatSVG}
+          illustrationType="shorter"
+          heading={<>Start a new conversation!</>}
+          description={
+            <>
+              Tap the button below to begin chatting with someone! You never
+              know what interesting conversations might come up!
+            </>
+          }
+          ctaText={<>Send a Message</>}
+          ctaLink="/messages/start"
+        />
       )}
     </>
   );

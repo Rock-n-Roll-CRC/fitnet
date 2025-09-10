@@ -6,6 +6,7 @@
 
   align-self: center;
   max-inline-size: 30rem;
+  padding-block-start: $whitespace-10;
 
   &__body {
     @include flex-shorthand(column, nowrap, $whitespace-6, center, center);
@@ -18,7 +19,15 @@
   }
 
   &__illustration {
-    @include size-shorthand(100%, 100%);
+    @include size-shorthand(100%, auto);
+
+    &--shorter {
+      max-block-size: 20rem;
+    }
+
+    &--short {
+      max-block-size: 18rem;
+    }
   }
 
   &__heading {

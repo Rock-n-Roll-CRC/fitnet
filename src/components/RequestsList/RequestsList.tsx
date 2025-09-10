@@ -9,6 +9,8 @@ import EmptyState from "@/components/EmptyState/EmptyState";
 
 import EmptySVG from "@/assets/illustrations/empty.svg";
 
+import styles from "./RequestsList.module.scss";
+
 export default function RequestsList({
   isCoach,
   requests,
@@ -25,14 +27,16 @@ export default function RequestsList({
   );
 
   return optimisticRequests.length > 0 ? (
-    optimisticRequests.map((request, index) => (
-      <RequestItem
-        key={index}
-        request={request}
-        type={isCoach ? "received" : "sent"}
-        onRemove={removeRequest}
-      />
-    ))
+    <ul className={styles["requests-list"]}>
+      {optimisticRequests.map((request, index) => (
+        <RequestItem
+          key={index}
+          request={request}
+          type={isCoach ? "received" : "sent"}
+          onRemove={removeRequest}
+        />
+      ))}
+    </ul>
   ) : (
     <EmptyState
       illustration={EmptySVG}

@@ -9,6 +9,8 @@ import EmptyState from "@/components/EmptyState/EmptyState";
 
 import OffRoadSVG from "@/assets/illustrations/off-road.svg";
 
+import styles from "./BlockedProfilesList.module.scss";
+
 export default function BlockedProfilesList({
   blockedProfiles,
 }: {
@@ -31,14 +33,16 @@ export default function BlockedProfilesList({
   );
 
   return optimisticBlockedProfiles.length > 0 ? (
-    optimisticBlockedProfiles.map(({ blockedProfile }) => (
-      <ProfilePreview
-        key={blockedProfile.user_id}
-        profile={blockedProfile}
-        type="blocked"
-        onRemoveProfile={removeProfile}
-      />
-    ))
+    <ul className={styles["blocked-profiles-list"]}>
+      {optimisticBlockedProfiles.map(({ blockedProfile }) => (
+        <ProfilePreview
+          key={blockedProfile.user_id}
+          profile={blockedProfile}
+          type="blocked"
+          onRemoveProfile={removeProfile}
+        />
+      ))}
+    </ul>
   ) : (
     <EmptyState
       illustration={OffRoadSVG}

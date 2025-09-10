@@ -6,7 +6,6 @@
 
   @include flex-shorthand(row, nowrap, null, center, space-between);
 
-  padding: $whitespace-7 $whitespace-6;
   background-color: $color-neutral-1;
 
   &__button {

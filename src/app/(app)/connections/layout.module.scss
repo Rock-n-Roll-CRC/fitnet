@@ -2,20 +2,18 @@
 @use "../../../styles/tools" as *;
 
 .main {
-  @include flex-shorthand(column, nowrap, $whitespace-8);
+  @include flex-shorthand(column, nowrap);
 
   flex: 1;
+  padding: $whitespace-7 $whitespace-6;
   overflow: scroll;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
   background-color: $color-neutral-1;
 
   &__content {
-    padding: 0 $whitespace-6;
-  }
+    @include flex-shorthand(column);
 
-  &__content-list {
-    @include remove-list-styles;
-    @include flex-shorthand(column, nowrap, $whitespace-7, center);
+    flex: 1;
   }
 }
