@@ -2,11 +2,14 @@
 @use "../../styles/tools" as *;
 
 .chat-footer {
-  @include flex-shorthand(row, nowrap, $whitespace-4, center);
+  @include flex-shorthand(row, nowrap, $whitespace-4, center, center);
 
   position: sticky;
   inset-block-end: 8rem;
-  padding: $whitespace-5 $whitespace-3;
+  align-self: center;
+  inline-size: 100%;
+  max-inline-size: 31.7rem;
+  padding: $whitespace-5 $whitespace-4;
   background-color: $color-neutral-1;
   border-radius: $border-radius-large;
   box-shadow: 0 0 1.5rem $color-neutral-5;
@@ -14,6 +17,8 @@
   &__input {
     @include remove-input-styles;
 
+    flex: 1;
+    inline-size: 100%;
     padding: $whitespace-4;
     color: $color-neutral-10;
     background-color: $color-neutral-3;
