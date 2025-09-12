@@ -112,6 +112,7 @@ export default function Chat({
         profile={profile}
         myProfile={myProfile}
         onSendMessage={sendMessage}
+        setAutoScroll={setAutoScroll}
       />
     </div>
   );

@@ -6,7 +6,12 @@ import SendOutlineSVG from "@/assets/icons/send-outline.svg";
 
 import styles from "./ChatFooter.module.scss";
 
-import { startTransition, type FormEvent } from "react";
+import {
+  startTransition,
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+} from "react";
 import type { Session } from "next-auth";
 
 export default function ChatFooter({
@@ -14,6 +19,7 @@ export default function ChatFooter({
   onSendMessage,
   session,
   myProfile,
+  setAutoScroll,
 }: {
   profile: Tables<"profiles">;
   onSendMessage: (
@@ -30,6 +36,7 @@ export default function ChatFooter({
   ) => void;
   session: Session;
   myProfile: Tables<"profiles">;
+  setAutoScroll: Dispatch<SetStateAction<boolean>>;
 }) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -58,6 +65,7 @@ export default function ChatFooter({
     });
 
     event.currentTarget.reset();
+    setAutoScroll(true);
 
     await sendMessage(profile.user_id, formData);
   }
