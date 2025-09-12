@@ -53,7 +53,7 @@ export default function Chat({
   useEffect(() => {
     if (autoScroll)
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [optimisticMessages, autoScroll]);
+  }, [messages, autoScroll]);
 
   useEffect(() => {
     const channelMsgs = supabaseClient
