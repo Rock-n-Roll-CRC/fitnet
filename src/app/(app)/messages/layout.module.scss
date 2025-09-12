@@ -4,6 +4,6 @@
 .main {
   @include flex-shorthand(column, nowrap);
 
-  block-size: calc(100vb - 7.3rem);
+  block-size: calc(100dvb - 7.3rem);
   background-color: $color-neutral-1;
 }
