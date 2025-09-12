@@ -24,4 +24,3 @@ export default Layout;
 // 1) Messages scroll window
 // 2) Save changes optimistic
 // 3) Map positioning
-// 4) Add scroll to bottom functionality on messages page
