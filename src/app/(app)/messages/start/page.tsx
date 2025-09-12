@@ -7,6 +7,8 @@ import { getSavedProfiles } from "@/services/apiSavedProfiles";
 
 import OnlineCommunitySVG from "@/assets/illustrations/online-community.svg";
 
+import styles from "./page.module.scss";
+
 export default async function Page() {
   const session = await auth();
 
@@ -15,7 +17,7 @@ export default async function Page() {
   const savedProfiles = await getSavedProfiles(session.user.id);
 
   return (
-    <>
+    <div className={styles["page-content"]}>
       <MessagesHeader />
 
       {savedProfiles.length > 0 ? (
@@ -36,6 +38,6 @@ export default async function Page() {
           description={<>As you add friends, they will appear here.</>}
         />
       )}
-    </>
+    </div>
   );
 }

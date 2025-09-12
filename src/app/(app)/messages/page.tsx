@@ -7,6 +7,8 @@ import { getActiveChats } from "@/services/apiMessages";
 
 import BubbleChatSVG from "@/assets/icons/bubble-chat.svg";
 
+import styles from "./page.module.scss";
+
 export default async function Page() {
   const session = await auth();
 
@@ -15,7 +17,7 @@ export default async function Page() {
   const activeChats = await getActiveChats(session.user.id);
 
   return (
-    <>
+    <div className={styles["page-content"]}>
       <MessagesHeader />
 
       {activeChats.length > 0 ? (
@@ -35,7 +37,7 @@ export default async function Page() {
           ctaLink="/messages/start"
         />
       )}
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,8 @@
+@use "../../../../styles/settings" as *;
+@use "../../../../styles/tools" as *;
+
+.page-content {
+  @include flex-shorthand(column, nowrap);
+
+  block-size: 100%;
+}

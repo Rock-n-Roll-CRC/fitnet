@@ -4,6 +4,8 @@ import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
 import { getMessages } from "@/services/apiMessages";
 
+import styles from "./page.module.scss";
+
 export default async function Page({
   params,
 }: {
@@ -25,11 +27,13 @@ export default async function Page({
   const messages = await getMessages(userId);
 
   return (
-    <Chat
-      session={session}
-      profile={profile}
-      myProfile={myProfile}
-      messages={messages}
-    />
+    <div className={styles["page-content"]}>
+      <Chat
+        session={session}
+        profile={profile}
+        myProfile={myProfile}
+        messages={messages}
+      />
+    </div>
   );
 }
