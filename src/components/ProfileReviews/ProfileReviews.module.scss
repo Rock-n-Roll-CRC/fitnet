@@ -2,14 +2,14 @@
 @use "../../styles/tools" as *;
 
 .profile-reviews {
-  @include flex-shorthand(column, nowrap, $whitespace-9);
+  @include flex-shorthand(column, nowrap, $whitespace-8);
 
   max-block-size: 55rem;
-  padding: $whitespace-8 $whitespace-5;
+  padding: $whitespace-6;
   overflow: scroll;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
-  background-color: $color-neutral-3;
+  background-color: $color-neutral-1;
 
   &__button {
     @include remove-button-styles;

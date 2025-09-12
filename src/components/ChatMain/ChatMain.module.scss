@@ -5,10 +5,7 @@
   @include flex-shorthand(column, nowrap, $whitespace-8);
 
   flex: 1;
-  padding: $whitespace-7 0;
-  overflow: scroll;
-  scrollbar-gutter: auto;
-  overscroll-behavior: auto;
+  padding-block-end: $whitespace-6;
 
   &__message-box {
     position: relative;

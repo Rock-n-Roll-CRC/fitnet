@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import type { UIEvent } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
+
+import { useEffect, useOptimistic, useRef, useState } from "react";
 
 import ChatHeader from "@/components/ChatHeader/ChatHeader";
 import ChatMain from "@/components/ChatMain/ChatMain";
@@ -17,16 +18,42 @@ import styles from "./Chat.module.scss";
 export default function Chat({
   session,
   profile,
+  myProfile,
   messages: initialMessages,
 }: {
   session: Session;
   profile: Tables<"profiles">;
+  myProfile: Tables<"profiles">;
   messages: (Tables<"messages"> & {
     senderProfile: Tables<"profiles">;
     receiverProfile: Tables<"profiles">;
   })[];
 }) {
   const [messages, setMessages] = useState(initialMessages);
+  const [autoScroll, setAutoScroll] = useState(true);
+  const [optimisticMessages, sendMessage] = useOptimistic(
+    messages,
+    (
+      state,
+      message: Tables<"messages"> & {
+        senderProfile: Tables<"profiles">;
+        receiverProfile: Tables<"profiles">;
+      },
+    ) => [...state, message],
+  );
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  function handleScroll(e: UIEvent<HTMLDivElement>) {
+    const el = e.currentTarget;
+    const atBottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+    setAutoScroll(atBottom);
+  }
+
+  useEffect(() => {
+    if (autoScroll)
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [optimisticMessages, autoScroll]);
 
   useEffect(() => {
     const channelMsgs = supabaseClient
@@ -71,12 +98,21 @@ export default function Chat({
   }, [session.user.id]);
 
   return (
-    <div className={styles.chat}>
+    <div onScroll={handleScroll} className={styles.chat}>
       <ChatHeader profile={profile} />
 
-      <ChatMain session={session} messages={messages} />
+      <ChatMain
+        session={session}
+        messages={optimisticMessages}
+        messagesEndRef={messagesEndRef}
+      />
 
-      <ChatFooter profile={profile} />
+      <ChatFooter
+        session={session}
+        profile={profile}
+        myProfile={myProfile}
+        onSendMessage={sendMessage}
+      />
     </div>
   );
 }

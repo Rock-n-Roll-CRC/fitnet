@@ -1,3 +1,4 @@
+import MessagesHeader from "@/components/MessagesHeader/MessagesHeader";
 import ProfileChatItem from "@/components/ProfileChatItem/ProfileChatItem";
 import EmptyState from "@/components/EmptyState/EmptyState";
 
@@ -15,6 +16,8 @@ export default async function Page() {
 
   return (
     <>
+      <MessagesHeader />
+
       {savedProfiles.length > 0 ? (
         savedProfiles.map(({ created_at, saverProfile, savedProfile }) => (
           <ProfileChatItem

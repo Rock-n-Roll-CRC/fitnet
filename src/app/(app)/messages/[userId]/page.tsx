@@ -18,10 +18,18 @@ export default async function Page({
   if (!session) return;
 
   const profile = await getProfileByUserId(userId);
+  const myProfile = await getProfileByUserId(session.user.id);
 
-  if (!profile) return;
+  if (!profile || !myProfile) return;
 
   const messages = await getMessages(userId);
 
-  return <Chat session={session} profile={profile} messages={messages} />;
+  return (
+    <Chat
+      session={session}
+      profile={profile}
+      myProfile={myProfile}
+      messages={messages}
+    />
+  );
 }

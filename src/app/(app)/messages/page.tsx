@@ -1,3 +1,4 @@
+import MessagesHeader from "@/components/MessagesHeader/MessagesHeader";
 import ActiveChats from "@/components/ActiveChats/ActiveChats";
 import EmptyState from "@/components/EmptyState/EmptyState";
 
@@ -15,6 +16,8 @@ export default async function Page() {
 
   return (
     <>
+      <MessagesHeader />
+
       {activeChats.length > 0 ? (
         <ActiveChats session={session} activeChats={activeChats} />
       ) : (

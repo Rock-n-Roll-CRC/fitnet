@@ -6,6 +6,6 @@
   @include flex-shorthand(column, nowrap, $whitespace-5);
 
   flex: 1;
-  padding: $whitespace-5;
+  padding-block-start: $whitespace-8;
   background-color: $color-neutral-1;
 }

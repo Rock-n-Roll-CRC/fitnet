@@ -19,6 +19,9 @@ export default function ProfileOverview({
   isBlocked,
   setIsEditing,
   isOnline,
+  setIsConnectedOptim,
+  setIsRequestSentOptim,
+  setIsBlockedOptim,
 }: {
   session: Session;
   profile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
@@ -29,6 +32,15 @@ export default function ProfileOverview({
   isBlocked: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   isOnline: boolean;
+  setIsConnectedOptim: (
+    action: boolean | ((pendingState: boolean) => boolean),
+  ) => void;
+  setIsRequestSentOptim: (
+    action: boolean | ((pendingState: boolean) => boolean),
+  ) => void;
+  setIsBlockedOptim: (
+    action: boolean | ((pendingState: boolean) => boolean),
+  ) => void;
 }) {
   return (
     <article
@@ -67,6 +79,9 @@ export default function ProfileOverview({
         isRequestSent={isRequestSent}
         isBlocked={isBlocked}
         setIsEditing={setIsEditing}
+        setIsConnectedOptim={setIsConnectedOptim}
+        setIsRequestSentOptim={setIsRequestSentOptim}
+        setIsBlockedOptim={setIsBlockedOptim}
       />
     </article>
   );

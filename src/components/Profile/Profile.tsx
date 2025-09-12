@@ -3,7 +3,7 @@
 import type { Tables } from "@/types/database";
 import type { Session } from "next-auth";
 
-import { useState } from "react";
+import { useOptimistic, useState } from "react";
 
 import ProfileOverview from "@/components/ProfileOverview/ProfileOverview";
 import ProfileDetails from "@/components/ProfileDetails/ProfileDetails";
@@ -40,18 +40,27 @@ export default function Profile({
   const [editedProfile, setEditedProfile] =
     useState<Tables<"profiles">>(initialEditedProfile);
 
+  const [isConnectedOptim, setIsConnectedOptim] =
+    useOptimistic(isProfileConnected);
+  const [isRequestSentOptim, setIsRequestSentOptim] =
+    useOptimistic(isRequestSent);
+  const [isBlockedOptim, setIsBlockedOptim] = useOptimistic(isProfileBlocked);
+
   return (
     <div className={styles.profile}>
       <ProfileOverview
         session={session}
         profile={profile}
         editedProfile={editedProfile}
-        isEditing={isEditing}
-        isConnected={isProfileConnected}
-        isRequestSent={isRequestSent}
-        isBlocked={isProfileBlocked}
         setIsEditing={setIsEditing}
         isOnline={onlineUsers.includes(profile.user_id)}
+        isEditing={isEditing}
+        isConnected={isConnectedOptim}
+        isRequestSent={isRequestSentOptim}
+        isBlocked={isBlockedOptim}
+        setIsConnectedOptim={setIsConnectedOptim}
+        setIsRequestSentOptim={setIsRequestSentOptim}
+        setIsBlockedOptim={setIsBlockedOptim}
       />
 
       <ProfileDetails

@@ -52,5 +52,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-// Add setup page (on register)

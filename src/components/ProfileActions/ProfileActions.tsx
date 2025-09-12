@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
+import { startTransition, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
@@ -26,6 +26,9 @@ export default function ProfileActions({
   isRequestSent,
   isBlocked,
   setIsEditing,
+  setIsConnectedOptim,
+  setIsRequestSentOptim,
+  setIsBlockedOptim,
 }: {
   session: Session;
   profile: Tables<"profiles">;
@@ -35,6 +38,15 @@ export default function ProfileActions({
   isRequestSent: boolean;
   isBlocked: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  setIsConnectedOptim: (
+    action: boolean | ((pendingState: boolean) => boolean),
+  ) => void;
+  setIsRequestSentOptim: (
+    action: boolean | ((pendingState: boolean) => boolean),
+  ) => void;
+  setIsBlockedOptim: (
+    action: boolean | ((pendingState: boolean) => boolean),
+  ) => void;
 }) {
   async function handleEditClick() {
     if (isEditing) {
@@ -45,19 +57,36 @@ export default function ProfileActions({
     }
   }
 
-  function handleConnectClick() {
+  async function handleConnectClick() {
     if (isConnected) {
-      void deleteSavedProfile(profile.user_id);
+      startTransition(() => {
+        setIsConnectedOptim(false);
+      });
+
+      await deleteSavedProfile(profile.user_id);
     } else {
-      void sendConnectionRequest(profile.user_id);
+      startTransition(() => {
+        setIsRequestSentOptim(true);
+      });
+
+      await sendConnectionRequest(profile.user_id);
     }
   }
 
-  function handleBlockClick() {
+  async function handleBlockClick() {
     if (isBlocked) {
-      void unblockProfile(profile.user_id);
+      startTransition(() => {
+        setIsBlockedOptim(false);
+      });
+
+      await unblockProfile(profile.user_id);
     } else {
-      void blockProfile(profile.user_id);
+      startTransition(() => {
+        setIsRequestSentOptim(false);
+        setIsBlockedOptim(true);
+      });
+
+      await blockProfile(profile.user_id);
     }
   }
 

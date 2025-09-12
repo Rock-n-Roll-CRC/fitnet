@@ -5,7 +5,7 @@
   @include flex-shorthand(row, nowrap, $whitespace-4, center, center);
 
   position: sticky;
-  inset-block-end: 8rem;
+  inset-block-end: 0;
   align-self: center;
   inline-size: 100%;
   max-inline-size: 31.7rem;

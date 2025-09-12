@@ -4,13 +4,12 @@
 .main {
   @include flex-shorthand(column, nowrap);
 
-  flex: 1;
-  padding: $whitespace-7 $whitespace-6;
+  block-size: calc(100vb - 7.3rem);
   background-color: $color-neutral-1;
 
   &__content {
     @include flex-shorthand(column, nowrap);
 
-    flex: 1;
+    block-size: 100%;
   }
 }

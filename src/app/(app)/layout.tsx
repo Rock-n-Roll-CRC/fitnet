@@ -20,3 +20,5 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 };
 
 export default Layout;
+
+// 1) Messages scroll window

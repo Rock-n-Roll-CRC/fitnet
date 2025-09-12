@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
@@ -36,12 +36,14 @@ export default function ProfileDetails({
   const router = useRouter();
   const pathname = usePathname();
 
-  function handleSelectTab(tab: string) {
+  const [currentTab, setCurrentTab] = useState(tab);
+
+  function handleSelectTab(tab: "about" | "reviews") {
+    setCurrentTab(tab);
+
     const searchParams = new URLSearchParams(readonlySearchParams);
-
     searchParams.set("tab", tab);
-
-    router.replace(`${pathname}/?${searchParams.toString()}`);
+    router.replace(`${pathname}?${searchParams.toString()}`, { scroll: false });
   }
 
   return (
@@ -54,7 +56,7 @@ export default function ProfileDetails({
                 handleSelectTab("about");
               }}
               // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["profile-details__tab"] ?? ""} ${(tab === "about" && styles["profile-details__tab--open"]) || ""}`}
+              className={`${styles["profile-details__tab"] ?? ""} ${(currentTab === "about" && styles["profile-details__tab--open"]) || ""}`}
             >
               About
             </button>
@@ -63,13 +65,13 @@ export default function ProfileDetails({
                 handleSelectTab("reviews");
               }}
               // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["profile-details__tab"] ?? ""} ${(tab === "reviews" && styles["profile-details__tab--open"]) || ""}`}
+              className={`${styles["profile-details__tab"] ?? ""} ${(currentTab === "reviews" && styles["profile-details__tab--open"]) || ""}`}
             >
               Reviews
             </button>
           </div>
 
-          {tab === "about" ? (
+          {currentTab === "about" ? (
             <ProfileAbout
               profile={profile}
               isEditing={isEditing}

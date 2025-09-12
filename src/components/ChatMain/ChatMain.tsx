@@ -1,23 +1,27 @@
+import type { RefObject } from "react";
+import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
 import styles from "./ChatMain.module.scss";
-import type { Session } from "next-auth";
 
 export default function ChatMain({
   session,
   messages,
+  messagesEndRef,
 }: {
   session: Session;
   messages: (Tables<"messages"> & {
     senderProfile: Tables<"profiles">;
     receiverProfile: Tables<"profiles">;
   })[];
+  messagesEndRef: RefObject<HTMLDivElement | null>;
 }) {
   return (
     <section className={styles["chat-main"]}>
-      {messages.map((message) => (
+      {messages.map((message, index) => (
         <div
           key={message.id}
+          ref={index === messages.length - 1 ? messagesEndRef : undefined}
           className={`${styles["chat-main__message-box"] ?? ""} ${styles[`chat-main__message-box--${message.sender_id === session.user.id ? "user" : "partner"}`] ?? ""}`}
         >
           {message.content}
