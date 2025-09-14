@@ -16,12 +16,28 @@ import styles from "./ProfileReviews.module.scss";
 export default function ProfileReviews({
   session,
   profile,
-  reviews,
+  myProfile,
+  setOptimisticProfile,
   sort,
 }: {
   session: Session;
-  profile: Tables<"profiles">;
-  reviews: (Tables<"reviews"> & { raterProfile: Tables<"profiles"> })[];
+  profile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  myProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setOptimisticProfile: (
+    action: Tables<"profiles"> & {
+      ratings: (Tables<"reviews"> & {
+        raterProfile: Tables<"profiles">;
+      })[];
+    },
+  ) => void;
   sort: string | string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +46,7 @@ export default function ProfileReviews({
   const router = useRouter();
   const pathname = usePathname();
 
-  const sortedReviews = reviews.sort((a, b) =>
+  const sortedReviews = profile.ratings.sort((a, b) =>
     sort === "asc"
       ? new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       : new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
@@ -46,7 +62,7 @@ export default function ProfileReviews({
 
   return (
     <div className={styles["profile-reviews"]}>
-      {reviews.length > 0 ? (
+      {profile.ratings.length > 0 ? (
         <>
           <button
             onClick={handleToggleSort}
@@ -99,6 +115,8 @@ export default function ProfileReviews({
       <ReviewModal
         session={session}
         rateeProfile={profile}
+        raterProfile={myProfile}
+        setOptimisticProfile={setOptimisticProfile}
         onClose={() => {
           setIsOpen(false);
         }}

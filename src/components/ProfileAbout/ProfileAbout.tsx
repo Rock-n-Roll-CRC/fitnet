@@ -25,11 +25,25 @@ export default function ProfileAbout({
   setEditedProfile,
 }: {
   profile: Tables<"profiles"> & {
-    ratings: Tables<"reviews">[];
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
   };
   isEditing: boolean;
-  editedProfile: Tables<"profiles">;
-  setEditedProfile: Dispatch<SetStateAction<Tables<"profiles">>>;
+  editedProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setEditedProfile: Dispatch<
+    SetStateAction<
+      Tables<"profiles"> & {
+        ratings: (Tables<"reviews"> & {
+          raterProfile: Tables<"profiles">;
+        })[];
+      }
+    >
+  >;
 }) {
   return (
     <div className={styles["profile-about"]}>

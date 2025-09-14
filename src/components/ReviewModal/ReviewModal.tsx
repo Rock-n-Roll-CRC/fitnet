@@ -1,7 +1,7 @@
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import Image from "next/image";
 
 import RatingSet from "@/components/RatingSet/RatingSet";
@@ -11,16 +11,33 @@ import { postReview } from "@/services/actions";
 import CloseOutlineSVG from "@/assets/icons/close-outline.svg";
 
 import styles from "./ReviewModal.module.scss";
-import toast from "react-hot-toast";
 
 export default function ReviewModal({
   session,
   rateeProfile,
+  raterProfile,
+  setOptimisticProfile,
   onClose,
   isOpen,
 }: {
   session: Session;
-  rateeProfile: Tables<"profiles">;
+  rateeProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  raterProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setOptimisticProfile: (
+    action: Tables<"profiles"> & {
+      ratings: (Tables<"reviews"> & {
+        raterProfile: Tables<"profiles">;
+      })[];
+    },
+  ) => void;
   onClose: () => void;
   isOpen: boolean;
 }) {
@@ -31,13 +48,39 @@ export default function ReviewModal({
     if (!rating) return;
 
     onClose();
-    try {
-      await postReview(session.user.id, rateeProfile.user_id, rating, text);
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong",
-      );
-    }
+
+    const tempReview: Tables<"reviews"> & { raterProfile: Tables<"profiles"> } =
+      {
+        content: text,
+        ratee_id: rateeProfile.user_id,
+        rater_id: session.user.id,
+        rating,
+        id: crypto.randomUUID(),
+        created_at: new Date().toISOString(),
+        raterProfile,
+      };
+
+    startTransition(() => {
+      setOptimisticProfile({
+        ...rateeProfile,
+        ratings: rateeProfile.ratings.some(
+          (review) =>
+            review.ratee_id === rateeProfile.user_id &&
+            review.rater_id === session.user.id,
+        )
+          ? [
+              ...rateeProfile.ratings.filter(
+                (review) =>
+                  review.ratee_id !== rateeProfile.user_id &&
+                  review.rater_id !== session.user.id,
+              ),
+              tempReview,
+            ]
+          : [...rateeProfile.ratings, tempReview],
+      });
+    });
+
+    await postReview(session.user.id, rateeProfile.user_id, rating, text);
   }
 
   return (

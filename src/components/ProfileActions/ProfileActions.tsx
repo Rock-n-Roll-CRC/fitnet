@@ -20,6 +20,7 @@ import styles from "./ProfileActions.module.scss";
 export default function ProfileActions({
   session,
   profile,
+  setOptimisticProfile,
   editedProfile,
   isEditing,
   isConnected,
@@ -31,8 +32,23 @@ export default function ProfileActions({
   setIsBlockedOptim,
 }: {
   session: Session;
-  profile: Tables<"profiles">;
-  editedProfile: Tables<"profiles">;
+  profile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setOptimisticProfile: (
+    action: Tables<"profiles"> & {
+      ratings: (Tables<"reviews"> & {
+        raterProfile: Tables<"profiles">;
+      })[];
+    },
+  ) => void;
+  editedProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
   isEditing: boolean;
   isConnected: boolean;
   isRequestSent: boolean;
@@ -48,10 +64,17 @@ export default function ProfileActions({
     action: boolean | ((pendingState: boolean) => boolean),
   ) => void;
 }) {
+  const { ratings, ...newProfile } = editedProfile;
+
   async function handleEditClick() {
     if (isEditing) {
-      await updateProfile(editedProfile);
+      startTransition(() => {
+        setOptimisticProfile(editedProfile);
+      });
+
       setIsEditing(false);
+
+      await updateProfile(newProfile);
     } else {
       setIsEditing(true);
     }

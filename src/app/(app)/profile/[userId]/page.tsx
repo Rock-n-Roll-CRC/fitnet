@@ -21,8 +21,9 @@ const Page = async ({
   if (!session) return;
 
   const profile = await getProfileByUserId((await params).userId);
+  const myProfile = await getProfileByUserId(session.user.id);
 
-  if (!profile) return;
+  if (!profile || !myProfile) return;
 
   const tab = (await searchParams).tab ?? "about";
   const sort = (await searchParams).sort ?? "desc";
@@ -45,6 +46,7 @@ const Page = async ({
         <Profile
           session={session}
           profile={profile}
+          myProfile={myProfile}
           isProfileConnected={isProfileConnected}
           isProfileBlocked={isProfileBlocked}
           isRequestSent={isRequestSentVar}

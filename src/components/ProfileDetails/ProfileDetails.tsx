@@ -14,6 +14,8 @@ import styles from "./ProfileDetails.module.scss";
 export default function ProfileDetails({
   session,
   profile,
+  myProfile,
+  setOptimisticProfile,
   isEditing,
   editedProfile,
   setEditedProfile,
@@ -26,9 +28,33 @@ export default function ProfileDetails({
       raterProfile: Tables<"profiles">;
     })[];
   };
+  myProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setOptimisticProfile: (
+    action: Tables<"profiles"> & {
+      ratings: (Tables<"reviews"> & {
+        raterProfile: Tables<"profiles">;
+      })[];
+    },
+  ) => void;
   isEditing: boolean;
-  editedProfile: Tables<"profiles">;
-  setEditedProfile: Dispatch<SetStateAction<Tables<"profiles">>>;
+  editedProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setEditedProfile: Dispatch<
+    SetStateAction<
+      Tables<"profiles"> & {
+        ratings: (Tables<"reviews"> & {
+          raterProfile: Tables<"profiles">;
+        })[];
+      }
+    >
+  >;
   tab: string | string[];
   sort: string | string[];
 }) {
@@ -82,7 +108,8 @@ export default function ProfileDetails({
             <ProfileReviews
               session={session}
               profile={profile}
-              reviews={profile.ratings}
+              myProfile={myProfile}
+              setOptimisticProfile={setOptimisticProfile}
               sort={sort}
             />
           )}

@@ -15,6 +15,7 @@ import styles from "./Profile.module.scss";
 export default function Profile({
   session,
   profile,
+  myProfile,
   isProfileConnected,
   isProfileBlocked,
   isRequestSent,
@@ -27,18 +28,21 @@ export default function Profile({
       raterProfile: Tables<"profiles">;
     })[];
   };
+  myProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
   isProfileConnected: boolean;
   isProfileBlocked: boolean;
   isRequestSent: boolean;
   tab: string | string[];
   sort: string | string[];
 }) {
-  const { ratings, ...initialEditedProfile } = profile;
-
   const onlineUsers = useOnlineUsers();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedProfile, setEditedProfile] =
-    useState<Tables<"profiles">>(initialEditedProfile);
+  const [editedProfile, setEditedProfile] = useState(profile);
+  const [optimisticProfile, setOptimisticProfile] = useOptimistic(profile);
 
   const [isConnectedOptim, setIsConnectedOptim] =
     useOptimistic(isProfileConnected);
@@ -50,7 +54,8 @@ export default function Profile({
     <div className={styles.profile}>
       <ProfileOverview
         session={session}
-        profile={profile}
+        profile={optimisticProfile}
+        setOptimisticProfile={setOptimisticProfile}
         editedProfile={editedProfile}
         setIsEditing={setIsEditing}
         isOnline={onlineUsers.includes(profile.user_id)}
@@ -65,7 +70,9 @@ export default function Profile({
 
       <ProfileDetails
         session={session}
-        profile={profile}
+        profile={optimisticProfile}
+        myProfile={myProfile}
+        setOptimisticProfile={setOptimisticProfile}
         isEditing={isEditing}
         editedProfile={editedProfile}
         setEditedProfile={setEditedProfile}

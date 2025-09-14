@@ -12,6 +12,7 @@ import styles from "./ProfileOverview.module.scss";
 export default function ProfileOverview({
   session,
   profile,
+  setOptimisticProfile,
   editedProfile,
   isEditing,
   isConnected,
@@ -24,8 +25,23 @@ export default function ProfileOverview({
   setIsBlockedOptim,
 }: {
   session: Session;
-  profile: Tables<"profiles"> & { ratings: Tables<"reviews">[] };
-  editedProfile: Tables<"profiles">;
+  profile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
+  setOptimisticProfile: (
+    action: Tables<"profiles"> & {
+      ratings: (Tables<"reviews"> & {
+        raterProfile: Tables<"profiles">;
+      })[];
+    },
+  ) => void;
+  editedProfile: Tables<"profiles"> & {
+    ratings: (Tables<"reviews"> & {
+      raterProfile: Tables<"profiles">;
+    })[];
+  };
   isEditing: boolean;
   isConnected: boolean;
   isRequestSent: boolean;
@@ -73,6 +89,7 @@ export default function ProfileOverview({
       <ProfileActions
         session={session}
         profile={profile}
+        setOptimisticProfile={setOptimisticProfile}
         editedProfile={editedProfile}
         isEditing={isEditing}
         isConnected={isConnected}
