@@ -64,8 +64,6 @@ export default function Chat({
   }
 
   useEffect(() => {
-    console.log(unreadMessagesRef.current);
-
     if (!unreadMessagesRef.current) return;
 
     observerRef.current ??= new IntersectionObserver(
