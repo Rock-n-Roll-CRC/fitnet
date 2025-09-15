@@ -1,6 +1,5 @@
 "use client";
 
-import type { UIEvent } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
