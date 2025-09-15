@@ -14,6 +14,7 @@ import { getProfileByUserId } from "@/services/apiProfiles";
 
 import styles from "./Chat.module.scss";
 import { sendMessage } from "@/services/actions";
+import { readMessage } from "@/services/apiMessages";
 
 export default function Chat({
   session,
@@ -32,7 +33,10 @@ export default function Chat({
   const [messages, setMessages] = useState(initialMessages);
   const [autoScroll, setAutoScroll] = useState(true);
 
+  const messageContainerRef = useRef<HTMLElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const unreadMessagesRef = useRef<HTMLDivElement[]>(null);
+  const observerRef = useRef<IntersectionObserver>(null);
 
   async function handleSendMessageOptimistic(content: string) {
     const clientId = crypto.randomUUID();
@@ -60,6 +64,48 @@ export default function Chat({
   }
 
   useEffect(() => {
+    console.log(unreadMessagesRef.current);
+
+    if (!unreadMessagesRef.current) return;
+
+    observerRef.current ??= new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = (entry.target as HTMLElement).dataset.id;
+            const isRead = messages.find(
+              (message) => message.id === id,
+            )?.is_read;
+
+            if (!id) return;
+            if (isRead) return;
+
+            setMessages((messages) =>
+              messages.map((message) =>
+                message.id === id ? { ...message, is_read: true } : message,
+              ),
+            );
+
+            void readMessage(id);
+
+            observerRef.current?.unobserve(entry.target);
+          }
+        });
+      },
+      { root: null, threshold: 0.1 },
+    );
+
+    unreadMessagesRef.current.forEach((messageEl) => {
+      observerRef.current?.observe(messageEl);
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+      observerRef.current = null;
+    };
+  }, [messages]);
+
+  useEffect(() => {
     const io = new IntersectionObserver(([entry]) => {
       setAutoScroll(entry?.isIntersecting ?? false);
     });
@@ -75,7 +121,7 @@ export default function Chat({
     if (autoScroll)
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
+  }, [messages.length]);
 
   useEffect(() => {
     const channelMsgs = supabaseClient
@@ -119,6 +165,23 @@ export default function Chat({
           }
         },
       )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "messages" },
+        (payload) => {
+          const updatedMessage = payload.new as Tables<"messages">;
+
+          if (updatedMessage.sender_id === session.user.id) {
+            setMessages((messages) =>
+              messages.map((message) =>
+                message.id === updatedMessage.id
+                  ? { ...message, ...updatedMessage }
+                  : message,
+              ),
+            );
+          }
+        },
+      )
       .subscribe();
 
     return () => {
@@ -133,7 +196,9 @@ export default function Chat({
       <ChatMain
         session={session}
         messages={messages}
+        messageContainerRef={messageContainerRef}
         messagesEndRef={messagesEndRef}
+        unreadMessagesRef={unreadMessagesRef}
       />
 
       <ChatFooter onSendMessage={handleSendMessageOptimistic} />

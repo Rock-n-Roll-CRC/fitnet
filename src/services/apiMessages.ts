@@ -80,3 +80,14 @@ export const getMessage = async (id: string) => {
 
   return data;
 };
+
+export const readMessage = async (id: string) => {
+  const { error } = await (
+    await import("@/services/supabase.client")
+  ).supabaseClient
+    .from("messages")
+    .update({ is_read: true })
+    .eq("id", id);
+
+  if (error) throw new Error(`Failed to read a message: ${error.message}`);
+};

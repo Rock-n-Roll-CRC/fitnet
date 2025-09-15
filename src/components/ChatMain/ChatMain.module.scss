@@ -2,6 +2,8 @@
 @use "../../styles/tools" as *;
 
 .chat-main {
+  $this: &;
+
   @include flex-shorthand(column, nowrap, $whitespace-8);
 
   flex: 1;
@@ -27,10 +29,23 @@
     }
   }
 
-  &__message-time {
+  &__message-read {
     @include absolute-shorthand(auto, 0, -2.5rem, auto);
+    @include flex-shorthand(row, nowrap, $whitespace-2, center);
 
     font-size: $font-size-2;
+    color: $color-neutral-7;
+
+    &--read {
+      #{$this}__message-read-icon {
+        color: $color-primary-10;
+      }
+    }
+  }
+
+  &__message-read-icon {
+    @include size-shorthand(1.5rem, 1.5rem);
+
     color: $color-neutral-7;
   }
 }
