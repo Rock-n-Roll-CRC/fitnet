@@ -1,4 +1,4 @@
-import type { Dispatch, FormEvent, SetStateAction } from "react";
+import type { FormEvent } from "react";
 
 import SendOutlineSVG from "@/assets/icons/send-outline.svg";
 
@@ -6,10 +6,8 @@ import styles from "./ChatFooter.module.scss";
 
 export default function ChatFooter({
   onSendMessage,
-  setAutoScroll,
 }: {
   onSendMessage: (content: string) => Promise<void>;
-  setAutoScroll: Dispatch<SetStateAction<boolean>>;
 }) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -23,8 +21,6 @@ export default function ChatFooter({
     event.currentTarget.reset();
 
     await onSendMessage(content);
-
-    setAutoScroll(true);
   }
 
   return (

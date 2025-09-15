@@ -54,6 +54,8 @@ export default function Chat({
 
     setMessages((messages) => [...messages, message]);
 
+    setAutoScroll(true);
+
     await sendMessage(newMessage);
   }
 
@@ -127,10 +129,7 @@ export default function Chat({
         messagesEndRef={messagesEndRef}
       />
 
-      <ChatFooter
-        onSendMessage={handleSendMessageOptimistic}
-        setAutoScroll={setAutoScroll}
-      />
+      <ChatFooter onSendMessage={handleSendMessageOptimistic} />
     </div>
   );
 }
