@@ -1,41 +1,14 @@
-import type { Tables } from "@/types/database";
-
-import { sendMessage } from "@/services/actions";
+import type { Dispatch, FormEvent, SetStateAction } from "react";
 
 import SendOutlineSVG from "@/assets/icons/send-outline.svg";
 
 import styles from "./ChatFooter.module.scss";
 
-import {
-  startTransition,
-  type Dispatch,
-  type FormEvent,
-  type SetStateAction,
-} from "react";
-import type { Session } from "next-auth";
-
 export default function ChatFooter({
-  profile,
   onSendMessage,
-  session,
-  myProfile,
   setAutoScroll,
 }: {
-  profile: Tables<"profiles">;
-  onSendMessage: (
-    action: {
-      content: string;
-      created_at: string;
-      id: string;
-      receiver_id: string;
-      sender_id: string;
-    } & {
-      senderProfile: Tables<"profiles">;
-      receiverProfile: Tables<"profiles">;
-    },
-  ) => void;
-  session: Session;
-  myProfile: Tables<"profiles">;
+  onSendMessage: (content: string) => Promise<void>;
   setAutoScroll: Dispatch<SetStateAction<boolean>>;
 }) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -47,27 +20,11 @@ export default function ChatFooter({
 
     if (!content || content.trim().length === 0) return;
 
-    const tempMessage: Tables<"messages"> & {
-      senderProfile: Tables<"profiles">;
-      receiverProfile: Tables<"profiles">;
-    } = {
-      content,
-      created_at: new Date().toISOString(),
-      id: crypto.randomUUID(),
-      receiver_id: profile.user_id,
-      sender_id: session.user.id,
-      receiverProfile: profile,
-      senderProfile: myProfile,
-    };
-
-    startTransition(() => {
-      onSendMessage(tempMessage);
-    });
-
     event.currentTarget.reset();
-    setAutoScroll(true);
 
-    await sendMessage(profile.user_id, formData);
+    await onSendMessage(content);
+
+    setAutoScroll(true);
   }
 
   return (

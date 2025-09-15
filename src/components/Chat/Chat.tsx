@@ -4,7 +4,7 @@ import type { UIEvent } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
-import { useEffect, useOptimistic, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import ChatHeader from "@/components/ChatHeader/ChatHeader";
 import ChatMain from "@/components/ChatMain/ChatMain";
@@ -14,6 +14,7 @@ import { supabaseClient } from "@/services/supabase.client";
 import { getProfileByUserId } from "@/services/apiProfiles";
 
 import styles from "./Chat.module.scss";
+import { sendMessage } from "@/services/actions";
 
 export default function Chat({
   session,
@@ -31,18 +32,30 @@ export default function Chat({
 }) {
   const [messages, setMessages] = useState(initialMessages);
   const [autoScroll, setAutoScroll] = useState(true);
-  const [optimisticMessages, sendMessage] = useOptimistic(
-    messages,
-    (
-      state,
-      message: Tables<"messages"> & {
-        senderProfile: Tables<"profiles">;
-        receiverProfile: Tables<"profiles">;
-      },
-    ) => [...state, message],
-  );
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  async function handleSendMessageOptimistic(content: string) {
+    const clientId = crypto.randomUUID();
+
+    const message: Tables<"messages"> & {
+      senderProfile: Tables<"profiles">;
+      receiverProfile: Tables<"profiles">;
+    } = {
+      id: clientId,
+      sender_id: session.user.id,
+      receiver_id: profile.user_id,
+      senderProfile: myProfile,
+      receiverProfile: profile,
+      content,
+      created_at: new Date().toISOString(),
+    };
+    const { senderProfile, receiverProfile, ...newMessage } = message;
+
+    setMessages((messages) => [...messages, message]);
+
+    await sendMessage(newMessage);
+  }
 
   function handleScroll(e: UIEvent<HTMLDivElement>) {
     const el = e.currentTarget;
@@ -80,10 +93,17 @@ export default function Chat({
 
               if (!senderProfile || !receiverProfile) return;
 
-              setMessages((messages) => [
-                ...messages,
-                { ...newMessage, senderProfile, receiverProfile },
-              ]);
+              const serverRow = {
+                ...newMessage,
+                senderProfile,
+                receiverProfile,
+              };
+
+              setMessages((messages) =>
+                messages.some((message) => message.id === newMessage.id)
+                  ? messages
+                  : [...messages, serverRow],
+              );
             }
 
             void fetchData();
@@ -103,15 +123,12 @@ export default function Chat({
 
       <ChatMain
         session={session}
-        messages={optimisticMessages}
+        messages={messages}
         messagesEndRef={messagesEndRef}
       />
 
       <ChatFooter
-        session={session}
-        profile={profile}
-        myProfile={myProfile}
-        onSendMessage={sendMessage}
+        onSendMessage={handleSendMessageOptimistic}
         setAutoScroll={setAutoScroll}
       />
     </div>

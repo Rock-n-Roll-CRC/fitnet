@@ -418,16 +418,10 @@ export const declineConnectionRequestByIds = async (
     );
 };
 
-export const sendMessage = async (userId: string, formData: FormData) => {
-  const session = await auth();
-
-  if (!session) return;
-
-  const content = formData.get("message") as string;
-
+export const sendMessage = async (message: Tables<"messages">) => {
   const { error } = await supabase
     .from("messages")
-    .insert({ content, sender_id: session.user.id, receiver_id: userId })
+    .insert(message)
     .select()
     .single();
 
@@ -437,9 +431,9 @@ export const sendMessage = async (userId: string, formData: FormData) => {
     });
 
   const { error: notifError } = await supabase.from("notifications").insert({
-    user_id: userId,
+    user_id: message.receiver_id,
     type: "NEW_MESSAGE",
-    sender_id: session.user.id,
+    sender_id: message.sender_id,
   });
 
   if (notifError)

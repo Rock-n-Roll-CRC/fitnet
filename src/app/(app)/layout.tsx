@@ -22,5 +22,3 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 export default Layout;
 
 // 1) Messages scroll window
-// 2) Save changes optimistic
-// 3) Map positioning
