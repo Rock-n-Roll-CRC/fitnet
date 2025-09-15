@@ -48,6 +48,7 @@ export default function Chat({
       senderProfile: myProfile,
       receiverProfile: profile,
       content,
+      is_read: false,
       created_at: new Date().toISOString(),
     };
     const { senderProfile, receiverProfile, ...newMessage } = message;
@@ -59,16 +60,23 @@ export default function Chat({
     await sendMessage(newMessage);
   }
 
-  function handleScroll(e: UIEvent<HTMLDivElement>) {
-    const el = e.currentTarget;
-    const atBottom = el.scrollHeight - el.scrollTop === el.clientHeight;
-    setAutoScroll(atBottom);
-  }
+  useEffect(() => {
+    const io = new IntersectionObserver(([entry]) => {
+      setAutoScroll(entry?.isIntersecting ?? false);
+    });
+
+    if (messagesEndRef.current) io.observe(messagesEndRef.current);
+
+    return () => {
+      io.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (autoScroll)
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, autoScroll]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   useEffect(() => {
     const channelMsgs = supabaseClient
@@ -120,7 +128,7 @@ export default function Chat({
   }, [session.user.id]);
 
   return (
-    <div onScroll={handleScroll} className={styles.chat}>
+    <div className={styles.chat}>
       <ChatHeader profile={profile} />
 
       <ChatMain
