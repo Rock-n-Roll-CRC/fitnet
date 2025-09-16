@@ -34,6 +34,9 @@ ol[role="list"] {
 
 /* Set core body defaults */
 body {
+  position: fixed;
+  height: 100%;
+  overscroll-behavior: none;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
