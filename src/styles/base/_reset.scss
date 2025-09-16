@@ -24,8 +24,6 @@ html {
   -moz-text-size-adjust: none;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
-
-  min-height: 100vh;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
@@ -36,7 +34,7 @@ ol[role="list"] {
 
 /* Set core body defaults */
 body {
-  height: 100%;
+  min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
