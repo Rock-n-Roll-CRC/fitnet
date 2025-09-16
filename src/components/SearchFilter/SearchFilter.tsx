@@ -76,86 +76,88 @@ const SearchFilter = ({
       </button>
 
       <form onSubmit={onSubmit} className={styles["search-filter__body"]}>
-        <div className={styles["search-filter__top-container"]}>
-          <h2 className={styles["search-filter__heading"]}>Filters</h2>
+        <div className={styles["search-filter__big-container"]}>
+          <div className={styles["search-filter__top-container"]}>
+            <h2 className={styles["search-filter__heading"]}>Filters</h2>
 
-          <button
-            type="button"
-            onClick={clearFilters}
-            className={styles["search-filter__clear-button"]}
-          >
-            Clear filters
-          </button>
-        </div>
-
-        <div className={styles["search-filter__input-group-wrapper"]}>
-          <LocationInput
-            session={session}
-            userCoords={userCoords}
-            setUserCoords={setUserCoords}
-          />
-
-          <span className={styles["search-filter__label"]}>
-            Location range | {locationRange}km
-          </span>
-
-          <RangeSlider
-            min={1}
-            max={100}
-            value={locationRange}
-            onChange={(value) => {
-              setLocationRange(value);
-            }}
-          />
-        </div>
-
-        <div className={styles["search-filter__input-group-wrapper"]}>
-          <h3 className={styles["search-filter__label"]}>Gender</h3>
-
-          <div
-            id="gender"
-            defaultValue={searchParamsReadOnly.get("gender") ?? "male"}
-            className={styles["search-filter__button-group"]}
-          >
             <button
-              value="male"
               type="button"
-              onClick={() => {
-                setGender("man");
-              }}
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "man" && styles["search-filter__option-button--selected"]) || ""}`}
+              onClick={clearFilters}
+              className={styles["search-filter__clear-button"]}
             >
-              Man
-            </button>
-            <button
-              value="female"
-              type="button"
-              onClick={() => {
-                setGender("woman");
-              }}
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "woman" && styles["search-filter__option-button--selected"]) || ""}`}
-            >
-              Woman
+              Clear filters
             </button>
           </div>
-        </div>
 
-        <div className={styles["search-filter__input-group-wrapper"]}>
-          <span className={styles["search-filter__label"]}>
-            Age range | {minAge} - {maxAge}
-          </span>
+          <div className={styles["search-filter__input-group-wrapper"]}>
+            <LocationInput
+              session={session}
+              userCoords={userCoords}
+              setUserCoords={setUserCoords}
+            />
 
-          <MultiRangeSlider
-            min={18}
-            max={100}
-            value={{ min: minAge, max: maxAge }}
-            onChange={({ min, max }) => {
-              setMinAge(min);
-              setMaxAge(max);
-            }}
-          />
+            <span className={styles["search-filter__label"]}>
+              Location range | {locationRange}km
+            </span>
+
+            <RangeSlider
+              min={1}
+              max={100}
+              value={locationRange}
+              onChange={(value) => {
+                setLocationRange(value);
+              }}
+            />
+          </div>
+
+          <div className={styles["search-filter__input-group-wrapper"]}>
+            <h3 className={styles["search-filter__label"]}>Gender</h3>
+
+            <div
+              id="gender"
+              defaultValue={searchParamsReadOnly.get("gender") ?? "male"}
+              className={styles["search-filter__button-group"]}
+            >
+              <button
+                value="male"
+                type="button"
+                onClick={() => {
+                  setGender("man");
+                }}
+                // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+                className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "man" && styles["search-filter__option-button--selected"]) || ""}`}
+              >
+                Man
+              </button>
+              <button
+                value="female"
+                type="button"
+                onClick={() => {
+                  setGender("woman");
+                }}
+                // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+                className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "woman" && styles["search-filter__option-button--selected"]) || ""}`}
+              >
+                Woman
+              </button>
+            </div>
+          </div>
+
+          <div className={styles["search-filter__input-group-wrapper"]}>
+            <span className={styles["search-filter__label"]}>
+              Age range | {minAge} - {maxAge}
+            </span>
+
+            <MultiRangeSlider
+              min={18}
+              max={100}
+              value={{ min: minAge, max: maxAge }}
+              onChange={({ min, max }) => {
+                setMinAge(min);
+                setMaxAge(max);
+              }}
+            />
+          </div>
         </div>
 
         <button className={styles["search-filter__submit-button"]}>

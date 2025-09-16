@@ -16,7 +16,7 @@
     @include flex-shorthand(row, nowrap, null, center, center);
     @include absolute-shorthand(2rem, 1rem, auto, auto);
 
-    z-index: 999;
+    z-index: 10000;
     background-color: $color-neutral-1;
     border-radius: $border-radius-large;
     box-shadow: 0 0 1.5rem $color-neutral-5;
@@ -30,17 +30,23 @@
   }
 
   &__body {
-    @include flex-shorthand(column, nowrap, $whitespace-7);
+    @include flex-shorthand(column, nowrap, $whitespace-9, center);
 
     position: fixed;
     inset: auto 0 0;
     z-index: 9998;
-    block-size: 75rem;
-    padding: $whitespace-6 $whitespace-4;
+    padding: $whitespace-6 $whitespace-4 calc($whitespace-6 + 7.3rem)
+      $whitespace-4;
     background-color: $color-neutral-1;
     border-radius: $border-radius-large;
     transform: translateY(100%);
     transition: transform 0.15s;
+  }
+
+  &__big-container {
+    @include flex-shorthand(column, nowrap, $whitespace-7);
+
+    inline-size: 100%;
   }
 
   &__top-container {
@@ -141,14 +147,12 @@
 
   &__submit-button {
     @include remove-button-styles;
-    @include absolute-shorthand(auto, auto, 10rem, 50%);
 
     inline-size: 18rem;
     padding: 1.25rem 0;
     color: $color-neutral-1;
     background-color: $color-primary-10;
     border-radius: $border-radius-medium;
-    transform: translateX(-50%);
   }
 
   &__input-group {
