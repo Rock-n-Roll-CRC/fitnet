@@ -109,7 +109,7 @@
   }
 
   &__button-group {
-    @include flex-shorthand(row, nowrap, $whitespace-4);
+    @include flex-shorthand(row, nowrap, $whitespace-4, null, center);
   }
 
   &__option-button {
