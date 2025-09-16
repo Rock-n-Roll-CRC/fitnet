@@ -4,10 +4,19 @@
 .chat-main {
   $this: &;
 
-  @include flex-shorthand(column, nowrap, $whitespace-8);
+  @include flex-shorthand(row, nowrap, null, null, center);
 
   flex: 1;
-  padding-block-end: $whitespace-6;
+  padding-inline: $whitespace-6;
+  overflow: scroll;
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-8);
+
+    flex: 1;
+    max-inline-size: 31.7rem;
+    padding-block: $whitespace-6 $whitespace-8;
+  }
 
   &__message-box {
     position: relative;

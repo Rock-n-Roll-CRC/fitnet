@@ -2,11 +2,7 @@
 @use "../../styles/tools" as *;
 
 .chat {
-  @include flex-shorthand(column, nowrap, $whitespace-6);
+  @include flex-shorthand(column, nowrap);
 
   block-size: 100%;
-  padding-inline: $whitespace-6;
-  overflow: scroll;
-  scrollbar-gutter: auto;
-  overscroll-behavior: auto;
 }

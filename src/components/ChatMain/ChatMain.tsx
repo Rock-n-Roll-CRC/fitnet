@@ -12,7 +12,6 @@ export default function ChatMain({
   messages,
   messageContainerRef,
   messagesEndRef,
-  unreadMessagesRef,
 }: {
   session: Session;
   messages: (Tables<"messages"> & {
@@ -21,51 +20,43 @@ export default function ChatMain({
   })[];
   messageContainerRef: RefObject<HTMLElement | null>;
   messagesEndRef: RefObject<HTMLDivElement | null>;
-  unreadMessagesRef: RefObject<HTMLDivElement[] | null>;
 }) {
   return (
     <section ref={messageContainerRef} className={styles["chat-main"]}>
-      {messages.map((message, index) => (
-        <div
-          key={message.id}
-          ref={(el) => {
-            if (!el) return;
-
-            if (index === messages.length - 1) messagesEndRef.current = el;
-            if (message.sender_id !== session.user.id && !message.is_read) {
-              unreadMessagesRef.current = unreadMessagesRef.current
-                ? [...unreadMessagesRef.current, el]
-                : [el];
-            }
-          }}
-          data-id={message.id}
-          className={`${styles["chat-main__message-box"] ?? ""} ${styles[`chat-main__message-box--${message.sender_id === session.user.id ? "user" : "partner"}`] ?? ""}`}
-        >
-          {message.content}
-          <span
-            // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-            className={`${styles["chat-main__message-read"] ?? ""} ${(message.is_read && styles["chat-main__message-read--read"]) || ""}`}
+      <div className={styles["chat-main__body"]}>
+        {messages.map((message, index) => (
+          <div
+            key={message.id}
+            ref={index === messages.length - 1 ? messagesEndRef : undefined}
+            data-id={message.id}
+            className={`${styles["chat-main__message-box"] ?? ""} ${styles[`chat-main__message-box--${message.sender_id === session.user.id ? "user" : "partner"}`] ?? ""}`}
           >
-            {message.sender_id === session.user.id ? (
-              message.is_read ? (
-                <CheckmarkDoneOutlineSVG
-                  className={styles["chat-main__message-read-icon"]}
-                />
-              ) : (
-                <CheckmarkOutlineSVG
-                  className={styles["chat-main__message-read-icon"]}
-                />
-              )
-            ) : null}
+            {message.content}
+            <span
+              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+              className={`${styles["chat-main__message-read"] ?? ""} ${(message.is_read && styles["chat-main__message-read--read"]) || ""}`}
+            >
+              {message.sender_id === session.user.id ? (
+                message.is_read ? (
+                  <CheckmarkDoneOutlineSVG
+                    className={styles["chat-main__message-read-icon"]}
+                  />
+                ) : (
+                  <CheckmarkOutlineSVG
+                    className={styles["chat-main__message-read-icon"]}
+                  />
+                )
+              ) : null}
 
-            {new Date(message.created_at).toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </span>
-        </div>
-      ))}
+              {new Date(message.created_at).toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </span>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

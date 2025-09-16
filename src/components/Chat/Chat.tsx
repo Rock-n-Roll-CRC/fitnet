@@ -35,8 +35,12 @@ export default function Chat({
 
   const messageContainerRef = useRef<HTMLElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const unreadMessagesRef = useRef<HTMLDivElement[]>(null);
-  const observerRef = useRef<IntersectionObserver>(null);
+  const observerUnreadRef = useRef<IntersectionObserver>(null);
+  const observerLastRef = useRef<IntersectionObserver>(null);
+
+  const unreadMessages = messages.filter(
+    (message) => message.sender_id !== session.user.id && !message.is_read,
+  );
 
   async function handleSendMessageOptimistic(content: string) {
     const clientId = crypto.randomUUID();
@@ -63,10 +67,12 @@ export default function Chat({
     await sendMessage(newMessage);
   }
 
-  useEffect(() => {
-    if (!unreadMessagesRef.current) return;
+  function handleScrollToBottom() {
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+  }
 
-    observerRef.current ??= new IntersectionObserver(
+  useEffect(() => {
+    observerUnreadRef.current ??= new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -86,34 +92,43 @@ export default function Chat({
 
             void readMessage(id);
 
-            observerRef.current?.unobserve(entry.target);
+            observerUnreadRef.current?.unobserve(entry.target);
           }
         });
       },
-      { root: null, threshold: 0.1 },
+      { root: null, threshold: 0.5, rootMargin: "0px" },
     );
 
-    unreadMessagesRef.current.forEach((messageEl) => {
-      observerRef.current?.observe(messageEl);
+    unreadMessages.forEach((message) => {
+      const el = messageContainerRef.current?.querySelector(
+        `[data-id="${message.id}"]`,
+      );
+
+      if (!el) return;
+
+      observerUnreadRef.current?.observe(el);
     });
 
     return () => {
-      observerRef.current?.disconnect();
-      observerRef.current = null;
+      observerUnreadRef.current?.disconnect();
     };
-  }, [messages]);
+  }, [messages, unreadMessages]);
 
   useEffect(() => {
-    const io = new IntersectionObserver(([entry]) => {
-      setAutoScroll(entry?.isIntersecting ?? false);
-    });
+    observerLastRef.current ??= new IntersectionObserver(
+      ([entry]) => {
+        setAutoScroll(entry?.isIntersecting ?? false);
+      },
+      { root: null, threshold: 0.5, rootMargin: "0px" },
+    );
 
-    if (messagesEndRef.current) io.observe(messagesEndRef.current);
+    if (messagesEndRef.current)
+      observerLastRef.current.observe(messagesEndRef.current);
 
     return () => {
-      io.disconnect();
+      observerLastRef.current?.disconnect();
     };
-  }, []);
+  }, [messages]);
 
   useEffect(() => {
     if (autoScroll)
@@ -196,10 +211,13 @@ export default function Chat({
         messages={messages}
         messageContainerRef={messageContainerRef}
         messagesEndRef={messagesEndRef}
-        unreadMessagesRef={unreadMessagesRef}
       />
 
-      <ChatFooter onSendMessage={handleSendMessageOptimistic} />
+      <ChatFooter
+        unreadMessagesCount={unreadMessages.length}
+        onSendMessage={handleSendMessageOptimistic}
+        onScrollToBottom={handleScrollToBottom}
+      />
     </div>
   );
 }
