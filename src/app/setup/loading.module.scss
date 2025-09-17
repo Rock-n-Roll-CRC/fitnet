@@ -1,0 +1,15 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.main {
+  flex: 1;
+  background-color: $color-neutral-1;
+}
+
+.loading {
+  @include size-shorthand(10rem, 10rem);
+  @include absolute-shorthand(50%, auto, auto, 50%);
+
+  color: $color-primary-10;
+  transform: translate(-50%, -50%);
+}
