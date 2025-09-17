@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import Image from "next/image";
 import { z } from "zod/v4";
 import { useForm } from "react-hook-form";
