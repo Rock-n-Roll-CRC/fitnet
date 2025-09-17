@@ -33,7 +33,7 @@ export default function InputHourlyRate({
         type="number"
         name="hourly-rate"
         id="hourly-rate"
-        value={rate}
+        value={rate.toString()}
         onChange={(event) => {
           onChange(+event.target.value, currency);
         }}
