@@ -5,7 +5,7 @@ import type { Session } from "next-auth";
 import { useRef, useState, type ChangeEvent } from "react";
 import Image from "next/image";
 import { z } from "zod/v4";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldErrors } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 
 import Select from "@/components/Select/Select";
@@ -25,7 +25,7 @@ import { createProfile, uploadAvatar } from "@/services/actions";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const ProfileFormSchemaClient = z.object({
+const ProfileFormSchemaBase = z.object({
   fullName: z
     .string()
     .min(1, "Full Name is required")
@@ -66,8 +66,12 @@ const ProfileFormSchemaClient = z.object({
   ),
 });
 
-const ProfileFormSchemaCoach = z.object({
-  ...ProfileFormSchemaClient.shape,
+const ProfileFormSchemaClient = ProfileFormSchemaBase.extend({
+  role: z.literal("client"),
+});
+
+const ProfileFormSchemaCoach = ProfileFormSchemaBase.extend({
+  role: z.literal("coach"),
 
   hourlyRate: z.preprocess(
     (val) => {
@@ -82,7 +86,19 @@ const ProfileFormSchemaCoach = z.object({
   ),
 });
 
+const ProfileFormSchema = z.discriminatedUnion("role", [
+  ProfileFormSchemaClient,
+  ProfileFormSchemaCoach,
+]);
+
 export default function ProfileSetup({ session }: { session: Session }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof ProfileFormSchema>>({
+    resolver: standardSchemaResolver(ProfileFormSchema),
+  });
   const router = useRouter();
   const [profile, setProfile] = useState<{
     user_id: string;
@@ -114,19 +130,6 @@ export default function ProfileSetup({ session }: { session: Session }) {
     expertise: ["muscle growth", "weight loss", "yoga"],
     isSearching: false,
     location: null,
-  });
-
-  const schema =
-    profile.role === "client"
-      ? ProfileFormSchemaClient
-      : ProfileFormSchemaCoach;
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<z.infer<typeof schema>>({
-    resolver: standardSchemaResolver(schema),
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -211,11 +214,9 @@ export default function ProfileSetup({ session }: { session: Session }) {
             options={["client", "coach"]}
             value={profile.role}
             onChange={(role) => {
-              setProfile((editedProfile) => ({
-                ...editedProfile,
-                role,
-              }));
+              setProfile((editedProfile) => ({ ...editedProfile, role }));
             }}
+            register={register("role")}
           />
 
           <InputText
@@ -319,7 +320,13 @@ export default function ProfileSetup({ session }: { session: Session }) {
                 fill
                 label={true}
                 register={register("hourlyRate")}
-                error={errors.hourlyRate}
+                error={
+                  (
+                    errors as FieldErrors<
+                      z.infer<typeof ProfileFormSchemaCoach>
+                    >
+                  ).hourlyRate
+                }
                 rate={profile.hourly_rate}
                 currency={profile.hourly_rate_currency}
                 onChange={(rate: number, currency: string) => {

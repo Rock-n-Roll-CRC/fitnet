@@ -33,3 +33,4 @@ export default RootLayout;
 
 // Realtime counter on navigation bar for messages/notifications
 // Ability to switch between client and coach profile
+// Map for coaches to display clients

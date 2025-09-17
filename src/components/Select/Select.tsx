@@ -6,6 +6,7 @@ import ChevronDownOutlineSVG from "@/assets/icons/chevron-down-outline.svg";
 import ChevronUpOutlineSVG from "@/assets/icons/chevron-up-outline.svg";
 
 import styles from "./Select.module.scss";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 export default function Select<T extends string>({
   label,
@@ -14,6 +15,7 @@ export default function Select<T extends string>({
   onChange,
   type,
   fill,
+  register,
 }: {
   label?: string;
   options: readonly T[];
@@ -21,6 +23,7 @@ export default function Select<T extends string>({
   onChange: (option: T) => void;
   type?: "hourly-rate";
   fill?: boolean;
+  register?: UseFormRegisterReturn;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,6 +36,7 @@ export default function Select<T extends string>({
   function handleSelectOption(option: T) {
     setIsOpen(false);
     onChange(option);
+    void register?.onChange({ target: { name: register.name, value: option } });
   }
 
   return (
@@ -50,6 +54,8 @@ export default function Select<T extends string>({
           {label}
         </label>
       )}
+
+      <input type="text" value={value} {...register} readOnly hidden />
 
       <button
         type="button"
