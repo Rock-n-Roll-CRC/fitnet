@@ -63,6 +63,17 @@ const ProfileFormSchema = z.object({
         return age >= 13 && age <= 120;
       }, "Age must be between 13 and 120"),
   ),
+
+  hourlyRate: z.preprocess(
+    (val) => {
+      if (typeof val === "string") return +val;
+      return val;
+    },
+    z
+      .number()
+      .min(1, "Hourly rate is required")
+      .max(1000000, "Hourly rate must be less than 1000000"),
+  ),
 });
 
 export default function ProfileSetup({ session }: { session: Session }) {
@@ -285,6 +296,8 @@ export default function ProfileSetup({ session }: { session: Session }) {
               <InputHourlyRate
                 fill
                 label={true}
+                register={register("hourlyRate")}
+                error={errors.hourlyRate}
                 rate={profile.hourly_rate}
                 currency={profile.hourly_rate_currency}
                 onChange={(rate: number, currency: string) => {

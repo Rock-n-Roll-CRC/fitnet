@@ -4,16 +4,24 @@
 .input-hourly-rate {
   $this: &;
 
-  @include flex-shorthand(row, nowrap, null, center);
+  @include flex-shorthand(column, nowrap, $whitespace-3, center);
 
-  position: relative;
-  inline-size: 17rem;
-  border: 0.2rem solid $color-primary-10;
-  border-radius: $border-radius-large;
+  text-align: center;
 
   &--labeled {
     #{$this}__input {
       padding: $whitespace-6 $whitespace-5 $whitespace-4 $whitespace-5;
+    }
+  }
+
+  &--error {
+    #{$this}__container,
+    #{$this}__input {
+      border-color: $color-accent-3;
+    }
+
+    #{$this}__label {
+      color: $color-accent-3;
     }
   }
 
@@ -27,6 +35,15 @@
     #{$this}__input {
       inline-size: 100%;
     }
+  }
+
+  &__container {
+    @include flex-shorthand(row, nowrap, null, center);
+
+    position: relative;
+    inline-size: 17rem;
+    border: 0.2rem solid $color-primary-10;
+    border-radius: $border-radius-large;
   }
 
   &__label {
@@ -47,5 +64,11 @@
     border-radius: $border-radius-large;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
+  }
+
+  &__error-message {
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-accent-3;
   }
 }
