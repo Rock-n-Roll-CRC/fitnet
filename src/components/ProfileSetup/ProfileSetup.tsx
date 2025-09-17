@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 
-import { useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import Image from "next/image";
 import { z } from "zod/v4";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ import { createProfile, uploadAvatar } from "@/services/actions";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const ProfileFormSchema = z.object({
+const ProfileFormSchemaClient = z.object({
   fullName: z
     .string()
     .min(1, "Full Name is required")
@@ -64,10 +64,15 @@ const ProfileFormSchema = z.object({
         return age >= 13 && age <= 120;
       }, "Age must be between 13 and 120"),
   ),
+});
+
+const ProfileFormSchemaCoach = z.object({
+  ...ProfileFormSchemaClient.shape,
 
   hourlyRate: z.preprocess(
     (val) => {
       if (typeof val === "string") return +val;
+      if (typeof val === "undefined") return 0;
       return val;
     },
     z
@@ -78,13 +83,6 @@ const ProfileFormSchema = z.object({
 });
 
 export default function ProfileSetup({ session }: { session: Session }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<z.infer<typeof ProfileFormSchema>>({
-    resolver: standardSchemaResolver(ProfileFormSchema),
-  });
   const router = useRouter();
   const [profile, setProfile] = useState<{
     user_id: string;
@@ -117,13 +115,32 @@ export default function ProfileSetup({ session }: { session: Session }) {
     isSearching: false,
     location: null,
   });
+
+  const schema =
+    profile.role === "client"
+      ? ProfileFormSchemaClient
+      : ProfileFormSchemaCoach;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
+    resolver: standardSchemaResolver(schema),
+  });
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFinishSetup() {
     const action = createProfile(profile);
 
     await toast.promise(action, {
-      loading: "Creating your profile! Please wait...",
+      loading: "Creating your profile...",
+      error: (error) => {
+        return error instanceof Error
+          ? error.message
+          : "Failed to create profile: Something went wrong";
+      },
     });
 
     router.push("/search");

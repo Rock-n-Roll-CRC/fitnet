@@ -627,6 +627,22 @@ export const createProfile = async (profile: {
   isSearching: boolean;
   location: null;
 }) => {
+  const { data: duplicate, error: duplicateError } = await supabase
+    .from("profiles")
+    .select()
+    .eq("phone_number", profile.phone_number)
+    .maybeSingle();
+
+  if (duplicateError)
+    throw new Error(`Failed to create profile: ${duplicateError.message}`, {
+      cause: duplicateError.cause,
+    });
+
+  if (duplicate)
+    throw new Error(
+      `Failed to create profile: User with this phone number already exists!`,
+    );
+
   const { error } = await supabase.from("profiles").insert(profile);
 
   if (error)

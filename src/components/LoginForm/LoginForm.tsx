@@ -40,9 +40,11 @@ const LoginForm = () => {
     try {
       await signInWithGoogle();
     } catch (error) {
+      if (isRedirectError(error)) return null;
+
       toast.error(
         error instanceof Error
-          ? error.message
+          ? `Failed to sign in: ${error.message}`
           : "Failed to sign in: Something went wrong",
       );
     }
@@ -51,25 +53,28 @@ const LoginForm = () => {
   async function handleSignInWithCredentials(
     data: z.infer<typeof SignInFormSchema>,
   ) {
-    try {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      Object.entries(data).forEach(([name, value]) => {
-        formData.append(name, value);
-      });
+    Object.entries(data).forEach(([name, value]) => {
+      formData.append(name, value);
+    });
 
-      await signInWithCredentials(formData);
-    } catch (error) {
-      if (isRedirectError(error)) {
-        toast.success("Log in successful");
-      } else {
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to sign in: Something went wrong",
-        );
-      }
-    }
+    const action = signInWithCredentials(formData);
+
+    await toast.promise(action, {
+      loading: "Signing in...",
+      success: "Sign in successfull!",
+      error: (error) => {
+        if (isRedirectError(error)) {
+          toast.success("Sign in successfull!");
+          return null;
+        }
+
+        return error instanceof Error
+          ? `Failed to sign in: ${error.message}`
+          : "Failed to sign in: Something went wrong";
+      },
+    });
   }
 
   return (

@@ -54,41 +54,45 @@ const SignUpForm = () => {
     try {
       await signInWithGoogle();
     } catch (error) {
-      if (isRedirectError(error)) {
-        toast.success("Sign in successful");
-      } else {
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to sign in: Something went wrong",
-        );
-      }
+      if (isRedirectError(error)) return null;
+
+      toast.error(
+        error instanceof Error
+          ? `Failed to sign up: ${error.message}`
+          : "Failed to sign up: Something went wrong",
+      );
     }
   }
 
   async function handleSignUpWithCredentials(
     data: z.infer<typeof SignUpFormSchema>,
   ) {
-    try {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      Object.entries(data).forEach((dataItem) => {
-        formData.append(dataItem[0], dataItem[1]);
-      });
+    Object.entries(data).forEach((dataItem) => {
+      formData.append(dataItem[0], dataItem[1]);
+    });
 
-      await signUpWithCredentials(formData);
-      await signInWithCredentials(formData);
-    } catch (error) {
-      if (isRedirectError(error)) {
-        toast.success("Sign up successful");
-      } else {
-        toast.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to sign up: Something went wrong",
-        );
-      }
-    }
+    await toast.promise(
+      async () => {
+        await signUpWithCredentials(formData);
+        await signInWithCredentials(formData);
+      },
+      {
+        loading: "Signing up...",
+        success: "Sign up successfull!",
+        error: (error) => {
+          if (isRedirectError(error)) {
+            toast.success("Sign up successfull!");
+            return null;
+          }
+
+          return error instanceof Error
+            ? `Failed to sign up: ${error.message}`
+            : "Failed to sign up: Something went wrong";
+        },
+      },
+    );
   }
 
   return (

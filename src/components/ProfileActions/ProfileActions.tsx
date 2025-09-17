@@ -16,6 +16,8 @@ import {
 } from "@/services/actions";
 
 import styles from "./ProfileActions.module.scss";
+import toast from "react-hot-toast";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export default function ProfileActions({
   session,
@@ -113,6 +115,24 @@ export default function ProfileActions({
     }
   }
 
+  async function handleSignOut() {
+    const action = logOut();
+
+    await toast.promise(action, {
+      loading: "Signing out...",
+      error: (error) => {
+        if (isRedirectError(error)) {
+          toast.success("Sign out successfull!");
+          return null;
+        }
+
+        return error instanceof Error
+          ? `Failed to sign out: ${error.message}`
+          : "Failed to sign out: Something went wrong";
+      },
+    });
+  }
+
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -127,9 +147,7 @@ export default function ProfileActions({
             {isEditing ? "Save changes" : "Edit"}
           </button>
           <button
-            onClick={() => {
-              void logOut();
-            }}
+            onClick={handleSignOut}
             className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""} ${styles["profile-actions__button--danger"] ?? ""}`}
           >
             Sign Out
