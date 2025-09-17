@@ -23,6 +23,7 @@ import CloudUploadOutlineSVG from "@/assets/icons/cloud-upload-outline.svg";
 import styles from "./ProfileSetup.module.scss";
 import { createProfile, uploadAvatar } from "@/services/actions";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const ProfileFormSchema = z.object({
   fullName: z
@@ -119,7 +120,11 @@ export default function ProfileSetup({ session }: { session: Session }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFinishSetup() {
-    await createProfile(profile);
+    const action = createProfile(profile);
+
+    await toast.promise(action, {
+      loading: "Creating your profile! Please wait...",
+    });
 
     router.push("/search");
   }

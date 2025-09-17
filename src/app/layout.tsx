@@ -30,3 +30,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default RootLayout;
+
+// Error toast when not unique profile creation
+// Loading spinner on sign out / profile creation
+// Realtime counter on navigation bar for messages/notifications
+// Ability to switch between client and coach profile
