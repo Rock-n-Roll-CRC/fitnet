@@ -47,7 +47,18 @@ const SignInFormSchema = z.object({
 });
 
 export const signInWithGoogle = async () => {
-  await signIn("google", { redirectTo: "/" });
+  try {
+    await signIn("google", { redirectTo: "/" });
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+
+    return {
+      message:
+        error instanceof Error
+          ? `Failed to sign in: ${error.message}`
+          : "Failed to sign in: Something went wrong",
+    };
+  }
 };
 
 export const signInWithCredentials = async (credentials: FormData) => {
@@ -70,7 +81,7 @@ export const signInWithCredentials = async (credentials: FormData) => {
     const errorMessage = `Failed to sign in: ${isCredentialsError || isZodError ? "Provided credentials are invalid" : "Something went wrong"}`;
 
     console.error(errorMessage);
-    throw new Error(errorMessage);
+    return { message: errorMessage };
   }
 };
 
@@ -103,16 +114,27 @@ export const signUpWithCredentials = async (credentials: FormData) => {
     const isZodError = error instanceof ZodError;
 
     if (isError || isZodError) {
-      const errorMessage = `Failed to sign up a new user with credentials: ${(isZodError ? error.issues.at(0)?.message : error.message) ?? "Something went wrong"}`;
+      const errorMessage = `Failed to sign up: ${(isZodError ? error.issues.at(0)?.message : error.message) ?? "Something went wrong"}`;
 
       console.error(errorMessage);
-      throw new Error(errorMessage);
+      return { message: errorMessage };
     }
   }
 };
 
 export const logOut = async () => {
-  await signOut();
+  try {
+    await signOut();
+  } catch (error) {
+    if (isRedirectError(error)) throw error;
+
+    return {
+      message:
+        error instanceof Error
+          ? `Failed to sign out: ${error.message}`
+          : "Failed to sign out: Something went wrong",
+    };
+  }
 };
 
 export const deleteSavedProfile = async (savedUserId: string) => {
@@ -634,21 +656,16 @@ export const createProfile = async (profile: {
     .maybeSingle();
 
   if (duplicateError)
-    throw new Error(`Failed to create profile: ${duplicateError.message}`, {
-      cause: duplicateError.cause,
-    });
+    return { message: `Failed to create profile: ${duplicateError.message}` };
 
   if (duplicate)
-    throw new Error(
-      `Failed to create profile: User with this phone number already exists!`,
-    );
+    return {
+      message: `Failed to create profile: User with this phone number already exists!`,
+    };
 
   const { error } = await supabase.from("profiles").insert(profile);
 
-  if (error)
-    throw new Error(`Failed to create profile: ${error.message}`, {
-      cause: error.cause,
-    });
+  if (error) return { message: `Failed to create profile: ${error.message}` };
 };
 
 export async function uploadAvatar(file: File, userId: string) {

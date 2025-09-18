@@ -135,16 +135,18 @@ export default function ProfileSetup({ session }: { session: Session }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFinishSetup() {
-    const action = createProfile(profile);
+    await toast.promise(
+      async () => {
+        const res = await createProfile(profile);
 
-    await toast.promise(action, {
-      loading: "Creating your profile...",
-      error: (error) => {
-        return error instanceof Error
-          ? error.message
-          : "Failed to create profile: Something went wrong";
+        if (res?.message) {
+          toast.error(res.message);
+        }
       },
-    });
+      {
+        loading: "Creating your profile...",
+      },
+    );
 
     router.push("/search");
   }

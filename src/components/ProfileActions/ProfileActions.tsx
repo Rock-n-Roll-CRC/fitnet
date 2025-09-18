@@ -116,21 +116,25 @@ export default function ProfileActions({
   }
 
   async function handleSignOut() {
-    const action = logOut();
+    await toast.promise(
+      async () => {
+        const res = await logOut();
 
-    await toast.promise(action, {
-      loading: "Signing out...",
-      error: (error) => {
-        if (isRedirectError(error)) {
-          toast.success("Sign out successfull!");
-          return null;
+        if (res?.message) {
+          toast.error(res.message);
         }
-
-        return error instanceof Error
-          ? `Failed to sign out: ${error.message}`
-          : "Failed to sign out: Something went wrong";
       },
-    });
+      {
+        loading: "Signing out...",
+        error: (error) => {
+          if (isRedirectError(error)) {
+            toast.success("Sign out successfull!");
+          }
+
+          return null;
+        },
+      },
+    );
   }
 
   return (

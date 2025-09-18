@@ -51,16 +51,10 @@ const SignUpForm = () => {
   });
 
   async function handleSignInWithGoogle() {
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      if (isRedirectError(error)) return null;
+    const res = await signInWithGoogle();
 
-      toast.error(
-        error instanceof Error
-          ? `Failed to sign up: ${error.message}`
-          : "Failed to sign up: Something went wrong",
-      );
+    if (res?.message) {
+      toast.error(res.message);
     }
   }
 
@@ -75,21 +69,25 @@ const SignUpForm = () => {
 
     await toast.promise(
       async () => {
-        await signUpWithCredentials(formData);
-        await signInWithCredentials(formData);
+        const resSignUp = await signUpWithCredentials(formData);
+        const resSignIn = await signInWithCredentials(formData);
+
+        if (resSignUp?.message) {
+          toast.error(resSignUp.message);
+        }
+
+        if (resSignIn?.message) {
+          toast.error(resSignIn.message);
+        }
       },
       {
         loading: "Signing up...",
-        success: "Sign up successfull!",
         error: (error) => {
           if (isRedirectError(error)) {
             toast.success("Sign up successfull!");
-            return null;
           }
 
-          return error instanceof Error
-            ? `Failed to sign up: ${error.message}`
-            : "Failed to sign up: Something went wrong";
+          return null;
         },
       },
     );
