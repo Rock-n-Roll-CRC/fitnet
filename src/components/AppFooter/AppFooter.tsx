@@ -16,9 +16,65 @@ import NotificationsOutlineSVG from "@/assets/icons/notifications-outline.svg";
 
 import styles from "./AppFooter.module.scss";
 import type { Session } from "next-auth";
+import { useEffect, useState } from "react";
+import { supabaseClient } from "@/services/supabase.client";
 
-const AppFooter = ({ session }: { session: Session }) => {
+const AppFooter = ({
+  session,
+  unreadMessagesCount: initialUnreadMessagesCount,
+  unreadNotificationsCount: initialUnreadNotificationsCount,
+}: {
+  session: Session;
+  unreadMessagesCount: number;
+  unreadNotificationsCount: number;
+}) => {
   const pathname = usePathname();
+
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(
+    initialUnreadMessagesCount,
+  );
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(
+    initialUnreadNotificationsCount,
+  );
+
+  useEffect(() => {
+    const channelMsgs = supabaseClient
+      .channel(`realtime:messages:msgs:count:${session.user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `receiver_id=eq.${session.user.id}`,
+        },
+        () => {
+          setUnreadMessagesCount((prev) => prev + 1);
+        },
+      )
+      .subscribe();
+
+    const channelNtfcs = supabaseClient
+      .channel(`realtime:notifications:ntfcs:count:${session.user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${session.user.id}`,
+        },
+        () => {
+          setUnreadNotificationsCount((prev) => prev + 1);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      channelMsgs.unsubscribe();
+      channelNtfcs.unsubscribe();
+    };
+  }, [session.user.id]);
 
   return (
     <footer className={styles["app-footer"]}>
@@ -46,7 +102,13 @@ const AppFooter = ({ session }: { session: Session }) => {
             </Link>
           </li>
           <li className={styles["app-footer__list-item"]}>
-            <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
+            <Link
+              href={`/messages`}
+              onClick={() => {
+                setUnreadMessagesCount(0);
+              }}
+              className={styles["app-footer__nav-link"]}
+            >
               {pathname.startsWith(`/messages`) ? (
                 <>
                   <ChatbubbleEllipsesSVG
@@ -60,6 +122,12 @@ const AppFooter = ({ session }: { session: Session }) => {
                 <ChatbubbleEllipsesOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
+              )}
+
+              {unreadMessagesCount > 0 && (
+                <div className={styles["app-footer__nav-link-count"]}>
+                  {unreadMessagesCount}
+                </div>
               )}
             </Link>
           </li>
@@ -88,6 +156,9 @@ const AppFooter = ({ session }: { session: Session }) => {
           <li className={styles["app-footer__list-item"]}>
             <Link
               href="/notifications"
+              onClick={() => {
+                setUnreadNotificationsCount(0);
+              }}
               className={styles["app-footer__nav-link"]}
             >
               {pathname.startsWith("/notifications") ? (
@@ -103,6 +174,12 @@ const AppFooter = ({ session }: { session: Session }) => {
                 <NotificationsOutlineSVG
                   className={styles["app-footer__nav-link-icon"]}
                 />
+              )}
+
+              {unreadNotificationsCount > 0 && (
+                <div className={styles["app-footer__nav-link-count"]}>
+                  {unreadNotificationsCount}
+                </div>
               )}
             </Link>
           </li>

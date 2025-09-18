@@ -91,3 +91,16 @@ export const readMessage = async (id: string) => {
 
   if (error) throw new Error(`Failed to read a message: ${error.message}`);
 };
+
+export const getUnreadMessagesCount = async (userId: string) => {
+  const { count, error } = await (await import("@/services/supabase")).supabase
+    .from("messages")
+    .select("*", { count: "exact", head: true })
+    .eq("receiver_id", userId)
+    .eq("is_read", false);
+
+  if (error)
+    throw new Error(`Failed to get unread messages count: ${error.message}`);
+
+  return count ?? 0;
+};

@@ -31,7 +31,6 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
 export default RootLayout;
 
-// Realtime counter on navigation bar for messages/notifications
 // Ability to switch between client and coach profile
 // Map for coaches to display clients
-// Sign in with random password passed the check (when sign up with google)
+// Realtime  counter for unread messages/notifications

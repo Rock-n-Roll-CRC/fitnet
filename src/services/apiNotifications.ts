@@ -47,3 +47,18 @@ export const getNotifications = async (
 
   return data;
 };
+
+export const getUnreadNotificationsCount = async (userId: string) => {
+  const { count, error } = await supabase
+    .from("notifications")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("is_read", false);
+
+  if (error)
+    throw new Error(
+      `Failed to get unread notifications count: ${error.message}`,
+    );
+
+  return count ?? 0;
+};
