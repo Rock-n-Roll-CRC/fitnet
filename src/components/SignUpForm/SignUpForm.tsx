@@ -70,14 +70,17 @@ const SignUpForm = () => {
     await toast.promise(
       async () => {
         const resSignUp = await signUpWithCredentials(formData);
-        const resSignIn = await signInWithCredentials(formData);
 
         if (resSignUp?.message) {
           toast.error(resSignUp.message);
+          return;
         }
+
+        const resSignIn = await signInWithCredentials(formData);
 
         if (resSignIn?.message) {
           toast.error(resSignIn.message);
+          return;
         }
       },
       {

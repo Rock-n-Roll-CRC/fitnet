@@ -17,13 +17,9 @@ export const getUserByCredentials = async (credentials: {
     throw new Error(error.message, { cause: error.cause });
   }
 
-  if (!data) return null;
+  if (!data?.password_hash) return null;
 
-  if (
-    data.password_hash &&
-    !(await compare(credentials.password, data.password_hash))
-  )
-    return null;
+  if (!(await compare(credentials.password, data.password_hash))) return null;
 
   return data;
 };
