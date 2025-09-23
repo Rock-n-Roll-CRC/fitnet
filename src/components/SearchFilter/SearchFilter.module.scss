@@ -35,8 +35,12 @@
     position: fixed;
     inset: auto 0 0;
     z-index: 9998;
+    block-size: 90%;
     padding: $whitespace-6 $whitespace-4 calc($whitespace-6 + 7.3rem)
       $whitespace-4;
+    overflow: scroll;
+    scrollbar-gutter: auto;
+    overscroll-behavior: auto;
     background-color: $color-neutral-1;
     border-radius: $border-radius-large;
     transform: translateY(100%);
@@ -148,6 +152,8 @@
   &__submit-button {
     @include remove-button-styles;
 
+    position: sticky;
+    inset-block-end: 0;
     inline-size: 18rem;
     padding: 1.25rem 0;
     color: $color-neutral-1;

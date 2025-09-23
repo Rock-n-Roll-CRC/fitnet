@@ -46,9 +46,11 @@ const Map = ({
   })[];
   filters: {
     distance: number;
-    gender: "male" | "female";
+    gender: ("male" | "female")[];
     minAge: number;
     maxAge: number;
+    expertise: ("muscle growth" | "weight loss" | "yoga")[];
+    fitnessGoal: ("muscle growth" | "weight loss" | "yoga")[];
   };
   isFilterOpen: boolean;
 }) => {
@@ -77,8 +79,6 @@ const Map = ({
       : undefined;
 
     if (distance > filters.distance) return false;
-
-    if (profile.gender !== filters.gender) return false;
 
     if (age && age < filters.minAge) return false;
 

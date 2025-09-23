@@ -40,9 +40,11 @@ const MapWrapper = ({
   })[];
   filters: {
     distance: number;
-    gender: "male" | "female";
+    gender: ("male" | "female")[];
     minAge: number;
     maxAge: number;
+    expertise: ("muscle growth" | "weight loss" | "yoga")[];
+    fitnessGoal: ("muscle growth" | "weight loss" | "yoga")[];
   };
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,6 +114,7 @@ const MapWrapper = ({
     <div className={styles["map-wrapper"]}>
       <SearchFilter
         session={session}
+        userProfile={userProfile}
         userCoords={userCoords}
         setUserCoords={setUserCoords}
         filters={filters}

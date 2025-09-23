@@ -9,10 +9,30 @@ import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 import styles from "./page.module.scss";
 
 const searchParamsSchema = z.object({
-  distance: z.coerce.number().min(1).max(100).catch(50),
-  gender: z.enum(["male", "female"]).catch("male"),
+  distance: z.coerce.number().min(1).max(100).catch(100),
+  gender: z.preprocess(
+    (val) => (typeof val === "string" ? [val] : val),
+    z
+      .array(z.enum(["male", "female"]))
+      .nonempty()
+      .catch(["male", "female"]),
+  ),
   minAge: z.coerce.number().min(18).max(99).catch(18),
   maxAge: z.coerce.number().min(19).max(100).catch(100),
+  expertise: z.preprocess(
+    (val) => (typeof val === "string" ? [val] : val),
+    z
+      .array(z.enum(["muscle growth", "weight loss", "yoga"]))
+      .nonempty()
+      .catch(["muscle growth", "weight loss", "yoga"]),
+  ),
+  fitnessGoal: z.preprocess(
+    (val) => (typeof val === "string" ? [val] : val),
+    z
+      .array(z.enum(["muscle growth", "weight loss", "yoga"]))
+      .nonempty()
+      .catch(["muscle growth", "weight loss", "yoga"]),
+  ),
 });
 
 const Page = async ({
@@ -20,7 +40,8 @@ const Page = async ({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) => {
-  const { distance, gender, minAge, maxAge } = await searchParams;
+  const { distance, gender, minAge, maxAge, expertise, fitnessGoal } =
+    await searchParams;
 
   const session = await auth();
 
@@ -35,6 +56,8 @@ const Page = async ({
     gender,
     minAge,
     maxAge,
+    expertise,
+    fitnessGoal,
   });
 
   const displayedProfiles = await getProfiles(

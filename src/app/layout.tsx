@@ -33,4 +33,4 @@ export default RootLayout;
 
 // Realtime  counter for unread messages/notifications
 // Add modal window for selected profiles on the map
-// Add more filters (expertize, fitness goal)
+// Fix clear button for messages

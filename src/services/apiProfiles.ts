@@ -27,9 +27,11 @@ export const getProfiles = async (
   role: "client" | "coach",
   filters?: {
     distance: number;
-    gender: "male" | "female";
+    gender: ("male" | "female")[];
     minAge: number;
     maxAge: number;
+    expertise: ("muscle growth" | "weight loss" | "yoga")[];
+    fitnessGoal: ("muscle growth" | "weight loss" | "yoga")[];
   },
 ) => {
   let query = (await import("@/services/supabase")).supabase
@@ -39,7 +41,15 @@ export const getProfiles = async (
     .eq("isSearching", true);
 
   if (filters?.gender) {
-    query = query.eq("gender", filters.gender);
+    query = query.in("gender", filters.gender);
+  }
+
+  if (filters?.expertise && role === "coach") {
+    query = query.overlaps("expertise", filters.expertise);
+  }
+
+  if (filters?.fitnessGoal && role === "client") {
+    query = query.in("fitness_goal", filters.fitnessGoal);
   }
 
   const { data, error } = await query;
