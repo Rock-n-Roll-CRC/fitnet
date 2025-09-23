@@ -28,7 +28,7 @@
 
   &__list {
     @include remove-list-styles;
-    @include flex-shorthand(column, nowrap, $whitespace-6);
+    @include flex-shorthand(column, nowrap, $whitespace-8);
   }
 
   &__list-item {

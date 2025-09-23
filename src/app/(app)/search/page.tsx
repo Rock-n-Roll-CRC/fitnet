@@ -1,13 +1,27 @@
-import ClientSearchPage from "@/components/ClientSearchPage/ClientSearchPage";
-import CoachSearchPage from "@/components/CoachSearchPage/CoachSearchPage";
+import { z } from "zod/v4";
+
+import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
 import { auth } from "@/services/auth";
-import { getCoachProfiles, getProfileByUserId } from "@/services/apiProfiles";
+import { getProfileByUserId, getProfiles } from "@/services/apiProfiles";
 import { getBlockedProfiles } from "@/services/apiBlockedProfiles";
 
 import styles from "./page.module.scss";
 
-const Page = async () => {
+const searchParamsSchema = z.object({
+  distance: z.coerce.number().min(1).max(100).catch(50),
+  gender: z.enum(["male", "female"]).catch("male"),
+  minAge: z.coerce.number().min(18).max(99).catch(18),
+  maxAge: z.coerce.number().min(19).max(100).catch(100),
+});
+
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) => {
+  const { distance, gender, minAge, maxAge } = await searchParams;
+
   const session = await auth();
 
   if (!session) return;
@@ -16,21 +30,28 @@ const Page = async () => {
 
   if (!userProfile) return;
 
-  const coaches = await getCoachProfiles();
+  const filters = searchParamsSchema.parse({
+    distance,
+    gender,
+    minAge,
+    maxAge,
+  });
+
+  const displayedProfiles = await getProfiles(
+    userProfile.role === "client" ? "coach" : "client",
+    filters,
+  );
   const blockedProfiles = await getBlockedProfiles(session.user.id);
 
   return (
     <main className={styles.main}>
-      {userProfile.role === "client" ? (
-        <ClientSearchPage
-          coaches={coaches}
-          blockedProfiles={blockedProfiles}
-          session={session}
-          userProfile={userProfile}
-        />
-      ) : (
-        <CoachSearchPage session={session} userProfile={userProfile} />
-      )}
+      <MapWrapper
+        session={session}
+        userProfile={userProfile}
+        displayedProfiles={displayedProfiles}
+        blockedProfiles={blockedProfiles}
+        filters={filters}
+      />
     </main>
   );
 };

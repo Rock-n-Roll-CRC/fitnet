@@ -14,6 +14,7 @@ export default function ProfileOverview({
   profile,
   setOptimisticProfile,
   editedProfile,
+  setEditedProfile,
   isEditing,
   isConnected,
   isRequestSent,
@@ -42,6 +43,15 @@ export default function ProfileOverview({
       raterProfile: Tables<"profiles">;
     })[];
   };
+  setEditedProfile: Dispatch<
+    SetStateAction<
+      Tables<"profiles"> & {
+        ratings: (Tables<"reviews"> & {
+          raterProfile: Tables<"profiles">;
+        })[];
+      }
+    >
+  >;
   isEditing: boolean;
   isConnected: boolean;
   isRequestSent: boolean;
@@ -91,6 +101,7 @@ export default function ProfileOverview({
         profile={profile}
         setOptimisticProfile={setOptimisticProfile}
         editedProfile={editedProfile}
+        setEditedProfile={setEditedProfile}
         isEditing={isEditing}
         isConnected={isConnected}
         isRequestSent={isRequestSent}

@@ -64,9 +64,11 @@ export default function ProfilePreview({
             <p className={styles["profile-preview__name"]}>
               {profile.full_name}
             </p>
-            <div className={styles["profile-preview__rating-box"]}>
-              <Rating ratings={profile.ratings} />
-            </div>
+            {profile.role === "coach" && (
+              <div className={styles["profile-preview__rating-box"]}>
+                <Rating ratings={profile.ratings} />
+              </div>
+            )}
             <div className={styles["profile-preview__details-box"]}>
               <div className={styles["profile-preview__detail"]}>
                 <LocationOutlineSVG

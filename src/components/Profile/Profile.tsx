@@ -57,6 +57,7 @@ export default function Profile({
         profile={optimisticProfile}
         setOptimisticProfile={setOptimisticProfile}
         editedProfile={editedProfile}
+        setEditedProfile={setEditedProfile}
         setIsEditing={setIsEditing}
         isOnline={onlineUsers.includes(profile.user_id)}
         isEditing={isEditing}

@@ -31,6 +31,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
 export default RootLayout;
 
-// Ability to switch between client and coach profile
-// Map for coaches to display clients
 // Realtime  counter for unread messages/notifications
+// Add validation for hourly rate (profile edit)
+// Add modal window for selected profiles on the map
+// Add more filters (expertize, fitness goal)

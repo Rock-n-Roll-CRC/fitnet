@@ -1,7 +1,7 @@
 @use "../../styles/settings" as *;
 @use "../../styles/tools" as *;
 
-.nearby-coaches-list {
+.nearby-profiles-list {
   $this: &;
 
   @include absolute-shorthand(auto, 0, 0, 0);
@@ -27,7 +27,7 @@
   }
 
   &__count-body {
-    @include flex-shorthand(row, nowrap, null, null, null);
+    @include flex-shorthand(row, nowrap, null, center, null);
   }
 
   &__count-list {

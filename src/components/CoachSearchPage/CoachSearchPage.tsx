@@ -1,39 +1,26 @@
-"use client";
-
 import type { Session } from "next-auth";
-
-import { useEffect } from "react";
+import type { Tables } from "@/types/database";
 
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
-import type { Tables } from "@/types/database";
-
-const CoachSearchPage = ({
+const CoachSearchPage = async ({
   session,
   userProfile,
 }: {
   session: Session;
   userProfile: Tables<"profiles">;
 }) => {
-  useEffect(() => {
-    function handleBeforeUnload() {
-      navigator.sendBeacon(
-        "/api/set-is-searching",
-        JSON.stringify({ value: false }),
-      );
-    }
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      handleBeforeUnload();
-    };
-  }, []);
+  const clients = await getClientProfiles();
+  const blockedProfiles = await getBlockedProfiles(session.user.id);
 
   return (
     <>
-      <MapWrapper session={session} userProfile={userProfile} />
+      <MapWrapper
+        profiles={clients}
+        blockedProfiles={blockedProfiles}
+        session={session}
+        userProfile={userProfile}
+      />
     </>
   );
 };

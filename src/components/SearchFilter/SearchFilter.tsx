@@ -1,48 +1,52 @@
 "use client";
 
+import type { Session } from "next-auth";
+import type { Dispatch, FormEvent, SetStateAction } from "react";
+import type { Coordinates } from "@/shared/Coordinates.interface";
+
+import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import styles from "./SearchFilter.module.scss";
-import {
-  useState,
-  type Dispatch,
-  type FormEvent,
-  type SetStateAction,
-} from "react";
-import OptionsSVG from "@/assets/icons/options.svg";
-import MultiRangeSlider from "../MultiRangeSlider/MultiRangeSlider";
-import RangeSlider from "../RangeSlider/RangeSlider";
-import type { Session } from "next-auth";
 import LocationInput from "@/components/LocationInput/LocationInput";
+import RangeSlider from "@/components/RangeSlider/RangeSlider";
+import MultiRangeSlider from "@/components/MultiRangeSlider/MultiRangeSlider";
+
+import OptionsSVG from "@/assets/icons/options.svg";
+
+import styles from "./SearchFilter.module.scss";
 
 const SearchFilter = ({
   session,
-  isOpen,
-  setIsOpen,
   userCoords,
   setUserCoords,
-  handleClick,
+  filters,
+  isOpen,
+  setIsOpen,
 }: {
   session: Session;
+  userCoords: Coordinates;
+  setUserCoords: Dispatch<SetStateAction<Coordinates>>;
+  filters: {
+    distance: number;
+    gender: "male" | "female";
+    minAge: number;
+    maxAge: number;
+  };
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  userCoords: { lat: number; lng: number };
-  setUserCoords: Dispatch<
-    SetStateAction<{
-      lat: number;
-      lng: number;
-    }>
-  >;
-  handleClick: () => void;
 }) => {
-  const searchParamsReadOnly = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+  const [locationRange, setLocationRange] = useState(filters.distance);
+  const [gender, setGender] = useState(filters.gender);
+  const [minAge, setMinAge] = useState(filters.minAge);
+  const [maxAge, setMaxAge] = useState(filters.maxAge);
 
-  const [locationRange, setLocationRange] = useState<number>(1);
-  const [gender, setGender] = useState<"man" | "woman">("man");
-  const [minAge, setMinAge] = useState<number>(18);
-  const [maxAge, setMaxAge] = useState<number>(100);
+  const searchParamsReadOnly = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  function handleClick() {
+    setIsOpen((isOpen) => !isOpen);
+  }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,7 +56,7 @@ const SearchFilter = ({
     const searchParams = new URLSearchParams(searchParamsReadOnly);
 
     searchParams.set("distance", locationRange.toString());
-    searchParams.set("gender", gender === "man" ? "male" : "female");
+    searchParams.set("gender", gender);
     searchParams.set("minAge", minAge.toString());
     searchParams.set("maxAge", maxAge.toString());
 
@@ -60,8 +64,8 @@ const SearchFilter = ({
   }
 
   function clearFilters() {
-    setLocationRange(1);
-    setGender("man");
+    setLocationRange(50);
+    setGender("male");
     setMinAge(18);
     setMaxAge(100);
   }
@@ -122,10 +126,10 @@ const SearchFilter = ({
                 value="male"
                 type="button"
                 onClick={() => {
-                  setGender("man");
+                  setGender("male");
                 }}
                 // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-                className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "man" && styles["search-filter__option-button--selected"]) || ""}`}
+                className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "male" && styles["search-filter__option-button--selected"]) || ""}`}
               >
                 Man
               </button>
@@ -133,10 +137,10 @@ const SearchFilter = ({
                 value="female"
                 type="button"
                 onClick={() => {
-                  setGender("woman");
+                  setGender("female");
                 }}
                 // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-                className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "woman" && styles["search-filter__option-button--selected"]) || ""}`}
+                className={`${styles["search-filter__option-button"] ?? ""} ${(gender === "female" && styles["search-filter__option-button--selected"]) || ""}`}
               >
                 Woman
               </button>

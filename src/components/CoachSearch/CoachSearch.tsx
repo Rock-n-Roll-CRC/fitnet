@@ -2,17 +2,13 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import type { Session } from "next-auth";
+import type { Coordinates } from "@/shared/Coordinates.interface";
 
 import LocationInput from "@/components/LocationInput/LocationInput";
 
 import { updateProfileIsSearching } from "@/services/actions";
 
 import styles from "./CoachSearch.module.scss";
-
-interface Coordinates {
-  lat: number;
-  lng: number;
-}
 
 const CoachSearch = ({
   session,

@@ -5,31 +5,19 @@ import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
 import type { Tables } from "@/types/database";
-import type { LeafletMouseEvent, LeafletMouseEventHandlerFn } from "leaflet";
+import type { Coordinates } from "@/shared/Coordinates.interface";
 
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { useSearchParams } from "next/navigation";
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
+import { useEffect, useState } from "react";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import { divIcon, Icon } from "leaflet";
 
-import NearbyCoachesList from "@/components/NearbyCoachesList/NearbyCoachesList";
+import NearbyProfilesList from "@/components/NearbyProfilesList/NearbyProfilesList";
 
 import { calculateAge, calculateDistance } from "@/utilities/helpers";
 
-import styles from "./Map.module.scss";
-import type { Session } from "next-auth";
 import navigateUrl from "@/assets/icons/navigate.svg?url";
 
-interface Coordinates {
-  lat: number;
-  lng: number;
-}
+import styles from "./Map.module.scss";
 
 const MapUpdater = ({ center }: { center: Coordinates }) => {
   const map = useMap();
@@ -41,45 +29,30 @@ const MapUpdater = ({ center }: { center: Coordinates }) => {
   return null;
 };
 
-const ClickHandler = ({
-  onMapClick,
-}: {
-  onMapClick: LeafletMouseEventHandlerFn;
-}) => {
-  useMapEvent("click", onMapClick);
-
-  return null;
-};
-
 const Map = ({
-  coaches,
-  blockedProfiles,
-  isSelectingPosition,
-  userCoords,
-  setUserCoords,
-  isFilterOpen,
   userProfile,
+  userCoords,
+  displayedProfiles,
+  blockedProfiles,
+  filters,
+  isFilterOpen,
 }: {
-  coaches?: (Tables<"profiles"> & { ratings: Tables<"reviews">[] })[];
+  userProfile: Tables<"profiles">;
+  userCoords: Coordinates;
+  displayedProfiles: (Tables<"profiles"> & { ratings: Tables<"reviews">[] })[];
   blockedProfiles?: (Tables<"blocked_profiles"> & {
     blockerProfile: Tables<"profiles">;
     blockedProfile: Tables<"profiles">;
   })[];
-  isSelectingPosition?: boolean;
-  userCoords: { lat: number; lng: number };
-  setUserCoords: Dispatch<
-    SetStateAction<{
-      lat: number;
-      lng: number;
-    }>
-  >;
-  session: Session;
+  filters: {
+    distance: number;
+    gender: "male" | "female";
+    minAge: number;
+    maxAge: number;
+  };
   isFilterOpen: boolean;
-  userProfile: Tables<"profiles">;
 }) => {
-  const searchParams = useSearchParams();
-
-  const [selectedCoach, setSelectedCoach] = useState<Tables<"profiles">>();
+  const [selectedProfile, setSelectedProfile] = useState<Tables<"profiles">>();
 
   const markerIcon = divIcon({
     html: `<img src="${navigateUrl.src}" class="${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--me"] ?? ""}" />`,
@@ -87,53 +60,35 @@ const Map = ({
     iconAnchor: [30, 15],
   });
 
-  const filteredCoaches =
-    coaches?.filter((coach) => {
-      if (!coach.isSearching) return false;
+  const filteredProfiles = displayedProfiles.filter((profile) => {
+    if (!profile.location) return null;
 
-      if (blockedProfiles?.map((el) => el.blocked_id).includes(coach.user_id))
-        return false;
+    if (blockedProfiles?.map((el) => el.blocked_id).includes(profile.user_id))
+      return false;
 
-      const coachPosition = coach.location as unknown as Coordinates;
-      const coachCoords = {
-        lat: coachPosition.lat,
-        lng: coachPosition.lng,
-      };
-      const distance = calculateDistance(userCoords, coachCoords);
-      const age = coach.birthdate
-        ? calculateAge(new Date(coach.birthdate))
-        : undefined;
+    const profilePosition = profile.location as unknown as Coordinates;
+    const profileCoords = {
+      lat: profilePosition.lat,
+      lng: profilePosition.lng,
+    };
+    const distance = calculateDistance(userCoords, profileCoords);
+    const age = profile.birthdate
+      ? calculateAge(new Date(profile.birthdate))
+      : undefined;
 
-      const distanceFilter = searchParams.get("distance");
-      const genderFilter = searchParams.get("gender");
-      const minAgeFilter = searchParams.get("minAge");
-      const maxAgeFilter = searchParams.get("maxAge");
+    if (distance > filters.distance) return false;
 
-      if (distanceFilter && distance > +distanceFilter) return false;
+    if (profile.gender !== filters.gender) return false;
 
-      if (genderFilter && coach.gender !== genderFilter) return false;
+    if (age && age < filters.minAge) return false;
 
-      if (minAgeFilter && age && age < +minAgeFilter) return false;
+    if (age && age > filters.maxAge) return false;
 
-      if (maxAgeFilter && age && age > +maxAgeFilter) return false;
+    return true;
+  });
 
-      return true;
-    }) ?? [];
-  const blockedCoachesIDs = blockedProfiles
-    ? blockedProfiles.reduce((accum: string[], item) => {
-        return item.blockedProfile.role === "coach"
-          ? [...accum, item.blockedProfile.user_id]
-          : accum;
-      }, [])
-    : [];
-
-  function handleMapClick(event: LeafletMouseEvent) {
-    if (isSelectingPosition)
-      setUserCoords({
-        lat: event.latlng.lat,
-        lng: event.latlng.lng,
-      });
-  }
+  const blockedIDs =
+    blockedProfiles?.map((profile) => profile.blockedProfile.user_id) ?? [];
 
   return (
     <>
@@ -169,48 +124,42 @@ const Map = ({
             zIndexOffset={1000}
           ></Marker>
 
-          {filteredCoaches.map((coach) => {
-            if (!coach.location) return null;
-
-            const { lat, lng } = coach.location as unknown as Coordinates;
-            const coachCoords = { lat, lng };
+          {filteredProfiles.map((profile) => {
+            const { lat, lng } = profile.location as unknown as Coordinates;
+            const profileCoords = { lat, lng };
             const icon = new Icon({
-              iconUrl: coach.avatar_url,
+              iconUrl: profile.avatar_url,
               // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className: `${styles["map__marker-icon"] ?? ""} ${(selectedCoach?.user_id === coach.user_id && styles["map__marker-icon--selected"]) || ""}`,
+              className: `${styles["map__marker-icon"] ?? ""} ${(selectedProfile?.user_id === profile.user_id && styles["map__marker-icon--selected"]) || ""}`,
               iconAnchor: [30, 15],
             });
             const redIcon = new Icon({
-              iconUrl: coach.avatar_url,
+              iconUrl: profile.avatar_url,
               className: `${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--red"] ?? ""}`,
               iconAnchor: [30, 15],
             });
 
             return (
               <Marker
-                key={coach.user_id}
-                position={coachCoords}
+                key={profile.user_id}
+                position={profileCoords}
                 eventHandlers={{
                   click: () => {
-                    setSelectedCoach(coach);
+                    setSelectedProfile(profile);
                   },
                 }}
-                icon={
-                  blockedCoachesIDs.includes(coach.user_id) ? redIcon : icon
-                }
+                icon={blockedIDs.includes(profile.user_id) ? redIcon : icon}
               ></Marker>
             );
           })}
           <MapUpdater center={userCoords} />
-          <ClickHandler onMapClick={handleMapClick} />
         </MapContainer>
 
-        {userProfile.role === "client" && (
-          <NearbyCoachesList
-            coaches={filteredCoaches}
-            blockedCoaches={blockedProfiles ?? []}
-          />
-        )}
+        <NearbyProfilesList
+          userProfile={userProfile}
+          displayedProfiles={filteredProfiles}
+          blockedCoaches={blockedProfiles ?? []}
+        />
       </div>
     </>
   );

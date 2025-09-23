@@ -3,24 +3,20 @@ import type { Tables } from "@/types/database";
 
 import MapWrapper from "@/components/MapWrapper/MapWrapper";
 
-const ClientSearchPage = ({
-  coaches,
-  blockedProfiles,
+const ClientSearchPage = async ({
   session,
   userProfile,
 }: {
-  coaches: (Tables<"profiles"> & { ratings: Tables<"reviews">[] })[];
-  blockedProfiles: (Tables<"blocked_profiles"> & {
-    blockerProfile: Tables<"profiles">;
-    blockedProfile: Tables<"profiles">;
-  })[];
   session: Session;
   userProfile: Tables<"profiles">;
 }) => {
+  const coaches = await getCoachProfiles();
+  const blockedProfiles = await getBlockedProfiles(session.user.id);
+
   return (
     <>
       <MapWrapper
-        coaches={coaches}
+        profiles={coaches}
         blockedProfiles={blockedProfiles}
         session={session}
         userProfile={userProfile}

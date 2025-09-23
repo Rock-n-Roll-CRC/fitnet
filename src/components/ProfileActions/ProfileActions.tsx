@@ -5,6 +5,8 @@ import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
 
 import Link from "next/link";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
+import toast from "react-hot-toast";
 
 import {
   blockProfile,
@@ -16,14 +18,13 @@ import {
 } from "@/services/actions";
 
 import styles from "./ProfileActions.module.scss";
-import toast from "react-hot-toast";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export default function ProfileActions({
   session,
   profile,
   setOptimisticProfile,
   editedProfile,
+  setEditedProfile,
   isEditing,
   isConnected,
   isRequestSent,
@@ -51,6 +52,15 @@ export default function ProfileActions({
       raterProfile: Tables<"profiles">;
     })[];
   };
+  setEditedProfile: Dispatch<
+    SetStateAction<
+      Tables<"profiles"> & {
+        ratings: (Tables<"reviews"> & {
+          raterProfile: Tables<"profiles">;
+        })[];
+      }
+    >
+  >;
   isEditing: boolean;
   isConnected: boolean;
   isRequestSent: boolean;
@@ -66,12 +76,26 @@ export default function ProfileActions({
     action: boolean | ((pendingState: boolean) => boolean),
   ) => void;
 }) {
-  const { ratings, ...newProfile } = editedProfile;
+  const { ratings: ratingsProfile, ...profileNoRatings } = profile;
+  const { ratings: ratingsEditedProfile, ...newProfile } = editedProfile;
+
+  async function handleSwitchClick() {
+    const newRole = profile.role === "client" ? "coach" : "client";
+
+    startTransition(() => {
+      setOptimisticProfile({ ...profile, role: newRole });
+      setEditedProfile((profile) => ({ ...profile, role: newRole }));
+    });
+
+    await updateProfile({ ...profileNoRatings, role: newRole });
+  }
 
   async function handleEditClick() {
     if (isEditing) {
       startTransition(() => {
         setOptimisticProfile(editedProfile);
+
+        toast.success("Profile successfully edited!");
       });
 
       setIsEditing(false);
@@ -144,6 +168,12 @@ export default function ProfileActions({
     >
       {session.user.id === profile.user_id ? (
         <>
+          <button
+            onClick={handleSwitchClick}
+            className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--secondary"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""}`}
+          >
+            {`Switch to ${profile.role === "client" ? "Coach" : "Client"}`}
+          </button>
           <button
             onClick={handleEditClick}
             className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""}`}

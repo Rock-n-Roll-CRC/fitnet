@@ -684,3 +684,9 @@ export async function uploadAvatar(file: File, userId: string) {
 
   return url.publicUrl;
 }
+
+export async function revalidateSearch() {
+  revalidatePath("/search");
+
+  return Promise.resolve();
+}

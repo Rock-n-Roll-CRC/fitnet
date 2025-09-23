@@ -23,19 +23,30 @@ export const getProfileByUserId = async (
   return data;
 };
 
-export const getCoachProfiles = async () => {
-  const client = (await import("@/services/supabase")).supabase;
-
-  const query = client
+export const getProfiles = async (
+  role: "client" | "coach",
+  filters?: {
+    distance: number;
+    gender: "male" | "female";
+    minAge: number;
+    maxAge: number;
+  },
+) => {
+  let query = (await import("@/services/supabase")).supabase
     .from("profiles")
     .select("*, ratings: reviews!ratee_id(*)")
-    .eq("role", "coach");
+    .eq("role", role)
+    .eq("isSearching", true);
+
+  if (filters?.gender) {
+    query = query.eq("gender", filters.gender);
+  }
 
   const { data, error } = await query;
 
   if (error) {
     console.error(error.message);
-    throw new Error(`Failed to fetch coaches' profiles: ${error.message}`);
+    throw new Error(`Failed to fetch profiles: ${error.message}`);
   }
 
   return data;
