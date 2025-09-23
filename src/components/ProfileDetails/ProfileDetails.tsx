@@ -3,6 +3,8 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type { ProfileAboutFieldValues } from "@/shared/schemas/ProfileAboutSchema";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -21,6 +23,8 @@ export default function ProfileDetails({
   setEditedProfile,
   tab,
   sort,
+  register,
+  formErrors,
 }: {
   session: Session;
   profile: Tables<"profiles"> & {
@@ -57,6 +61,8 @@ export default function ProfileDetails({
   >;
   tab: string | string[];
   sort: string | string[];
+  register: UseFormRegister<ProfileAboutFieldValues>;
+  formErrors: FieldErrors<ProfileAboutFieldValues>;
 }) {
   const readonlySearchParams = useSearchParams();
   const router = useRouter();
@@ -103,6 +109,8 @@ export default function ProfileDetails({
               isEditing={isEditing}
               editedProfile={editedProfile}
               setEditedProfile={setEditedProfile}
+              register={register}
+              formErrors={formErrors}
             />
           ) : (
             <ProfileReviews
@@ -120,6 +128,8 @@ export default function ProfileDetails({
           isEditing={isEditing}
           editedProfile={editedProfile}
           setEditedProfile={setEditedProfile}
+          register={register}
+          formErrors={formErrors}
         />
       )}
     </div>

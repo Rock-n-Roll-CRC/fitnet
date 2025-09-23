@@ -32,6 +32,5 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 export default RootLayout;
 
 // Realtime  counter for unread messages/notifications
-// Add validation for hourly rate (profile edit)
 // Add modal window for selected profiles on the map
 // Add more filters (expertize, fitness goal)

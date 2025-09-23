@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
-import type { Coordinates } from "@/shared/Coordinates.interface";
+import type { Coordinates } from "@/shared/interfaces/Coordinates.interface";
 
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

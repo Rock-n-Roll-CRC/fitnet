@@ -5,7 +5,7 @@ import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
 import type { Tables } from "@/types/database";
-import type { Coordinates } from "@/shared/Coordinates.interface";
+import type { Coordinates } from "@/shared/interfaces/Coordinates.interface";
 
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";

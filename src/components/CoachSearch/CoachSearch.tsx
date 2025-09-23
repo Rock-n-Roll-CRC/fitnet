@@ -2,7 +2,7 @@
 
 import type { Dispatch, SetStateAction } from "react";
 import type { Session } from "next-auth";
-import type { Coordinates } from "@/shared/Coordinates.interface";
+import type { Coordinates } from "@/shared/interfaces/Coordinates.interface";
 
 import LocationInput from "@/components/LocationInput/LocationInput";
 

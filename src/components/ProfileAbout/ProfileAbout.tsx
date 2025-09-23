@@ -1,11 +1,18 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Tables } from "@/types/database";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type {
+  ProfileAboutCoachFieldValues,
+  ProfileAboutFieldValues,
+} from "@/shared/schemas/ProfileAboutSchema";
 
 import InputCity from "@/components/InputCity/InputCity";
 import InputDate from "@/components/InputDate/InputDate";
 import MultiSelect from "@/components/MultiSelect/MultiSelect";
 import Select from "@/components/Select/Select";
 import InputHourlyRate from "@/components/InputHourlyRate/InputHourlyRate";
+
+import { calculateAge } from "@/utilities/helpers";
 
 import LocationOutlineSVG from "@/assets/icons/location-outline.svg";
 import CashOutlineSVG from "@/assets/icons/cash-outline.svg";
@@ -14,8 +21,6 @@ import FemaleOutlineSVG from "@/assets/icons/female-outline.svg";
 import BarbellOutlineSVG from "@/assets/icons/barbell-outline.svg";
 import SparklesOutlineSVG from "@/assets/icons/sparkles-outline.svg";
 
-import { calculateAge } from "@/utilities/helpers";
-
 import styles from "./ProfileAbout.module.scss";
 
 export default function ProfileAbout({
@@ -23,6 +28,8 @@ export default function ProfileAbout({
   isEditing,
   editedProfile,
   setEditedProfile,
+  register,
+  formErrors: errors,
 }: {
   profile: Tables<"profiles"> & {
     ratings: (Tables<"reviews"> & {
@@ -44,9 +51,18 @@ export default function ProfileAbout({
       }
     >
   >;
+  register: UseFormRegister<ProfileAboutFieldValues>;
+  formErrors: FieldErrors<ProfileAboutFieldValues>;
 }) {
   return (
     <div className={styles["profile-about"]}>
+      <input
+        type="hidden"
+        value={profile.role}
+        {...register("role")}
+        readOnly
+      />
+
       <div className={styles["profile-about__detail"]}>
         <div className={styles["profile-about__detail-label-box"]}>
           <LocationOutlineSVG
@@ -56,6 +72,8 @@ export default function ProfileAbout({
         </div>
         {isEditing ? (
           <InputCity
+            register={register("city")}
+            error={errors.city}
             value={editedProfile.city}
             onChange={(val: string) => {
               setEditedProfile((editedProfile) => ({
@@ -84,6 +102,11 @@ export default function ProfileAbout({
             </div>
             {isEditing ? (
               <InputHourlyRate
+                register={register("hourlyRate")}
+                error={
+                  (errors as FieldErrors<ProfileAboutCoachFieldValues>)
+                    .hourlyRate
+                }
                 rate={editedProfile.hourly_rate as number}
                 currency={editedProfile.hourly_rate_currency as string}
                 onChange={(rate: number, currency: string) => {
@@ -219,6 +242,8 @@ export default function ProfileAbout({
         </div>
         {isEditing ? (
           <InputDate
+            register={register("birthdate")}
+            error={errors.birthdate}
             value={editedProfile.birthdate as string}
             onChange={(date: string) => {
               setEditedProfile({

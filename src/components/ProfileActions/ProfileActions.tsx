@@ -3,6 +3,8 @@
 import { startTransition, type Dispatch, type SetStateAction } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
+import type { UseFormHandleSubmit } from "react-hook-form";
+import type { ProfileAboutFieldValues } from "@/shared/schemas/ProfileAboutSchema";
 
 import Link from "next/link";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -33,6 +35,7 @@ export default function ProfileActions({
   setIsConnectedOptim,
   setIsRequestSentOptim,
   setIsBlockedOptim,
+  handleSubmit,
 }: {
   session: Session;
   profile: Tables<"profiles"> & {
@@ -75,6 +78,7 @@ export default function ProfileActions({
   setIsBlockedOptim: (
     action: boolean | ((pendingState: boolean) => boolean),
   ) => void;
+  handleSubmit: UseFormHandleSubmit<ProfileAboutFieldValues>;
 }) {
   const { ratings: ratingsProfile, ...profileNoRatings } = profile;
   const { ratings: ratingsEditedProfile, ...newProfile } = editedProfile;
@@ -175,7 +179,9 @@ export default function ProfileActions({
             {`Switch to ${profile.role === "client" ? "Coach" : "Client"}`}
           </button>
           <button
-            onClick={handleEditClick}
+            onClick={
+              isEditing ? handleSubmit(handleEditClick) : handleEditClick
+            }
             className={`${styles["profile-actions__button"] ?? ""} ${styles["profile-actions__button--fill"] ?? ""}`}
           >
             {isEditing ? "Save changes" : "Edit"}

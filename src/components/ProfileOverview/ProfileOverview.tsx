@@ -1,6 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
+import type { UseFormHandleSubmit } from "react-hook-form";
+import type { ProfileAboutFieldValues } from "@/shared/schemas/ProfileAboutSchema";
 
 import Image from "next/image";
 
@@ -24,6 +26,7 @@ export default function ProfileOverview({
   setIsConnectedOptim,
   setIsRequestSentOptim,
   setIsBlockedOptim,
+  handleSubmit,
 }: {
   session: Session;
   profile: Tables<"profiles"> & {
@@ -67,6 +70,7 @@ export default function ProfileOverview({
   setIsBlockedOptim: (
     action: boolean | ((pendingState: boolean) => boolean),
   ) => void;
+  handleSubmit: UseFormHandleSubmit<ProfileAboutFieldValues>;
 }) {
   return (
     <article
@@ -110,6 +114,7 @@ export default function ProfileOverview({
         setIsConnectedOptim={setIsConnectedOptim}
         setIsRequestSentOptim={setIsRequestSentOptim}
         setIsBlockedOptim={setIsBlockedOptim}
+        handleSubmit={handleSubmit}
       />
     </article>
   );

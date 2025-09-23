@@ -2,7 +2,7 @@
 
 import type { Session } from "next-auth";
 import type { Tables } from "@/types/database";
-import type { Coordinates } from "@/shared/Coordinates.interface";
+import type { Coordinates } from "@/shared/interfaces/Coordinates.interface";
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
