@@ -14,6 +14,7 @@ export default function NearbyProfilesList({
   userProfile,
   displayedProfiles,
   blockedCoaches,
+  selectedProfile,
 }: {
   userProfile: Tables<"profiles">;
   displayedProfiles: (Tables<"profiles"> & { ratings: Tables<"reviews">[] })[];
@@ -21,11 +22,18 @@ export default function NearbyProfilesList({
     blockerProfile: Tables<"profiles">;
     blockedProfile: Tables<"profiles">;
   })[];
+  selectedProfile?: Tables<"profiles">;
 }) {
-  const filteredProfiles = displayedProfiles.filter(
-    (profile) =>
-      !blockedCoaches.map((el) => el.blocked_id).includes(profile.user_id),
-  );
+  const filteredProfiles = displayedProfiles
+    .filter(
+      (profile) =>
+        !blockedCoaches.map((el) => el.blocked_id).includes(profile.user_id),
+    )
+    .sort((a, b) => {
+      if (a.user_id === selectedProfile?.user_id) return -1;
+      if (b.user_id === selectedProfile?.user_id) return 1;
+      return 0;
+    });
 
   return (
     <div className={styles["nearby-profiles-list"]}>

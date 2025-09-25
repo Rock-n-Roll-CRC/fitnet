@@ -159,6 +159,7 @@ const Map = ({
           userProfile={userProfile}
           displayedProfiles={filteredProfiles}
           blockedCoaches={blockedProfiles ?? []}
+          selectedProfile={selectedProfile}
         />
       </div>
     </>

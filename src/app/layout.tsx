@@ -31,6 +31,5 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
 export default RootLayout;
 
-// Add modal window for selected profiles on the map
 // Fix clear button for messages
 // Show both sent and received requests
