@@ -1,5 +1,7 @@
 "use client";
 
+import type { Tables } from "@/types/database";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -52,6 +54,23 @@ const AppFooter = ({
           setUnreadMessagesCount((prev) => prev + 1);
         },
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "messages",
+          filter: `receiver_id=eq.${session.user.id}`,
+        },
+        (payload) => {
+          const newMessage = payload.new as Tables<"messages">;
+          const oldMessage = payload.old as Tables<"messages">;
+
+          if (newMessage.is_read && !oldMessage.is_read) {
+            setUnreadMessagesCount((prev) => prev - 1);
+          }
+        },
+      )
       .subscribe();
 
     const channelNtfcs = supabaseClient
@@ -66,6 +85,23 @@ const AppFooter = ({
         },
         () => {
           setUnreadNotificationsCount((prev) => prev + 1);
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${session.user.id}`,
+        },
+        (payload) => {
+          const newNotification = payload.new as Tables<"notifications">;
+          const oldNotification = payload.old as Tables<"notifications">;
+
+          if (newNotification.is_read && !oldNotification.is_read) {
+            setUnreadNotificationsCount((prev) => prev - 1);
+          }
         },
       )
       .subscribe();
@@ -102,13 +138,7 @@ const AppFooter = ({
             </Link>
           </li>
           <li className={styles["app-footer__list-item"]}>
-            <Link
-              href={`/messages`}
-              onClick={() => {
-                setUnreadMessagesCount(0);
-              }}
-              className={styles["app-footer__nav-link"]}
-            >
+            <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
               {pathname.startsWith(`/messages`) ? (
                 <>
                   <ChatbubbleEllipsesSVG
@@ -156,9 +186,6 @@ const AppFooter = ({
           <li className={styles["app-footer__list-item"]}>
             <Link
               href="/notifications"
-              onClick={() => {
-                setUnreadNotificationsCount(0);
-              }}
               className={styles["app-footer__nav-link"]}
             >
               {pathname.startsWith("/notifications") ? (

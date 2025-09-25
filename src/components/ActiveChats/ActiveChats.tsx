@@ -20,6 +20,7 @@ export default function ActiveChats({
   activeChats: {
     chatPartnerProfile: Tables<"profiles">;
     lastMessage: Tables<"messages">;
+    unreadMessagesCount: number;
   }[];
 }) {
   const [activeChats, setActiveChats] = useState(initialActiveChats);

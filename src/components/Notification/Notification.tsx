@@ -4,6 +4,10 @@ import MailOutlineSVG from "@/assets/icons/mail-outline.svg";
 import PersonOutlineSVG from "@/assets/icons/person-outline.svg";
 import PersonAddOutlineSVG from "@/assets/icons/person-add-outline.svg";
 import StarOutlineSVG from "@/assets/icons/star-outline.svg";
+import MailSVG from "@/assets/icons/mail.svg";
+import PersonSVG from "@/assets/icons/person.svg";
+import PersonAddSVG from "@/assets/icons/person-add.svg";
+import StarSVG from "@/assets/icons/star.svg";
 
 import styles from "./Notification.module.scss";
 
@@ -22,10 +26,10 @@ const messages = new Map([
 ]);
 
 const icons = new Map([
-  ["NEW_MESSAGE", MailOutlineSVG],
-  ["REQUEST_RECEIVED", PersonOutlineSVG],
-  ["REQUEST_ACCEPTED", PersonAddOutlineSVG],
-  ["NEW_REVIEW", StarOutlineSVG],
+  ["NEW_MESSAGE", { outline: MailOutlineSVG, fill: MailSVG }],
+  ["REQUEST_RECEIVED", { outline: PersonOutlineSVG, fill: PersonSVG }],
+  ["REQUEST_ACCEPTED", { outline: PersonAddOutlineSVG, fill: PersonAddSVG }],
+  ["NEW_REVIEW", { outline: StarOutlineSVG, fill: StarSVG }],
 ]);
 
 export default function Notification({
@@ -35,7 +39,9 @@ export default function Notification({
   notification: Tables<"notifications"> & { senderProfile: Tables<"profiles"> };
   numberOfMessages: number;
 }) {
-  const Icon = icons.get(notification.type);
+  const Icon = notification.is_read
+    ? icons.get(notification.type)?.outline
+    : icons.get(notification.type)?.fill;
 
   const notificationDate = new Date(notification.created_at);
   const currDate = new Date();
@@ -63,7 +69,10 @@ export default function Notification({
   if (!Icon) return;
 
   return (
-    <li className={styles.notification}>
+    <li
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      className={`${styles.notification ?? ""} ${(!notification.is_read && styles["notification--unread"]) || ""}`}
+    >
       <div className={styles.notification__container}>
         <div className={styles["notification__icon-wrapper"]}>
           <Icon className={styles.notification__icon} />

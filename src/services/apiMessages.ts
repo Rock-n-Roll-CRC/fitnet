@@ -21,7 +21,11 @@ export const getActiveChats = async (
 
   const activeChatsMap = new Map<
     string,
-    { chatPartnerProfile: Tables<"profiles">; lastMessage: Tables<"messages"> }
+    {
+      chatPartnerProfile: Tables<"profiles">;
+      lastMessage: Tables<"messages">;
+      unreadMessagesCount: number;
+    }
   >();
 
   for (const message of data) {
@@ -34,18 +38,23 @@ export const getActiveChats = async (
       activeChatsMap.set(chatPartnerProfile.user_id, {
         chatPartnerProfile,
         lastMessage: message,
+        unreadMessagesCount: data.filter(
+          (message) =>
+            !message.is_read &&
+            message.sender_id === chatPartnerProfile.user_id,
+        ).length,
       });
     }
   }
 
   return Array.from(activeChatsMap).map(
-    ([_, { chatPartnerProfile, lastMessage }]) => {
-      return { chatPartnerProfile, lastMessage };
+    ([_, { chatPartnerProfile, lastMessage, unreadMessagesCount }]) => {
+      return { chatPartnerProfile, lastMessage, unreadMessagesCount };
     },
   );
 };
 
-export const getMessages = async (userId: string) => {
+export const getMessages = async (userId1: string, userId2: string) => {
   const client = (await import("@/services/supabase")).supabase;
 
   const { data, error } = await client
@@ -53,7 +62,9 @@ export const getMessages = async (userId: string) => {
     .select(
       "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
     )
-    .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+    .or(
+      `and(sender_id.eq.${userId1},receiver_id.eq.${userId2}),and(sender_id.eq.${userId2},receiver_id.eq.${userId1})`,
+    )
     .order("created_at", { ascending: true });
 
   if (error)

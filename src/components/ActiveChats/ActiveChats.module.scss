@@ -3,6 +3,7 @@
 
 .active-chats {
   @include remove-list-styles;
+  @include flex-shorthand(column, nowrap, $whitespace-6);
 
   padding-block-start: $whitespace-7;
 }

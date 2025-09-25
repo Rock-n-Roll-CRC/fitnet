@@ -72,6 +72,10 @@ export default function Chat({
   }
 
   useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+  }, []);
+
+  useEffect(() => {
     observerUnreadRef.current ??= new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

@@ -31,6 +31,6 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
 export default RootLayout;
 
-// Realtime  counter for unread messages/notifications
 // Add modal window for selected profiles on the map
 // Fix clear button for messages
+// Show both sent and received requests

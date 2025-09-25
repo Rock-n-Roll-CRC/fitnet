@@ -2,6 +2,8 @@
 @use "../../styles/tools" as *;
 
 .notification {
+  $this: &;
+
   @include flex-shorthand(row, nowrap, $whitespace-5, center);
 
   max-inline-size: 35rem;
@@ -10,6 +12,25 @@
   border: 0.2rem solid white;
   border-radius: $border-radius-large;
   box-shadow: 0 0 0.5rem $color-neutral-3;
+
+  &--unread {
+    background-color: white;
+    background-image: none;
+
+    #{$this}__icon-wrapper {
+      background-color: $color-primary-4;
+      background-image: none;
+    }
+
+    #{$this}__icon {
+      background-image: none;
+      fill: white;
+    }
+
+    #{$this}__message-count {
+      outline: 0.2rem solid white;
+    }
+  }
 
   &__container {
     @include flex-shorthand(row, nowrap, $whitespace-5, center);

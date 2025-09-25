@@ -4,6 +4,7 @@
 .active-chat {
   @include flex-shorthand(row, nowrap, null, null, space-between);
 
+  position: relative;
   padding: $whitespace-5;
   text-decoration: none;
   background-color: $color-neutral-2;
@@ -47,5 +48,21 @@
   &__message-date {
     font-size: $font-size-3;
     color: $color-neutral-8;
+  }
+
+  &__unread-message-count {
+    @include absolute-shorthand(0, 0, auto, auto);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    min-inline-size: 3rem;
+    min-block-size: 3rem;
+    aspect-ratio: 1 / 1;
+    padding: $whitespace-2;
+    font-size: $font-size-2;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    background-color: $color-accent-3;
+    border-radius: $border-radius-circle;
+    transform: translate(50%, -50%);
   }
 }

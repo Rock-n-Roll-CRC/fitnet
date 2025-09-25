@@ -24,7 +24,7 @@ export default async function Page({
 
   if (!profile || !myProfile) return;
 
-  const messages = await getMessages(userId);
+  const messages = await getMessages(session.user.id, userId);
 
   return (
     <div className={styles["page-content"]}>

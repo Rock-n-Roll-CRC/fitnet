@@ -8,11 +8,12 @@ import { useOnlineUsers } from "@/hooks/useOnlineUsers";
 import styles from "./ActiveChat.module.scss";
 
 export default function ActiveChat({
-  activeChat: { chatPartnerProfile: profile, lastMessage },
+  activeChat: { chatPartnerProfile: profile, lastMessage, unreadMessagesCount },
 }: {
   activeChat: {
     chatPartnerProfile: Tables<"profiles">;
     lastMessage: Tables<"messages">;
+    unreadMessagesCount: number;
   };
 }) {
   const onlineUsers = useOnlineUsers();
@@ -50,6 +51,12 @@ export default function ActiveChat({
           hour12: true,
         })}
       </p>
+
+      {unreadMessagesCount > 0 && (
+        <p className={styles["active-chat__unread-message-count"]}>
+          {unreadMessagesCount}
+        </p>
+      )}
     </Link>
   );
 }
