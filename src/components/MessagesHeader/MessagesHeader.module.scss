@@ -26,7 +26,10 @@
   }
 
   &__heading {
+    @include absolute-shorthand(auto, auto, auto, 50%);
+
     font-size: $font-size-6;
     color: $color-neutral-10;
+    transform: translateX(-50%);
   }
 }
