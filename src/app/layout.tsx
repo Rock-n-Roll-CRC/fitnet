@@ -30,5 +30,3 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default RootLayout;
-
-// Fix clear button for messages

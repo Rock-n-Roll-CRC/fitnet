@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import MessagesMenu from "@/components/MessagesMenu/MessagesMenu";
-
 import ArrowBackOutlineSVG from "@/assets/icons/arrow-back-outline.svg";
 
 import styles from "./MessagesHeader.module.scss";
@@ -14,8 +12,6 @@ export default function MessagesHeader() {
       </Link>
 
       <h1 className={styles["messages-header__heading"]}>Messages</h1>
-
-      <MessagesMenu />
     </header>
   );
 }
