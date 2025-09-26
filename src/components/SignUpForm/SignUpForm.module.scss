@@ -6,6 +6,7 @@
 
   @include flex-shorthand(column, nowrap, $whitespace-8);
 
+  max-inline-size: 30rem;
   background-color: $color-neutral-1;
 
   &__heading {

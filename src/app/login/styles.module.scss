@@ -2,9 +2,84 @@
 @use "../../styles/tools" as *;
 
 .main {
+  @include flex-shorthand(row, nowrap, null, null, center);
+
   inline-size: 100vi;
-  min-block-size: 100vb;
-  padding: $whitespace-8 $whitespace-7;
+  block-size: 100vb;
+  padding: $whitespace-6;
   background-color: $color-neutral-1;
-  @include flex-shorthand(row, nowrap, null, center, center);
+
+  &__body {
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    flex: 1;
+    max-inline-size: 120rem;
+  }
+
+  &__image-wrapper {
+    position: relative;
+    display: none;
+    flex: 1;
+    max-inline-size: 55rem;
+    block-size: 100%;
+    max-block-size: 90rem;
+    overflow: hidden;
+    border-radius: $border-radius-large;
+
+    @include media-up-shorthand(laptop-1) {
+      display: block;
+    }
+  }
+
+  &__image {
+    @include size-shorthand(100%, 100%);
+
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(1) blur(0.1rem);
+  }
+
+  &__image-caption {
+    @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
+
+    max-inline-size: 35rem;
+  }
+
+  &__app-image {
+    @include size-shorthand(auto, 35rem);
+
+    border-radius: $border-radius-large;
+  }
+
+  &__image-overlay {
+    @include absolute-shorthand(0, 0, 0, 0);
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    padding: $whitespace-7;
+    background: radial-gradient(
+      rgb($color-primary-10, 95%),
+      rgb($color-primary-8, 95%)
+    );
+  }
+
+  &__text-content {
+    @include flex-shorthand(column, nowrap, $whitespace-4);
+  }
+
+  &__heading {
+    font-size: $font-size-7;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+  }
+
+  &__description {
+    font-size: $font-size-3;
+    color: $color-neutral-4;
+  }
+
+  &__form {
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    flex: 1;
+  }
 }
