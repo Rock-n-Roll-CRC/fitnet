@@ -14,11 +14,13 @@ export default async function Page() {
   const profile = await getProfileByUserId(session.user.id);
   if (!profile) return;
 
-  const isCoach = profile.role === "coach";
+  const receivedRequests = await getPendingConnectionRequests(session.user.id);
+  const sentRequests = await getSentPendingConnectionRequests(session.user.id);
 
-  const requests = isCoach
-    ? await getPendingConnectionRequests(session.user.id)
-    : await getSentPendingConnectionRequests(session.user.id);
-
-  return <RequestsList isCoach={isCoach} requests={requests} />;
+  return (
+    <RequestsList
+      receivedRequests={receivedRequests}
+      sentRequests={sentRequests}
+    />
+  );
 }

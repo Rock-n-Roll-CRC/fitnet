@@ -86,16 +86,16 @@ const RequestItem = ({
 
   return (
     <div className={styles["request-item"]}>
-      <div className={styles["request-item__image-wrapper"]}>
-        <Image
-          src={profile.avatar_url}
-          alt={profile.full_name}
-          fill
-          className={styles["request-item__image"]}
-        />
-      </div>
+      <div className={styles["request-item__top-container"]}>
+        <div className={styles["request-item__image-wrapper"]}>
+          <Image
+            src={profile.avatar_url}
+            alt={profile.full_name}
+            fill
+            className={styles["request-item__image"]}
+          />
+        </div>
 
-      <div className={styles["request-item__body"]}>
         <div className={styles["request-item__text-content"]}>
           <span className={styles["request-item__name"]}>
             {profile.full_name}
@@ -104,7 +104,9 @@ const RequestItem = ({
             Request sent {differenceStr}
           </span>
         </div>
+      </div>
 
+      <div className={styles["request-item__body"]}>
         <div className={styles["request-item__button-container"]}>
           {type === "sent" ? (
             <>

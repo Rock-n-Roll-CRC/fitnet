@@ -12,47 +12,74 @@ import EmptySVG from "@/assets/illustrations/empty.svg";
 import styles from "./RequestsList.module.scss";
 
 export default function RequestsList({
-  isCoach,
-  requests,
+  receivedRequests,
+  sentRequests,
 }: {
-  isCoach: boolean;
-  requests: (Tables<"connection_requests"> & {
+  receivedRequests: (Tables<"connection_requests"> & {
+    senderProfile: Tables<"profiles">;
+    receiverProfile: Tables<"profiles">;
+  })[];
+  sentRequests: (Tables<"connection_requests"> & {
     senderProfile: Tables<"profiles">;
     receiverProfile: Tables<"profiles">;
   })[];
 }) {
-  const [optimisticRequests, removeRequest] = useOptimistic(
-    requests,
+  const [optimisticReceivedRequests, removeReceivedRequest] = useOptimistic(
+    receivedRequests,
+    (state, id: string) => state.filter((request) => request.id !== id),
+  );
+  const [optimisticSentRequests, removeSentRequest] = useOptimistic(
+    sentRequests,
     (state, id: string) => state.filter((request) => request.id !== id),
   );
 
-  return optimisticRequests.length > 0 ? (
-    <ul className={styles["requests-list"]}>
-      {optimisticRequests.map((request, index) => (
-        <RequestItem
-          key={index}
-          request={request}
-          type={isCoach ? "received" : "sent"}
-          onRemove={removeRequest}
-        />
-      ))}
-    </ul>
+  return optimisticReceivedRequests.length > 0 ||
+    optimisticSentRequests.length > 0 ? (
+    <div className={styles["requests-list"]}>
+      <div className={styles["requests-list__container"]}>
+        <h2 className={styles["requests-list__heading"]}>Received Requests</h2>
+
+        <ul className={styles["requests-list__list"]}>
+          {optimisticReceivedRequests.length > 0 ? (
+            optimisticReceivedRequests.map((request, index) => (
+              <RequestItem
+                key={index}
+                request={request}
+                type={"received"}
+                onRemove={removeReceivedRequest}
+              />
+            ))
+          ) : (
+            <EmptySVG className={styles["requests-list__empty"]} />
+          )}
+        </ul>
+      </div>
+
+      <div className={styles["requests-list__container"]}>
+        <h2 className={styles["requests-list__heading"]}>Sent Requests</h2>
+
+        <ul className={styles["requests-list__list"]}>
+          {optimisticSentRequests.length > 0 ? (
+            optimisticSentRequests.map((request, index) => (
+              <RequestItem
+                key={index}
+                request={request}
+                type={"sent"}
+                onRemove={removeSentRequest}
+              />
+            ))
+          ) : (
+            <EmptySVG className={styles["requests-list__empty"]} />
+          )}
+        </ul>
+      </div>
+    </div>
   ) : (
     <EmptyState
       illustration={EmptySVG}
-      heading={
-        isCoach ? (
-          <>Looks like you have no pending requests!</>
-        ) : (
-          <>Looks like you have no sent requests!</>
-        )
-      }
+      heading={<>Looks like you have neither pending nor sent requests!</>}
       description={
-        isCoach ? (
-          <>As you get sent connection requests, they will appear here.</>
-        ) : (
-          <>As you send connection requests, they will appear here.</>
-        )
+        <>As you get or send connection requests, they will appear here.</>
       }
       ctaText={<>Start searching</>}
     />

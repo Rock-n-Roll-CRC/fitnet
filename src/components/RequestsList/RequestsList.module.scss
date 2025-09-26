@@ -2,8 +2,37 @@
 @use "../../styles/tools" as *;
 
 .requests-list {
-  @include remove-list-styles;
-  @include flex-shorthand(column, nowrap, $whitespace-7, center);
+  @include flex-shorthand(column, nowrap, $whitespace-7);
 
+  block-size: 100%;
   padding-block-start: $whitespace-8;
+  overflow: hidden;
+
+  &__container {
+    @include flex-shorthand(column, nowrap, $whitespace-6);
+
+    flex: 1;
+    block-size: 50%;
+    overflow: hidden;
+  }
+
+  &__empty {
+    @include size-shorthand(auto, 100%);
+  }
+
+  &__heading {
+    font-size: $font-size-5;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-10;
+  }
+
+  &__list {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-7, center);
+
+    flex: 1;
+    overflow: scroll;
+    scrollbar-gutter: auto;
+    overscroll-behavior: auto;
+  }
 }
