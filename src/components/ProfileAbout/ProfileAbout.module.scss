@@ -2,9 +2,25 @@
 @use "../../styles/tools" as *;
 
 .profile-about {
+  $this: &;
+
   @include flex-shorthand(column, nowrap, $whitespace-6);
 
+  inline-size: 100%;
+  max-inline-size: 40rem;
   padding: $whitespace-6;
+
+  @include media-up-shorthand(tablet-3) {
+    padding: $whitespace-7;
+
+    #{$this}__detail {
+      gap: $whitespace-7;
+    }
+
+    #{$this}__detail-label-box {
+      inline-size: max-content;
+    }
+  }
 
   &__detail {
     @include flex-shorthand(row, nowrap, $whitespace-2, center, space-between);
