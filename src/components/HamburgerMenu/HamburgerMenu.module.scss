@@ -70,7 +70,7 @@
       transition: all 0.5s;
     }
 
-    @include media-up-shorthand(tablet-2) {
+    @include media-up-shorthand(tablet-3) {
       display: none;
     }
   }

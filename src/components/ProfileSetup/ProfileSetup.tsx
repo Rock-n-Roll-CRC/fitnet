@@ -25,6 +25,8 @@ import { createProfile, uploadAvatar } from "@/services/actions";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+import SetupWizardSVG from "@/assets/illustrations/setup-wizard.svg";
+
 const ProfileFormSchemaBase = z.object({
   fullName: z
     .string()
@@ -163,190 +165,207 @@ export default function ProfileSetup({ session }: { session: Session }) {
 
   return (
     <div className={styles["profile-setup"]}>
-      <div className={styles["profile-setup__top-container"]}>
-        <div className={styles["profile-setup__image-wrapper"]}>
-          <Image
-            src={profile.avatar_url}
-            alt={profile.full_name}
-            fill
-            className={styles["profile-setup__image"]}
-          />
-          <input
-            type="file"
-            name="avatar-upload"
-            id="avatar-upload"
-            ref={inputRef}
-            accept="image/*"
-            onChange={(event) => {
-              void handleUploadFile(event);
-            }}
-            hidden
-          />
-          <button
-            onClick={() => {
-              inputRef.current?.click();
-            }}
-            className={styles["profile-setup__image-upload-button"]}
-          >
-            <CloudUploadOutlineSVG
-              className={styles["profile-setup__image-upload-icon"]}
+      <div className={styles["profile-setup__body"]}>
+        <div className={styles["profile-setup__top-container"]}>
+          <div className={styles["profile-setup__image-wrapper"]}>
+            <Image
+              src={profile.avatar_url}
+              alt={profile.full_name}
+              fill
+              className={styles["profile-setup__image"]}
             />
-          </button>
+            <input
+              type="file"
+              name="avatar-upload"
+              id="avatar-upload"
+              ref={inputRef}
+              accept="image/*"
+              onChange={(event) => {
+                void handleUploadFile(event);
+              }}
+              hidden
+            />
+            <button
+              onClick={() => {
+                inputRef.current?.click();
+              }}
+              className={styles["profile-setup__image-upload-button"]}
+            >
+              <CloudUploadOutlineSVG
+                className={styles["profile-setup__image-upload-icon"]}
+              />
+            </button>
+          </div>
+
+          <div className={styles["profile-setup__text-content"]}>
+            <h1 className={styles["profile-setup__heading"]}>
+              Setup Your Profile
+            </h1>
+
+            <p className={styles["profile-setup__description"]}>
+              Get a more personalized experience
+            </p>
+          </div>
         </div>
 
-        <div className={styles["profile-setup__text-content"]}>
-          <h1 className={styles["profile-setup__heading"]}>
-            Setup Your Profile
-          </h1>
-
-          <p className={styles["profile-setup__description"]}>
-            Get a more personalized experience
-          </p>
-        </div>
-      </div>
-
-      <form
-        onSubmit={handleSubmit(handleFinishSetup)}
-        className={styles["profile-setup__bottom-container"]}
-      >
-        <div className={styles["profile-setup__input-container"]}>
-          <Select
-            fill
-            label="Role"
-            options={["client", "coach"]}
-            value={profile.role}
-            onChange={(role) => {
-              setProfile((editedProfile) => ({ ...editedProfile, role }));
-            }}
-            register={register("role")}
-          />
-
-          <InputText
-            fill
-            label="Full Name"
-            register={register("fullName")}
-            error={errors.fullName}
-            value={profile.full_name}
-            onChange={(val) => {
-              setProfile((editedProfile) => ({
-                ...editedProfile,
-                full_name: val,
-              }));
-            }}
-          />
-
-          <InputTel
-            fill
-            label={true}
-            register={register("phoneNumber")}
-            error={errors.phoneNumber}
-            value={profile.phone_number}
-            onChange={(val) => {
-              setProfile((editedProfile) => ({
-                ...editedProfile,
-                phone_number: val,
-              }));
-            }}
-          />
-
-          <InputCity
-            fill
-            label={true}
-            register={register("city")}
-            error={errors.city}
-            value={profile.city}
-            onChange={(val) => {
-              setProfile((editedProfile) => ({
-                ...editedProfile,
-                city: val,
-              }));
-            }}
-          />
-
-          <Select
-            fill
-            label="Gender"
-            options={["male", "female"]}
-            value={profile.gender}
-            onChange={(gender) => {
-              setProfile((editedProfile) => ({
-                ...editedProfile,
-                gender,
-              }));
-            }}
-          />
-
-          <InputDate
-            fill
-            label="Birthdate"
-            register={register("birthdate")}
-            error={errors.birthdate}
-            value={profile.birthdate}
-            onChange={(date) => {
-              setProfile((editedProfile) => ({
-                ...editedProfile,
-                birthdate: date,
-              }));
-            }}
-          />
-
-          {profile.role === "client" ? (
+        <form
+          onSubmit={handleSubmit(handleFinishSetup)}
+          className={styles["profile-setup__bottom-container"]}
+        >
+          <div className={styles["profile-setup__input-container"]}>
             <Select
               fill
-              label="Fitness Goal"
-              options={["muscle growth", "weight loss", "yoga"]}
-              value={profile.fitness_goal}
-              onChange={(fitnessGoal) => {
+              label="Role"
+              options={["client", "coach"]}
+              value={profile.role}
+              onChange={(role) => {
+                setProfile((editedProfile) => ({ ...editedProfile, role }));
+              }}
+              register={register("role")}
+            />
+
+            <InputText
+              fill
+              label="Full Name"
+              register={register("fullName")}
+              error={errors.fullName}
+              value={profile.full_name}
+              onChange={(val) => {
                 setProfile((editedProfile) => ({
                   ...editedProfile,
-                  fitness_goal: fitnessGoal,
+                  full_name: val,
                 }));
               }}
             />
-          ) : (
-            <>
-              <MultiSelect
-                fill
-                label="Expertise"
-                options={["muscle growth", "weight loss", "yoga"]}
-                value={profile.expertise}
-                onChange={(val) => {
-                  setProfile((editedProfile) => ({
-                    ...editedProfile,
-                    expertise: val.length > 0 ? val : editedProfile.expertise,
-                  }));
-                }}
-              />
 
-              <InputHourlyRate
+            <InputTel
+              fill
+              label={true}
+              register={register("phoneNumber")}
+              error={errors.phoneNumber}
+              value={profile.phone_number}
+              onChange={(val) => {
+                setProfile((editedProfile) => ({
+                  ...editedProfile,
+                  phone_number: val,
+                }));
+              }}
+            />
+
+            <InputCity
+              fill
+              label={true}
+              register={register("city")}
+              error={errors.city}
+              value={profile.city}
+              onChange={(val) => {
+                setProfile((editedProfile) => ({
+                  ...editedProfile,
+                  city: val,
+                }));
+              }}
+            />
+
+            <Select
+              fill
+              label="Gender"
+              options={["male", "female"]}
+              value={profile.gender}
+              onChange={(gender) => {
+                setProfile((editedProfile) => ({
+                  ...editedProfile,
+                  gender,
+                }));
+              }}
+            />
+
+            <InputDate
+              fill
+              label="Birthdate"
+              register={register("birthdate")}
+              error={errors.birthdate}
+              value={profile.birthdate}
+              onChange={(date) => {
+                setProfile((editedProfile) => ({
+                  ...editedProfile,
+                  birthdate: date,
+                }));
+              }}
+            />
+
+            {profile.role === "client" ? (
+              <Select
                 fill
-                label={true}
-                register={register("hourlyRate")}
-                error={
-                  (
-                    errors as FieldErrors<
-                      z.infer<typeof ProfileFormSchemaCoach>
-                    >
-                  ).hourlyRate
-                }
-                rate={profile.hourly_rate}
-                currency={profile.hourly_rate_currency}
-                onChange={(rate: number, currency: string) => {
+                label="Fitness Goal"
+                options={["muscle growth", "weight loss", "yoga"]}
+                value={profile.fitness_goal}
+                onChange={(fitnessGoal) => {
                   setProfile((editedProfile) => ({
                     ...editedProfile,
-                    hourly_rate: rate,
-                    hourly_rate_currency: currency,
+                    fitness_goal: fitnessGoal,
                   }));
                 }}
               />
-            </>
-          )}
+            ) : (
+              <>
+                <MultiSelect
+                  fill
+                  label="Expertise"
+                  options={["muscle growth", "weight loss", "yoga"]}
+                  value={profile.expertise}
+                  onChange={(val) => {
+                    setProfile((editedProfile) => ({
+                      ...editedProfile,
+                      expertise: val.length > 0 ? val : editedProfile.expertise,
+                    }));
+                  }}
+                />
+
+                <InputHourlyRate
+                  fill
+                  label={true}
+                  register={register("hourlyRate")}
+                  error={
+                    (
+                      errors as FieldErrors<
+                        z.infer<typeof ProfileFormSchemaCoach>
+                      >
+                    ).hourlyRate
+                  }
+                  rate={profile.hourly_rate}
+                  currency={profile.hourly_rate_currency}
+                  onChange={(rate: number, currency: string) => {
+                    setProfile((editedProfile) => ({
+                      ...editedProfile,
+                      hourly_rate: rate,
+                      hourly_rate_currency: currency,
+                    }));
+                  }}
+                />
+              </>
+            )}
+          </div>
+
+          <button className={styles["profile-setup__button"]}>
+            Done & Dusted
+          </button>
+        </form>
+      </div>
+
+      <div className={styles["profile-setup__illustration-container"]}>
+        <div className={styles["profile-setup__caption-container"]}>
+          <h2 className={styles["profile-setup__caption-heading"]}>
+            <span className={styles["profile-setup__heading-bold"]}>
+              Almost done,
+            </span>{" "}
+            let&apos;s get to know each other!
+          </h2>
+
+          <p className={styles["profile-setup__caption-description"]}></p>
         </div>
 
-        <button className={styles["profile-setup__button"]}>
-          Done & Dusted
-        </button>
-      </form>
+        <SetupWizardSVG className={styles["profile-setup__illustration"]} />
+      </div>
     </div>
   );
 }

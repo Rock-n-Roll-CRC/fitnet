@@ -2,17 +2,64 @@
 @use "../../styles/tools" as *;
 
 .profile-setup {
-  @include flex-shorthand(column, nowrap, $whitespace-6);
+  @include flex-shorthand(row, nowrap, null);
 
-  flex: 1;
-  padding: $whitespace-9 $whitespace-5;
+  min-block-size: 100vb;
   background-color: $color-neutral-1;
+
+  &__body {
+    @include flex-shorthand(column, nowrap, $whitespace-6, center, center);
+
+    flex: 1;
+    padding: $whitespace-9 $whitespace-5;
+    background-color: $color-neutral-1;
+
+    @include media-up-shorthand(laptop-1) {
+      padding: $whitespace-9 $whitespace-7;
+    }
+  }
+
+  &__illustration-container {
+    display: none;
+    flex: 1;
+    padding: 0 $whitespace-7;
+    background-color: white;
+
+    @include media-up-shorthand(laptop-1) {
+      @include flex-shorthand(column, nowrap, $whitespace-12, null, center);
+    }
+  }
+
+  &__illustration {
+    max-inline-size: 50rem;
+    block-size: auto;
+    margin: 0 auto;
+  }
+
+  &__caption-heading {
+    max-inline-size: 45rem;
+    font-size: $font-size-9;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-5;
+  }
+
+  &__heading-bold {
+    font-size: $font-size-10;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-10;
+  }
 
   &__top-container {
     @include flex-shorthand(column, nowrap, $whitespace-7, center);
 
+    inline-size: 100%;
+    max-inline-size: 30rem;
     padding-block-end: $whitespace-6;
     border-block-end: 0.2rem solid $color-neutral-3;
+
+    @include media-up-shorthand(tablet-1) {
+      max-inline-size: 55rem;
+    }
   }
 
   &__image-wrapper {
@@ -37,6 +84,7 @@
     @include flex-shorthand(row, nowrap, null, center, center);
 
     padding: $whitespace-4;
+    cursor: pointer;
     background-color: $color-neutral-2;
     border-radius: $border-radius-large;
   }
@@ -64,23 +112,42 @@
   }
 
   &__bottom-container {
-    @include flex-shorthand(column, nowrap, $whitespace-7);
+    @include flex-shorthand(column, nowrap, $whitespace-7, center);
+
+    inline-size: 100%;
+    max-inline-size: 30rem;
+
+    @include media-up-shorthand(tablet-1) {
+      max-inline-size: 55rem;
+    }
   }
 
   &__input-container {
-    @include grid-shorthand(auto, 1fr, $whitespace-5, $whitespace-5);
+    @include grid-shorthand(
+      auto,
+      repeat(auto-fit, minmax(min(100%, 17rem), 25rem)),
+      $whitespace-5,
+      $whitespace-5
+    );
 
     justify-content: center;
     justify-items: center;
+    inline-size: 100%;
+
+    @include media-up-shorthand(tablet-1) {
+      grid-template-columns: repeat(2, minmax(17rem, 25rem));
+    }
   }
 
   &__button {
     @include remove-button-styles;
 
+    inline-size: 100%;
     padding: $whitespace-4 0;
     font-size: $font-size-3;
     font-weight: $font-weight-semi-bold;
     color: $color-neutral-1;
+    cursor: pointer;
     background-color: $color-primary-10;
     border-radius: $border-radius-medium;
   }
