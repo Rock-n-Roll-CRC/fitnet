@@ -13,6 +13,7 @@
 
 @mixin remove-button-styles {
   padding: 0;
+  cursor: pointer;
   background-color: transparent;
   border: 0;
 }

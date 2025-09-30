@@ -2,7 +2,22 @@
 @use "../../styles/tools" as *;
 
 .notification-group {
+  $this: &;
+
   @include flex-shorthand(column, nowrap, $whitespace-6);
+
+  @include media-up-shorthand(tablet-2) {
+    #{$this}__body {
+      justify-items: unset;
+    }
+  }
+
+  @include media-up-shorthand(laptop-2) {
+    #{$this}__body {
+      grid-template-columns: repeat(2, minmax(35rem, 40rem));
+      justify-content: center;
+    }
+  }
 
   &__header {
     @include flex-shorthand(row, nowrap, null, center, space-between);
@@ -22,6 +37,13 @@
 
   &__body {
     @include remove-list-styles;
-    @include flex-shorthand(column, nowrap, $whitespace-5);
+    @include grid-shorthand(
+      null,
+      repeat(auto-fit, minmax(25rem, 1fr)),
+      $whitespace-5,
+      $whitespace-5
+    );
+
+    place-items: stretch center;
   }
 }

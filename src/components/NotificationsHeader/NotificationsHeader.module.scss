@@ -6,7 +6,20 @@
 
   @include flex-shorthand(column, nowrap, $whitespace-6);
 
+  inline-size: 100%;
+  max-inline-size: 90rem;
+  margin: 0 auto;
   background-color: $color-neutral-1;
+
+  @include media-up-shorthand(laptop-1) {
+    position: relative;
+
+    #{$this}__heading {
+      @include absolute-shorthand(auto, auto, auto, 50%);
+
+      transform: translateX(-50%);
+    }
+  }
 
   &__top-container {
     @include flex-shorthand(row, nowrap, null, center, space-between);
@@ -41,7 +54,6 @@
   &__filter-container {
     position: relative;
     inline-size: 20rem;
-    padding: $whitespace-5;
     background-color: $color-neutral-1;
     border-radius: $border-radius-pill;
     box-shadow: 0 0 0.8rem $color-neutral-4;
@@ -55,6 +67,9 @@
 
   &__filter-display {
     @include flex-shorthand(row, nowrap, null, center, space-between);
+
+    padding: $whitespace-5;
+    cursor: pointer;
   }
 
   &__filter-label {

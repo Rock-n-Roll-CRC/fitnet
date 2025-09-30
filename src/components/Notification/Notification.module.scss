@@ -6,6 +6,7 @@
 
   @include flex-shorthand(row, nowrap, $whitespace-5, center);
 
+  inline-size: 100%;
   max-inline-size: 35rem;
   padding: $whitespace-4 $whitespace-3;
   background-image: linear-gradient(to right, $color-neutral-2, white);
@@ -29,6 +30,18 @@
 
     #{$this}__message-count {
       outline: 0.2rem solid white;
+    }
+  }
+
+  @include media-up-shorthand(laptop-1) {
+    max-inline-size: 40rem;
+
+    #{$this}__container {
+      flex: 1;
+    }
+
+    #{$this}__body {
+      max-inline-size: none;
     }
   }
 

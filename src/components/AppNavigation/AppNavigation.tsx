@@ -126,9 +126,6 @@ const AppNavigation = ({
                   <PeopleSVG
                     className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
-                  <span
-                    className={styles["app-navigation__nav-link-stroke"]}
-                  ></span>
                 </>
               ) : (
                 <PeopleOutlineSVG
@@ -136,6 +133,11 @@ const AppNavigation = ({
                 />
               )}
             </Link>
+            {pathname.startsWith("/connections") && (
+              <span
+                className={styles["app-navigation__nav-link-stroke"]}
+              ></span>
+            )}
           </li>
           <li className={styles["app-navigation__list-item"]}>
             <Link
@@ -147,9 +149,6 @@ const AppNavigation = ({
                   <ChatbubbleEllipsesSVG
                     className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
-                  <span
-                    className={styles["app-navigation__nav-link-stroke"]}
-                  ></span>
                 </>
               ) : (
                 <ChatbubbleEllipsesOutlineSVG
@@ -163,6 +162,11 @@ const AppNavigation = ({
                 </div>
               )}
             </Link>
+            {pathname.startsWith(`/messages`) && (
+              <span
+                className={styles["app-navigation__nav-link-stroke"]}
+              ></span>
+            )}
           </li>
           <li className={styles["app-navigation__list-item"]}>
             <Link
@@ -174,9 +178,6 @@ const AppNavigation = ({
                   <CompassSVG
                     className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
-                  <span
-                    className={styles["app-navigation__nav-link-stroke"]}
-                  ></span>
                 </>
               ) : (
                 <CompassOutlineSVG
@@ -184,6 +185,11 @@ const AppNavigation = ({
                 />
               )}
             </Link>
+            {pathname === "/search" && (
+              <span
+                className={styles["app-navigation__nav-link-stroke"]}
+              ></span>
+            )}
           </li>
 
           <li className={styles["app-navigation__list-item"]}>
@@ -196,9 +202,6 @@ const AppNavigation = ({
                   <NotificationsSVG
                     className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
-                  <span
-                    className={styles["app-navigation__nav-link-stroke"]}
-                  ></span>
                 </>
               ) : (
                 <NotificationsOutlineSVG
@@ -212,6 +215,11 @@ const AppNavigation = ({
                 </div>
               )}
             </Link>
+            {pathname.startsWith("/notifications") && (
+              <span
+                className={styles["app-navigation__nav-link-stroke"]}
+              ></span>
+            )}
           </li>
           <li className={styles["app-navigation__list-item"]}>
             <Link
@@ -223,9 +231,6 @@ const AppNavigation = ({
                   <PersonSVG
                     className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
-                  <span
-                    className={styles["app-navigation__nav-link-stroke"]}
-                  ></span>
                 </>
               ) : (
                 <PersonOutlineSVG
@@ -233,6 +238,11 @@ const AppNavigation = ({
                 />
               )}
             </Link>
+            {pathname === `/profile/${session.user.id}` && (
+              <span
+                className={styles["app-navigation__nav-link-stroke"]}
+              ></span>
+            )}
           </li>
         </ul>
       </nav>

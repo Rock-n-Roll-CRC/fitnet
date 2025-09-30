@@ -1,0 +1,52 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.notifications-actions {
+  display: none;
+
+  &__button {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
+
+    padding: 1rem 2rem;
+    font-size: $font-size-3;
+    font-weight: $font-weight-semi-bold;
+    color: $color-neutral-1;
+    text-decoration: none;
+    cursor: pointer;
+    background: linear-gradient(to right, $color-primary-9, $color-primary-5);
+    border-radius: $border-radius-small;
+    box-shadow: get-shadow(small, $color-primary-5);
+    transition: all 0.15s;
+
+    @media (hover: hover) {
+      &:hover {
+        box-shadow: get-shadow(medium, $color-primary-5);
+      }
+    }
+
+    &:active {
+      box-shadow: get-shadow(small, $color-primary-5);
+    }
+
+    &--danger {
+      color: $color-neutral-1;
+      background: none;
+      background-color: $color-accent-3;
+
+      @media (hover: hover) {
+        &:hover {
+          box-shadow: none;
+        }
+      }
+
+      &:active {
+        box-shadow: none;
+      }
+    }
+  }
+
+  @include media-up-shorthand(laptop-1) {
+    @include flex-shorthand(row, nowrap, $whitespace-3, center);
+  }
+}

@@ -13,6 +13,10 @@
     }
   }
 
+  @include media-up-shorthand(laptop-1) {
+    display: none;
+  }
+
   &__button {
     @include remove-button-styles;
     @include size-shorthand(5rem, 5rem);

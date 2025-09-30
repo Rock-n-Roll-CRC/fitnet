@@ -73,6 +73,8 @@
   }
 
   &__nav-link {
+    position: relative;
+
     &--circled {
       @include flex-shorthand;
 
@@ -95,7 +97,7 @@
   }
 
   &__nav-link-count {
-    @include absolute-shorthand(0, -1rem, auto, auto);
+    @include absolute-shorthand(-0.5rem, -1rem, auto, auto);
     @include flex-shorthand(row, nowrap, null, center, center);
 
     min-inline-size: 2rem;

@@ -6,9 +6,11 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import NotificationsMenu from "@/components/NotificationsMenu/NotificationsMenu";
+import NotificationsActions from "@/components/NotificationsActions/NotificationsActions";
 
 import ArrowBackOutlineSVG from "@/assets/icons/arrow-back-outline.svg";
 import ChevronDownOutlineSVG from "@/assets/icons/chevron-down-outline.svg";
+import ChevronUpOutlineSVG from "@/assets/icons/chevron-up-outline.svg";
 import OptionsOutlineSVG from "@/assets/icons/options-outline.svg";
 
 import styles from "./NotificationsHeader.module.scss";
@@ -100,6 +102,7 @@ export default function NotificationsHeader({
         </h1>
 
         <NotificationsMenu />
+        <NotificationsActions />
       </div>
 
       <div className={styles["notifications-header__bottom-container"]}>
@@ -119,9 +122,15 @@ export default function NotificationsHeader({
                 .join("")}
             </span>
 
-            <ChevronDownOutlineSVG
-              className={styles["notifications-header__filter-icon"]}
-            />
+            {isStatusFilterOpen ? (
+              <ChevronUpOutlineSVG
+                className={styles["notifications-header__filter-icon"]}
+              />
+            ) : (
+              <ChevronDownOutlineSVG
+                className={styles["notifications-header__filter-icon"]}
+              />
+            )}
           </div>
 
           <div className={styles["notifications-header__filter-body"]}>

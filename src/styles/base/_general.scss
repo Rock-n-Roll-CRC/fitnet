@@ -4,7 +4,7 @@
 @use "../tools" as *;
 
 html {
-  font-size: 62.5%;
+  font-size: calc(62.5% + 0.05vi);
   scroll-behavior: smooth;
 }
 
