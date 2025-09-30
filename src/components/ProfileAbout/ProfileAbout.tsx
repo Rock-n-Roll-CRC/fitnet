@@ -30,6 +30,7 @@ export default function ProfileAbout({
   setEditedProfile,
   register,
   formErrors: errors,
+  currentTab,
 }: {
   profile: Tables<"profiles"> & {
     ratings: (Tables<"reviews"> & {
@@ -53,9 +54,13 @@ export default function ProfileAbout({
   >;
   register: UseFormRegister<ProfileAboutFieldValues>;
   formErrors: FieldErrors<ProfileAboutFieldValues>;
+  currentTab: string | string[];
 }) {
   return (
-    <div className={styles["profile-about"]}>
+    <div
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      className={`${styles["profile-about"] ?? ""} ${((currentTab === "about" || profile.role === "client") && styles["profile-about--selected"]) || ""}`}
+    >
       <input
         type="hidden"
         value={profile.role}

@@ -1,7 +1,9 @@
 @use "../../styles/settings" as *;
 @use "../../styles/tools" as *;
 
-.app-footer {
+.app-navigation {
+  $this: &;
+
   @include flex-shorthand(row, nowrap, null, center, center);
 
   position: sticky;
@@ -14,6 +16,39 @@
   background-color: $color-neutral-1;
   border-radius: 0;
   box-shadow: none;
+
+  @include media-up-shorthand(laptop-1) {
+    align-items: unset;
+    justify-content: unset;
+    order: -1;
+    inline-size: unset;
+
+    #{$this}__nav {
+      padding: $whitespace-5 0;
+      border-start-start-radius: 0.8rem;
+      border-start-end-radius: 3.2rem;
+      border-end-start-radius: 0.8rem;
+      border-end-end-radius: 3.2rem;
+    }
+
+    #{$this}__list {
+      flex-direction: column;
+      align-items: center;
+      margin-block-start: $whitespace-12;
+    }
+
+    #{$this}__list-item {
+      justify-content: center;
+      inline-size: 100%;
+      padding: 0 $whitespace-4;
+    }
+
+    #{$this}__nav-link-stroke {
+      @include size-shorthand(0.7rem, 100%);
+
+      inset: 0 -0.2rem auto auto;
+    }
+  }
 
   &__nav {
     padding: $whitespace-5 $whitespace-6;

@@ -10,6 +10,12 @@
     }
   }
 
+  @include media-up-shorthand(laptop-1) {
+    #{$this}__body {
+      padding: $whitespace-6 $whitespace-4 $whitespace-6 $whitespace-4;
+    }
+  }
+
   &__button {
     @include remove-button-styles;
     @include size-shorthand(5rem, 5rem);

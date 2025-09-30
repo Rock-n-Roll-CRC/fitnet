@@ -1,0 +1,18 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.layout {
+  @include flex-shorthand(column);
+
+  flex: 1;
+
+  @include media-up-shorthand(laptop-1) {
+    flex-direction: row;
+  }
+
+  &__body {
+    @include flex-shorthand(column);
+
+    flex: 1;
+  }
+}

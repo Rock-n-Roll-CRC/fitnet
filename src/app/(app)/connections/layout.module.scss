@@ -11,6 +11,10 @@
   overscroll-behavior: auto;
   background-color: $color-neutral-1;
 
+  @include media-up-shorthand(laptop-1) {
+    block-size: 100dvb;
+  }
+
   &__content {
     @include flex-shorthand(column);
 

@@ -16,12 +16,12 @@ import ChatbubbleEllipsesOutlineSVG from "@/assets/icons/chatbubble-ellipses-out
 import NotificationsSVG from "@/assets/icons/notifications.svg";
 import NotificationsOutlineSVG from "@/assets/icons/notifications-outline.svg";
 
-import styles from "./AppFooter.module.scss";
+import styles from "./AppNavigation.module.scss";
 import type { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import { supabaseClient } from "@/services/supabase.client";
 
-const AppFooter = ({
+const AppNavigation = ({
   session,
   unreadMessagesCount: initialUnreadMessagesCount,
   unreadNotificationsCount: initialUnreadNotificationsCount,
@@ -113,128 +113,131 @@ const AppFooter = ({
   }, [session.user.id]);
 
   return (
-    <footer className={styles["app-footer"]}>
-      <nav className={styles["app-footer__nav"]}>
-        <ul className={styles["app-footer__list"]}>
-          <li className={styles["app-footer__list-item"]}>
+    <aside className={styles["app-navigation"]}>
+      <nav className={styles["app-navigation__nav"]}>
+        <ul className={styles["app-navigation__list"]}>
+          <li className={styles["app-navigation__list-item"]}>
             <Link
               href="/connections/friends"
-              className={styles["app-footer__nav-link"]}
+              className={styles["app-navigation__nav-link"]}
             >
               {pathname.startsWith("/connections") ? (
                 <>
                   <PeopleSVG
-                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                    className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
                   <span
-                    className={styles["app-footer__nav-link-stroke"]}
+                    className={styles["app-navigation__nav-link-stroke"]}
                   ></span>
                 </>
               ) : (
                 <PeopleOutlineSVG
-                  className={styles["app-footer__nav-link-icon"]}
+                  className={styles["app-navigation__nav-link-icon"]}
                 />
               )}
             </Link>
           </li>
-          <li className={styles["app-footer__list-item"]}>
-            <Link href={`/messages`} className={styles["app-footer__nav-link"]}>
+          <li className={styles["app-navigation__list-item"]}>
+            <Link
+              href={`/messages`}
+              className={styles["app-navigation__nav-link"]}
+            >
               {pathname.startsWith(`/messages`) ? (
                 <>
                   <ChatbubbleEllipsesSVG
-                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                    className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
                   <span
-                    className={styles["app-footer__nav-link-stroke"]}
+                    className={styles["app-navigation__nav-link-stroke"]}
                   ></span>
                 </>
               ) : (
                 <ChatbubbleEllipsesOutlineSVG
-                  className={styles["app-footer__nav-link-icon"]}
+                  className={styles["app-navigation__nav-link-icon"]}
                 />
               )}
 
               {unreadMessagesCount > 0 && (
-                <div className={styles["app-footer__nav-link-count"]}>
+                <div className={styles["app-navigation__nav-link-count"]}>
                   {unreadMessagesCount}
                 </div>
               )}
             </Link>
           </li>
-          <li className={styles["app-footer__list-item"]}>
+          <li className={styles["app-navigation__list-item"]}>
             <Link
               href="/search"
-              className={`${styles["app-footer__nav-link"] ?? ""} ${styles["app-footer__nav-link--circled"] ?? ""}`}
+              className={`${styles["app-navigation__nav-link"] ?? ""} ${styles["app-navigation__nav-link--circled"] ?? ""}`}
             >
               {pathname === "/search" ? (
                 <>
                   <CompassSVG
-                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                    className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
                   <span
-                    className={styles["app-footer__nav-link-stroke"]}
+                    className={styles["app-navigation__nav-link-stroke"]}
                   ></span>
                 </>
               ) : (
                 <CompassOutlineSVG
-                  className={styles["app-footer__nav-link-icon"]}
+                  className={styles["app-navigation__nav-link-icon"]}
                 />
               )}
             </Link>
           </li>
 
-          <li className={styles["app-footer__list-item"]}>
+          <li className={styles["app-navigation__list-item"]}>
             <Link
               href="/notifications"
-              className={styles["app-footer__nav-link"]}
+              className={styles["app-navigation__nav-link"]}
             >
               {pathname.startsWith("/notifications") ? (
                 <>
                   <NotificationsSVG
-                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                    className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
                   <span
-                    className={styles["app-footer__nav-link-stroke"]}
+                    className={styles["app-navigation__nav-link-stroke"]}
                   ></span>
                 </>
               ) : (
                 <NotificationsOutlineSVG
-                  className={styles["app-footer__nav-link-icon"]}
+                  className={styles["app-navigation__nav-link-icon"]}
                 />
               )}
 
               {unreadNotificationsCount > 0 && (
-                <div className={styles["app-footer__nav-link-count"]}>
+                <div className={styles["app-navigation__nav-link-count"]}>
                   {unreadNotificationsCount}
                 </div>
               )}
             </Link>
           </li>
-          <li className={styles["app-footer__list-item"]}>
+          <li className={styles["app-navigation__list-item"]}>
             <Link
               href={`/profile/${session.user.id}`}
-              className={styles["app-footer__nav-link"]}
+              className={styles["app-navigation__nav-link"]}
             >
               {pathname === `/profile/${session.user.id}` ? (
                 <>
                   <PersonSVG
-                    className={`${styles["app-footer__nav-link-icon"] ?? ""} ${styles["app-footer__nav-link-icon--filled"] ?? ""}`}
+                    className={`${styles["app-navigation__nav-link-icon"] ?? ""} ${styles["app-navigation__nav-link-icon--filled"] ?? ""}`}
                   />
                   <span
-                    className={styles["app-footer__nav-link-stroke"]}
+                    className={styles["app-navigation__nav-link-stroke"]}
                   ></span>
                 </>
               ) : (
                 <PersonOutlineSVG
-                  className={styles["app-footer__nav-link-icon"]}
+                  className={styles["app-navigation__nav-link-icon"]}
                 />
               )}
             </Link>
           </li>
         </ul>
       </nav>
-    </footer>
+    </aside>
   );
 };
 
-export default AppFooter;
+export default AppNavigation;

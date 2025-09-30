@@ -5,6 +5,7 @@
   @include flex-shorthand(column, nowrap, $whitespace-7);
 
   inline-size: 100%;
+  max-inline-size: 90rem;
 
   @include media-up-shorthand(tablet-3) {
     flex-direction: row;
