@@ -4,5 +4,15 @@
 .page-content {
   @include flex-shorthand(column, nowrap);
 
+  inline-size: 100%;
+  max-inline-size: 130rem;
   block-size: 100%;
+  padding: $whitespace-6 0 $whitespace-6 0;
+  margin: 0 auto;
+
+  @include media-up-shorthand(laptop-1) {
+    @include flex-shorthand(row, nowrap, $whitespace-8);
+
+    padding: $whitespace-6 0 $whitespace-6 $whitespace-8;
+  }
 }

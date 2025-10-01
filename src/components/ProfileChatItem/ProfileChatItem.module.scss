@@ -4,6 +4,8 @@
 .profile-chat-item {
   @include flex-shorthand(row, nowrap, null, null, space-between);
 
+  inline-size: 100%;
+  max-inline-size: 35rem;
   padding: $whitespace-5;
   text-decoration: none;
   background-color: $color-neutral-2;

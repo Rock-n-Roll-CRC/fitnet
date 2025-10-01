@@ -24,6 +24,12 @@
     }
   }
 
+  @include media-up-shorthand(laptop-1) {
+    #{$this}__body {
+      max-inline-size: 60rem;
+    }
+  }
+
   &__body {
     @include flex-shorthand(row, nowrap, $whitespace-4, center);
 

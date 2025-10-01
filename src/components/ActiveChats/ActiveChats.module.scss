@@ -2,8 +2,41 @@
 @use "../../styles/tools" as *;
 
 .active-chats {
-  @include remove-list-styles;
-  @include flex-shorthand(column, nowrap, $whitespace-6);
+  $this: &;
 
+  inline-size: 100%;
+  max-inline-size: 35rem;
   padding-block-start: $whitespace-7;
+  margin: 0 auto;
+
+  &--sidebar {
+    display: none;
+    max-inline-size: 30rem;
+    padding: 0;
+  }
+
+  &--empty {
+    padding: 0;
+  }
+
+  @include media-up-shorthand(laptop-3) {
+    &--sidebar {
+      @include flex-shorthand(column, nowrap, $whitespace-7);
+
+      #{$this}__heading {
+        display: block;
+      }
+    }
+  }
+
+  &__heading {
+    display: none;
+    font-size: $font-size-7;
+    color: $color-neutral-10;
+  }
+
+  &__list {
+    @include remove-list-styles;
+    @include flex-shorthand(column, nowrap, $whitespace-6);
+  }
 }

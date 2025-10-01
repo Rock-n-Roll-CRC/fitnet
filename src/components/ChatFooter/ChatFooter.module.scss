@@ -2,9 +2,17 @@
 @use "../../styles/tools" as *;
 
 .chat-footer {
+  $this: &;
+
   @include flex-shorthand(row, nowrap, null, center, center);
 
   padding-inline: $whitespace-6;
+
+  @include media-up-shorthand(laptop-1) {
+    #{$this}__body {
+      max-inline-size: 60rem;
+    }
+  }
 
   &__body {
     @include flex-shorthand(row, nowrap, $whitespace-4, center, center);

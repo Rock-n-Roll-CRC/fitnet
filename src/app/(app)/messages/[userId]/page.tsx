@@ -1,8 +1,10 @@
+import ActiveChats from "@/components/ActiveChats/ActiveChats";
 import Chat from "@/components/Chat/Chat";
 
 import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
-import { getMessages } from "@/services/apiMessages";
+import { getActiveChats, getMessages } from "@/services/apiMessages";
+import { getSavedProfiles } from "@/services/apiSavedProfiles";
 
 import styles from "./page.module.scss";
 
@@ -25,9 +27,18 @@ export default async function Page({
   if (!profile || !myProfile) return;
 
   const messages = await getMessages(session.user.id, userId);
+  const activeChats = await getActiveChats(session.user.id);
+  const savedProfiles = await getSavedProfiles(session.user.id);
 
   return (
     <div className={styles["page-content"]}>
+      <ActiveChats
+        session={session}
+        activeChats={activeChats}
+        savedProfiles={savedProfiles}
+        type="sidebar"
+      />
+
       <Chat
         session={session}
         profile={profile}

@@ -150,8 +150,10 @@ export default function Chat({
           const newMessage = payload.new as Tables<"messages">;
 
           if (
-            newMessage.sender_id === session.user.id ||
-            newMessage.receiver_id === session.user.id
+            (newMessage.sender_id === session.user.id &&
+              newMessage.receiver_id === profile.user_id) ||
+            (newMessage.receiver_id === session.user.id &&
+              newMessage.sender_id === profile.user_id)
           ) {
             async function fetchData() {
               const senderProfile = await getProfileByUserId(
