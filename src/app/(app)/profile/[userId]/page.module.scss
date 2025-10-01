@@ -5,7 +5,7 @@
   @include flex-shorthand(row, nowrap, null, center, center);
 
   flex: 1;
-  overflow: scroll;
+  overflow: auto;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
   background-color: $color-neutral-1;
