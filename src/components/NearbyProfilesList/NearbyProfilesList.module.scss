@@ -8,7 +8,9 @@
   @include flex-shorthand(column, nowrap, $whitespace-6, null, null);
 
   z-index: 1000;
-  block-size: 28rem;
+
+  // block-size: 28rem;
+  block-size: 7rem;
   padding: $whitespace-6 $whitespace-5;
   overflow: auto;
   background-color: $color-neutral-1;
@@ -16,8 +18,28 @@
   border-start-end-radius: $border-radius-large;
   box-shadow: 0 0 1.5rem $color-neutral-5;
 
+  @include media-up-shorthand(tablet-1) {
+    #{$this}__list {
+      @include grid-shorthand(
+        null,
+        repeat(auto-fit, minmax(30rem, 1fr)),
+        $whitespace-7,
+        $whitespace-7
+      );
+    }
+  }
+
+  @include media-up-shorthand(laptop-1) {
+    position: static;
+    block-size: 50%;
+  }
+
   &__count-box {
     @include flex-shorthand(row, nowrap, null, center, space-between);
+
+    inline-size: 100%;
+    max-inline-size: 35rem;
+    margin: 0 auto;
   }
 
   &__count-label {

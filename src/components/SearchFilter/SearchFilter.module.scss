@@ -10,9 +10,36 @@
     }
   }
 
-  @include media-up-shorthand(laptop-1) {
+  @include media-up-shorthand(tablet-1) {
+    &--open {
+      #{$this}__body {
+        transform: translateX(0) !important;
+      }
+    }
+
     #{$this}__body {
+      inset: 0 auto 0 0;
+      max-inline-size: 30rem;
+      block-size: unset;
+      border-radius: 0;
+      transform: translateX(-100%);
+    }
+  }
+
+  @include media-up-shorthand(laptop-1) {
+    block-size: 50%;
+
+    #{$this}__body {
+      position: static;
+      inset: unset;
+      block-size: 100%;
       padding: $whitespace-6 $whitespace-4 $whitespace-6 $whitespace-4;
+      transform: none;
+    }
+
+    #{$this}__button,
+    #{$this}__submit-button {
+      display: none;
     }
   }
 
@@ -42,8 +69,8 @@
     inset: auto 0 0;
     z-index: 9998;
     block-size: 90%;
-    padding: $whitespace-6 $whitespace-4 calc($whitespace-6 + 7.3rem)
-      $whitespace-4;
+    padding: $whitespace-6 $whitespace-6 calc($whitespace-6 + 7.3rem)
+      $whitespace-6;
     overflow: auto;
     scrollbar-gutter: auto;
     overscroll-behavior: auto;

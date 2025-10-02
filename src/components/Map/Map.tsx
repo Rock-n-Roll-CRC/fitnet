@@ -7,10 +7,11 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import type { Tables } from "@/types/database";
 import type { Coordinates } from "@/shared/interfaces/Coordinates.interface";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import { divIcon, Icon } from "leaflet";
 
+import SearchFilter from "@/components/SearchFilter/SearchFilter";
 import NearbyProfilesList from "@/components/NearbyProfilesList/NearbyProfilesList";
 
 import { calculateAge, calculateDistance } from "@/utilities/helpers";
@@ -18,6 +19,7 @@ import { calculateAge, calculateDistance } from "@/utilities/helpers";
 import navigateUrl from "@/assets/icons/navigate.svg?url";
 
 import styles from "./Map.module.scss";
+import type { Session } from "next-auth";
 
 const MapUpdater = ({ center }: { center: Coordinates }) => {
   const map = useMap();
@@ -36,6 +38,10 @@ const Map = ({
   blockedProfiles,
   filters,
   isFilterOpen,
+  session,
+  setUserCoords,
+  isOpen,
+  setIsOpen,
 }: {
   userProfile: Tables<"profiles">;
   userCoords: Coordinates;
@@ -53,6 +59,10 @@ const Map = ({
     fitnessGoal: ("muscle growth" | "weight loss" | "yoga")[];
   };
   isFilterOpen: boolean;
+  session: Session;
+  setUserCoords: Dispatch<SetStateAction<Coordinates>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [selectedProfile, setSelectedProfile] = useState<Tables<"profiles">>();
 
@@ -93,12 +103,8 @@ const Map = ({
   return (
     <>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          filter: isFilterOpen ? "brightness(0.5)" : undefined,
-        }}
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        className={`${styles.map ?? ""} ${(isFilterOpen && styles["map--grayed"]) || ""}`}
       >
         <MapContainer
           center={userCoords}
@@ -109,9 +115,7 @@ const Map = ({
           touchZoom={false}
           boxZoom={false}
           keyboard={false}
-          style={{
-            flex: 1,
-          }}
+          className={styles.map__container}
         >
           <TileLayer
             url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
@@ -155,12 +159,24 @@ const Map = ({
           <MapUpdater center={userCoords} />
         </MapContainer>
 
-        <NearbyProfilesList
-          userProfile={userProfile}
-          displayedProfiles={filteredProfiles}
-          blockedCoaches={blockedProfiles ?? []}
-          selectedProfile={selectedProfile}
-        />
+        <div className={styles.map__sidebar}>
+          <SearchFilter
+            session={session}
+            userProfile={userProfile}
+            userCoords={userCoords}
+            setUserCoords={setUserCoords}
+            filters={filters}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
+
+          <NearbyProfilesList
+            userProfile={userProfile}
+            displayedProfiles={filteredProfiles}
+            blockedCoaches={blockedProfiles ?? []}
+            selectedProfile={selectedProfile}
+          />
+        </div>
       </div>
     </>
   );

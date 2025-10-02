@@ -7,8 +7,6 @@ import type { Coordinates } from "@/shared/interfaces/Coordinates.interface";
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
-import SearchFilter from "@/components/SearchFilter/SearchFilter";
-
 import {
   revalidateSearch,
   updateProfileIsSearching,
@@ -112,16 +110,6 @@ const MapWrapper = ({
 
   return (
     <div className={styles["map-wrapper"]}>
-      <SearchFilter
-        session={session}
-        userProfile={userProfile}
-        userCoords={userCoords}
-        setUserCoords={setUserCoords}
-        filters={filters}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-
       <Map
         userProfile={userProfile}
         userCoords={userCoords}
@@ -129,6 +117,10 @@ const MapWrapper = ({
         blockedProfiles={blockedProfiles}
         filters={filters}
         isFilterOpen={isOpen}
+        session={session}
+        setUserCoords={setUserCoords}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   );

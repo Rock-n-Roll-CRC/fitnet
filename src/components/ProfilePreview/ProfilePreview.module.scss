@@ -6,6 +6,10 @@
 
   $this: &;
 
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: 35rem;
+  margin: 0 auto;
   overflow: hidden;
   background-color: $color-neutral-1;
   border-radius: $border-radius-extra-large;
@@ -32,22 +36,22 @@
     @include flex-shorthand(
       row,
       nowrap,
-      $whitespace-3,
+      $whitespace-4,
       flex-start,
       space-between
     );
 
-    padding: 0 0 0 $whitespace-4;
+    block-size: 100%;
   }
 
   &__body {
-    @include flex-shorthand(column, nowrap, $whitespace-5, flex-start, null);
+    @include flex-shorthand(column, nowrap, $whitespace-6, flex-start, null);
   }
 
   &__info-box {
-    @include flex-shorthand(column, nowrap, $whitespace-2, flex-start, null);
+    @include flex-shorthand(column, nowrap, $whitespace-4, flex-start, null);
 
-    padding: $whitespace-4 0 0 0;
+    padding: $whitespace-5 0 0 $whitespace-5;
   }
 
   &__name {
@@ -87,8 +91,9 @@
   }
 
   &__phone-box {
+    position: sticky;
+    inset-block-end: 0;
     padding: $whitespace-2 $whitespace-4;
-    margin-inline-start: -$whitespace-5;
     font-size: $font-size-3;
     color: $color-neutral-1;
     background-color: $color-neutral-10;

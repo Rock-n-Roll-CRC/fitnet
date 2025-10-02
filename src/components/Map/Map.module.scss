@@ -16,6 +16,33 @@
 }
 
 .map {
+  $this: &;
+
+  @include flex-shorthand(column);
+
+  flex: 1;
+
+  &--grayed {
+    #{$this}__container {
+      filter: brightness(0.5);
+    }
+  }
+
+  @include media-up-shorthand(laptop-1) {
+    flex-direction: row;
+
+    #{$this}__sidebar {
+      @include flex-shorthand(column);
+
+      inline-size: 45%;
+      block-size: 100vb;
+    }
+  }
+
+  &__container {
+    flex: 1;
+  }
+
   &__marker-icon {
     @include size-shorthand(5.5rem, 5.5rem);
 
