@@ -80,59 +80,6 @@ export default function ProfileDetails({
 
   return (
     <div className={styles["profile-details"]}>
-      {/* {profile.role === "coach" ? (
-        <>
-          <div className={styles["profile-details__tabs"]}>
-            <button
-              onClick={() => {
-                handleSelectTab("about");
-              }}
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["profile-details__tab"] ?? ""} ${(currentTab === "about" && styles["profile-details__tab--open"]) || ""}`}
-            >
-              About
-            </button>
-            <button
-              onClick={() => {
-                handleSelectTab("reviews");
-              }}
-              // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-              className={`${styles["profile-details__tab"] ?? ""} ${(currentTab === "reviews" && styles["profile-details__tab--open"]) || ""}`}
-            >
-              Reviews
-            </button>
-          </div>
-
-          {currentTab === "about" ? (
-            <ProfileAbout
-              profile={profile}
-              isEditing={isEditing}
-              editedProfile={editedProfile}
-              setEditedProfile={setEditedProfile}
-              register={register}
-              formErrors={formErrors}
-            />
-          ) : (
-            <ProfileReviews
-              session={session}
-              profile={profile}
-              myProfile={myProfile}
-              setOptimisticProfile={setOptimisticProfile}
-              sort={sort}
-            />
-          )}
-        </>
-      ) : (
-        <ProfileAbout
-          profile={profile}
-          isEditing={isEditing}
-          editedProfile={editedProfile}
-          setEditedProfile={setEditedProfile}
-          register={register}
-          formErrors={formErrors}
-        />
-      )} */}
-
       <>
         {profile.role === "coach" ? (
           <>

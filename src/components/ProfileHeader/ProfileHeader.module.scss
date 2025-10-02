@@ -6,8 +6,15 @@
 
   @include flex-shorthand(row, nowrap, null, center, space-between);
 
+  inline-size: 100%;
+  max-inline-size: 90rem;
   padding: $whitespace-7 $whitespace-6;
+  margin: 0 auto;
   background-color: $color-neutral-1;
+
+  @include media-up-shorthand(laptop-1) {
+    position: sticky;
+  }
 
   &__button {
     @include remove-button-styles;

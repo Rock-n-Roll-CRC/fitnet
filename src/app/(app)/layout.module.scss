@@ -7,12 +7,18 @@
   flex: 1;
 
   @include media-up-shorthand(laptop-1) {
+    flex: none;
     flex-direction: row;
+    block-size: 100vb;
+    overflow: auto;
+    scrollbar-gutter: auto;
+    overscroll-behavior: auto;
   }
 
   &__body {
     @include flex-shorthand(column);
 
     flex: 1;
+    background-color: $color-neutral-1;
   }
 }

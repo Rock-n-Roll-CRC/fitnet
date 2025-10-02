@@ -2,6 +2,8 @@
 @use "../../styles/tools" as *;
 
 .profile-reviews {
+  $this: &;
+
   display: none;
   max-inline-size: 40rem;
   max-block-size: 55rem;
@@ -16,11 +18,25 @@
   }
 
   @include media-up-shorthand(tablet-3) {
-    padding: $whitespace-7;
+    padding: $whitespace-7 $whitespace-4;
+    margin: 0 -$whitespace-4;
   }
 
   @include media-up-shorthand(laptop-1) {
     @include flex-shorthand(column, nowrap, $whitespace-7);
+
+    flex: 1;
+    grid-column: span 2;
+    max-inline-size: none;
+
+    #{$this}__list {
+      @include grid-shorthand(
+        null,
+        repeat(auto-fit, minmax(30rem, 1fr)),
+        $whitespace-8,
+        $whitespace-8
+      );
+    }
   }
 
   &__button {

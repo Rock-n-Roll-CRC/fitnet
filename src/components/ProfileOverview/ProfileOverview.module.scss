@@ -26,7 +26,7 @@
 
   @include media-up-shorthand(tablet-3) {
     flex: 1;
-    padding: $whitespace-7;
+    padding: 0;
   }
 
   &__body {

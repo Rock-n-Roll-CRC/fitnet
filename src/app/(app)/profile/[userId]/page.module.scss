@@ -9,4 +9,11 @@
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
   background-color: $color-neutral-1;
+
+  @include media-up-shorthand(laptop-1) {
+    padding: $whitespace-7;
+    overflow: unset;
+    scrollbar-gutter: unset;
+    overscroll-behavior: unset;
+  }
 }

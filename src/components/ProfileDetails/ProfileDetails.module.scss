@@ -11,6 +11,8 @@
   }
 
   @include media-up-shorthand(laptop-1) {
+    display: contents;
+
     #{$this}__tabs {
       display: none;
     }

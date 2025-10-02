@@ -6,6 +6,8 @@
 
   @include flex-shorthand(column, nowrap, $whitespace-3, center);
 
+  inline-size: 100%;
+  max-inline-size: 17rem;
   text-align: center;
 
   &--labeled {
@@ -40,12 +42,13 @@
     @include flex-shorthand(row, nowrap, null, null, null);
 
     position: relative;
+    inline-size: 100%;
   }
 
   &__input {
     @include remove-input-styles;
 
-    inline-size: 17rem;
+    inline-size: 100%;
     padding: $whitespace-5;
     font-size: $font-size-3;
     border: 0.2rem solid $color-primary-10;

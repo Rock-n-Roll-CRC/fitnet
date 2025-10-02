@@ -5,7 +5,8 @@
   $this: &;
 
   position: relative;
-  inline-size: 17rem;
+  inline-size: 100%;
+  max-inline-size: 17rem;
 
   &--labeled {
     #{$this}__button {

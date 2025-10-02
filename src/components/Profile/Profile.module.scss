@@ -9,7 +9,15 @@
 
   @include media-up-shorthand(tablet-3) {
     flex-direction: row;
+    gap: $whitespace-10;
     align-items: center;
+    padding: 0 $whitespace-7;
+  }
+
+  @include media-up-shorthand(laptop-1) {
+    @include grid-shorthand(null, repeat(2, 1fr));
+
+    gap: $whitespace-10;
   }
 
   &__image-wrapper {
