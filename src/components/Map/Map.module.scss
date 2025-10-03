@@ -28,14 +28,12 @@
     }
   }
 
-  @include media-up-shorthand(laptop-1) {
+  @include media-up-shorthand(laptop-4) {
     flex-direction: row;
+    block-size: 100%;
 
     #{$this}__sidebar {
-      @include flex-shorthand(column);
-
-      inline-size: 45%;
-      block-size: 100vb;
+      block-size: 100%;
     }
   }
 

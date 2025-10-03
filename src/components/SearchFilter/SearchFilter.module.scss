@@ -27,19 +27,14 @@
   }
 
   @include media-up-shorthand(laptop-1) {
-    block-size: 50%;
-
     #{$this}__body {
-      position: static;
-      inset: unset;
-      block-size: 100%;
-      padding: $whitespace-6 $whitespace-4 $whitespace-6 $whitespace-4;
-      transform: none;
+      position: absolute;
     }
+  }
 
-    #{$this}__button,
-    #{$this}__submit-button {
-      display: none;
+  @include media-up-shorthand(laptop-4) {
+    #{$this}__button {
+      inset: 2rem 36rem auto auto;
     }
   }
 
@@ -63,19 +58,19 @@
   }
 
   &__body {
-    @include flex-shorthand(column, nowrap, $whitespace-9, center);
+    @include flex-shorthand(column, nowrap, $whitespace-8, center);
 
-    position: fixed;
+    position: absolute;
     inset: auto 0 0;
     z-index: 9998;
     block-size: 90%;
-    padding: $whitespace-6 $whitespace-6 calc($whitespace-6 + 7.3rem)
-      $whitespace-6;
+    padding: $whitespace-6;
     overflow: auto;
     scrollbar-gutter: auto;
     overscroll-behavior: auto;
     background-color: $color-neutral-1;
-    border-radius: $border-radius-large;
+    border-start-start-radius: $border-radius-large;
+    border-start-end-radius: $border-radius-large;
     transform: translateY(100%);
     transition: transform 0.15s;
   }

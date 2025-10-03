@@ -156,6 +156,7 @@ const Map = ({
               ></Marker>
             );
           })}
+
           <MapUpdater center={userCoords} />
         </MapContainer>
 
@@ -169,12 +170,12 @@ const Map = ({
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           />
-
           <NearbyProfilesList
             userProfile={userProfile}
             displayedProfiles={filteredProfiles}
             blockedCoaches={blockedProfiles ?? []}
             selectedProfile={selectedProfile}
+            isGrayed={isFilterOpen}
           />
         </div>
       </div>

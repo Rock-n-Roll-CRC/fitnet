@@ -45,7 +45,15 @@
   }
 
   &__body {
-    @include flex-shorthand(column, nowrap, $whitespace-6, flex-start, null);
+    @include flex-shorthand(
+      column,
+      nowrap,
+      $whitespace-6,
+      flex-start,
+      space-between
+    );
+
+    block-size: 100%;
   }
 
   &__info-box {

@@ -1,0 +1,32 @@
+@use "../../styles/settings" as *;
+@use "../../styles/tools" as *;
+
+.drag-handle {
+  position: sticky;
+  inset: 0 0 auto;
+  z-index: 2000;
+  padding-block: 2.4rem;
+  background-color: inherit;
+
+  @include media-up-shorthand(laptop-4) {
+    display: none;
+  }
+
+  &__button {
+    @include remove-button-styles;
+    @include flex-shorthand(row, nowrap, null, center, center);
+
+    margin: 0 auto;
+    cursor: grab;
+    outline: none;
+  }
+
+  &__handle {
+    display: block;
+    inline-size: 4.8rem;
+    block-size: 0.6rem;
+    background: linear-gradient(180deg, #f3f3f3, #e0e0e0);
+    border-radius: $border-radius-pill;
+    box-shadow: 0 0.2rem 0.6rem rgb(0 0 0 / 8%);
+  }
+}
