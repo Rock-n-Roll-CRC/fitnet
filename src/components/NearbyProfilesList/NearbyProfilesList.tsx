@@ -1,6 +1,7 @@
 "use client";
 
 import type { Tables } from "@/types/database";
+import type { TouchEvent } from "react";
 
 import { useRef, useState } from "react";
 import Image from "next/image";
@@ -37,7 +38,7 @@ export default function NearbyProfilesList({
   const maxTranslate = 28 - 10;
   const threshold = 0.1;
 
-  function handleTouchStart(e: TouchEvent) {
+  function handleTouchStart(e: TouchEvent<HTMLDivElement>) {
     const currentY = e.touches[0]?.clientY;
 
     if (!currentY) return;
@@ -48,7 +49,7 @@ export default function NearbyProfilesList({
     lastTime.current = Date.now();
   }
 
-  function handleTouchMove(e: TouchEvent) {
+  function handleTouchMove(e: TouchEvent<HTMLDivElement>) {
     if (isPulling) {
       const currentY = e.touches[0]?.clientY;
 

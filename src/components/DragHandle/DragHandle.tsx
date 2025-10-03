@@ -1,3 +1,5 @@
+import type { TouchEventHandler } from "react";
+
 import styles from "./DragHandle.module.scss";
 
 export default function DragHandle({
@@ -5,9 +7,9 @@ export default function DragHandle({
   onTouchMove,
   onTouchEnd,
 }: {
-  onTouchStart: (e: TouchEvent) => void;
-  onTouchMove: (e: TouchEvent) => void;
-  onTouchEnd: () => void;
+  onTouchStart: TouchEventHandler;
+  onTouchMove: TouchEventHandler;
+  onTouchEnd: TouchEventHandler;
 }) {
   return (
     <div
