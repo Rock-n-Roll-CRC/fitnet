@@ -85,7 +85,9 @@ const RequestItem = ({
   }
 
   return (
-    <div className={styles["request-item"]}>
+    <div
+      className={`${styles["request-item"] ?? ""} ${styles[`request-item--type-${type}`] ?? ""}`}
+    >
       <div className={styles["request-item__top-container"]}>
         <div className={styles["request-item__image-wrapper"]}>
           <Image

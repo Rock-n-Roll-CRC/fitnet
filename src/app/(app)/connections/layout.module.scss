@@ -5,7 +5,7 @@
   @include flex-shorthand(column, nowrap);
 
   block-size: calc(100dvb - 7.3rem);
-  padding: $whitespace-7 $whitespace-6;
+  padding: 0 $whitespace-6 $whitespace-7;
   overflow: auto;
   scrollbar-gutter: auto;
   overscroll-behavior: auto;
@@ -19,6 +19,10 @@
     @include flex-shorthand(column);
 
     flex: 1;
-    overflow: hidden;
+    padding: $whitespace-5;
+    margin: -$whitespace-5;
+    overflow: auto;
+    scrollbar-gutter: auto;
+    overscroll-behavior: auto;
   }
 }

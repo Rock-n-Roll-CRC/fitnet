@@ -3,7 +3,15 @@
 
 .blocked-profiles-list {
   @include remove-list-styles;
-  @include flex-shorthand(column, nowrap, $whitespace-7, center);
+  @include grid-shorthand(
+    null,
+    repeat(auto-fit, minmax(min(35rem, 100%), 1fr)),
+    $whitespace-7,
+    $whitespace-7
+  );
 
-  padding-block-start: $whitespace-8;
+  justify-items: center;
+  inline-size: 100%;
+  max-inline-size: 90rem;
+  margin: 0 auto;
 }

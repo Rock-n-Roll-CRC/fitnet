@@ -384,6 +384,9 @@ export const blockProfile = async (userId: string) => {
 
   if (!session) return;
 
+  console.log(`BLOCKER_ID: ${session.user.id}`);
+  console.log(`BLOCKED_ID: ${userId}`);
+
   const { error } = await supabase
     .from("blocked_profiles")
     .insert({ blocker_id: session.user.id, blocked_id: userId });

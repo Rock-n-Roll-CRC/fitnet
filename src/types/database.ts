@@ -208,14 +208,14 @@ export type Database = {
           {
             foreignKeyName: "blocked_profiles_blocked_id_fkey";
             columns: ["blocked_id"];
-            isOneToOne: true;
+            isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["user_id"];
           },
           {
             foreignKeyName: "blocked_profiles_blocker_id_fkey";
             columns: ["blocker_id"];
-            isOneToOne: true;
+            isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["user_id"];
           },

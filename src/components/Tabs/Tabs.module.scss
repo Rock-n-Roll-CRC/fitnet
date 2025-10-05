@@ -3,4 +3,9 @@
 
 .tabs {
   @include flex-shorthand(row, nowrap, $whitespace-6, center, space-between);
+
+  inline-size: 100%;
+  max-inline-size: 40rem;
+  padding: $whitespace-7 0;
+  margin: 0 auto;
 }
