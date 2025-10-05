@@ -40,6 +40,10 @@
     overflow: auto !important;
     border-radius: 0;
     transform: none !important;
+
+    #{$this}__empty-illustration {
+      inline-size: unset;
+    }
   }
 
   &__body {
@@ -196,6 +200,10 @@
   &__empty-state {
     @include flex-shorthand(column, nowrap, $whitespace-7, center, center);
 
+    inline-size: 100%;
+    max-inline-size: 35rem;
+    padding: $whitespace-6;
+    margin: 0 auto;
     text-align: center;
   }
 

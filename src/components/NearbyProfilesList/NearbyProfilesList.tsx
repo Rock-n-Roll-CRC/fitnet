@@ -98,7 +98,10 @@ export default function NearbyProfilesList({
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       className={`${styles["nearby-profiles-list"] ?? ""} ${(isGrayed && styles["nearby-profiles-list--grayed"]) || ""}`}
       style={{
-        transform: `translateY(${translateY.toString()}rem)`,
+        transform:
+          filteredProfiles.length === 0
+            ? undefined
+            : `translateY(${translateY.toString()}rem)`,
         overflow: translateY === 0 ? "auto" : "hidden",
       }}
     >
