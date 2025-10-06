@@ -2,7 +2,7 @@
 @use "../../../styles/tools" as *;
 
 .main {
-  @include flex-shorthand(column, nowrap);
+  @include flex-shorthand(column, nowrap, $whitespace-7);
 
   flex: 1;
   padding: $whitespace-7 $whitespace-6;

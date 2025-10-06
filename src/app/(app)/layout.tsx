@@ -37,6 +37,5 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
 export default Layout;
 
-// TODO: Check empty states on all screen sizes!
 // TODO: Check everything on different roles
-// TODO: Fix padding for Empty State
+// TODO: Work on responsive design for review box (writing review)
