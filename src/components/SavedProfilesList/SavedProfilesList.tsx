@@ -38,18 +38,21 @@ export default function SavedProfilesList({
 
   return optimisticSavedProfiles.length > 0 ? (
     <ul className={styles["saved-profiles-list"]}>
-      {optimisticSavedProfiles.map(({ saverProfile, savedProfile }) => (
-        <ProfilePreview
-          key={savedProfile.user_id}
-          type="saved"
-          profile={
-            session.user.id === saverProfile.user_id
-              ? savedProfile
-              : saverProfile
-          }
-          onRemoveProfile={removeSavedProfile}
-        />
-      ))}
+      {optimisticSavedProfiles.map(({ saverProfile, savedProfile }) => {
+        const profile =
+          session.user.id === saverProfile.user_id
+            ? savedProfile
+            : saverProfile;
+
+        return (
+          <ProfilePreview
+            key={profile.user_id}
+            type="saved"
+            profile={profile}
+            onRemoveProfile={removeSavedProfile}
+          />
+        );
+      })}
     </ul>
   ) : (
     <EmptyState
