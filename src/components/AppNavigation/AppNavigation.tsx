@@ -104,6 +104,18 @@ const AppNavigation = ({
           }
         },
       )
+      .on(
+        "postgres_changes",
+        {
+          event: "DELETE",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${session.user.id}`,
+        },
+        () => {
+          setUnreadNotificationsCount((prev) => (prev > 0 ? prev - 1 : 0));
+        },
+      )
       .subscribe();
 
     return () => {

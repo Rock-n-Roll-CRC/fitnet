@@ -36,6 +36,3 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 };
 
 export default Layout;
-
-// TODO: Check everything on different roles
-// TODO: When clear notifications mark as read
