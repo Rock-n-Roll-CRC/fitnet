@@ -74,19 +74,24 @@ export const getConnectionRequest = async (id: string) => {
   return data;
 };
 
-export const isRequestSent = async (senderId: string, receiverId: string) => {
+export const getPendingRequest = async (
+  senderId: string,
+  receiverId: string,
+) => {
   const { data, error } = await supabase
     .from("connection_requests")
-    .select()
+    .select(
+      "*, senderProfile: profiles!sender_id(*), receiverProfile: profiles!receiver_id(*)",
+    )
     .eq("sender_id", senderId)
     .eq("receiver_id", receiverId)
     .eq("status", "pending")
     .maybeSingle();
 
   if (error)
-    throw new Error(`Failed to get isRequestSent: ${error.message}`, {
+    throw new Error(`Failed to get pending request: ${error.message}`, {
       cause: error.cause,
     });
 
-  return Boolean(data);
+  return data;
 };

@@ -5,7 +5,7 @@ import { auth } from "@/services/auth";
 import { getProfileByUserId } from "@/services/apiProfiles";
 import { isBlocked } from "@/services/apiBlockedProfiles";
 import { isConnected } from "@/services/apiSavedProfiles";
-import { isRequestSent } from "@/services/apiConnectionRequests";
+import { getPendingRequest } from "@/services/apiConnectionRequests";
 
 import styles from "./page.module.scss";
 
@@ -33,9 +33,10 @@ const Page = async ({
     session.user.id,
     profile.user_id,
   );
-  const isRequestSentVar = await isRequestSent(
-    session.user.id,
+  const sentRequest = await getPendingRequest(session.user.id, profile.user_id);
+  const receivedRequest = await getPendingRequest(
     profile.user_id,
+    session.user.id,
   );
 
   return (
@@ -49,7 +50,8 @@ const Page = async ({
           myProfile={myProfile}
           isProfileConnected={isProfileConnected}
           isProfileBlocked={isProfileBlocked}
-          isRequestSent={isRequestSentVar}
+          sentRequest={sentRequest}
+          receivedRequest={receivedRequest}
           tab={tab}
           sort={sort}
         />

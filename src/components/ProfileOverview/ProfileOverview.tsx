@@ -20,6 +20,7 @@ export default function ProfileOverview({
   isEditing,
   isConnected,
   isRequestSent,
+  receivedRequest,
   isBlocked,
   setIsEditing,
   isOnline,
@@ -58,6 +59,12 @@ export default function ProfileOverview({
   isEditing: boolean;
   isConnected: boolean;
   isRequestSent: boolean;
+  receivedRequest:
+    | (Tables<"connection_requests"> & {
+        senderProfile: Tables<"profiles">;
+        receiverProfile: Tables<"profiles">;
+      })
+    | null;
   isBlocked: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   isOnline: boolean;
@@ -109,6 +116,7 @@ export default function ProfileOverview({
         isEditing={isEditing}
         isConnected={isConnected}
         isRequestSent={isRequestSent}
+        receivedRequest={receivedRequest}
         isBlocked={isBlocked}
         setIsEditing={setIsEditing}
         setIsConnectedOptim={setIsConnectedOptim}

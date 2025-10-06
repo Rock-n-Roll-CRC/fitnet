@@ -23,7 +23,8 @@ export default function Profile({
   myProfile,
   isProfileConnected,
   isProfileBlocked,
-  isRequestSent,
+  sentRequest,
+  receivedRequest,
   tab,
   sort,
 }: {
@@ -40,7 +41,18 @@ export default function Profile({
   };
   isProfileConnected: boolean;
   isProfileBlocked: boolean;
-  isRequestSent: boolean;
+  sentRequest:
+    | (Tables<"connection_requests"> & {
+        senderProfile: Tables<"profiles">;
+        receiverProfile: Tables<"profiles">;
+      })
+    | null;
+  receivedRequest:
+    | (Tables<"connection_requests"> & {
+        senderProfile: Tables<"profiles">;
+        receiverProfile: Tables<"profiles">;
+      })
+    | null;
   tab: string | string[];
   sort: string | string[];
 }) {
@@ -52,7 +64,7 @@ export default function Profile({
   const [isConnectedOptim, setIsConnectedOptim] =
     useOptimistic(isProfileConnected);
   const [isRequestSentOptim, setIsRequestSentOptim] =
-    useOptimistic(isRequestSent);
+    useOptimistic(!!sentRequest);
   const [isBlockedOptim, setIsBlockedOptim] = useOptimistic(isProfileBlocked);
 
   const {
@@ -76,6 +88,7 @@ export default function Profile({
         isEditing={isEditing}
         isConnected={isConnectedOptim}
         isRequestSent={isRequestSentOptim}
+        receivedRequest={receivedRequest}
         isBlocked={isBlockedOptim}
         setIsConnectedOptim={setIsConnectedOptim}
         setIsRequestSentOptim={setIsRequestSentOptim}

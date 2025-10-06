@@ -11,6 +11,7 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import toast from "react-hot-toast";
 
 import {
+  acceptConnectionRequest,
   blockProfile,
   deleteSavedProfile,
   logOut,
@@ -30,6 +31,7 @@ export default function ProfileActions({
   isEditing,
   isConnected,
   isRequestSent,
+  receivedRequest,
   isBlocked,
   setIsEditing,
   setIsConnectedOptim,
@@ -67,6 +69,12 @@ export default function ProfileActions({
   isEditing: boolean;
   isConnected: boolean;
   isRequestSent: boolean;
+  receivedRequest:
+    | (Tables<"connection_requests"> & {
+        senderProfile: Tables<"profiles">;
+        receiverProfile: Tables<"profiles">;
+      })
+    | null;
   isBlocked: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   setIsConnectedOptim: (
@@ -117,12 +125,22 @@ export default function ProfileActions({
       });
 
       await deleteSavedProfile(profile.user_id);
-    } else {
+    }
+
+    if (isRequestSent) {
       startTransition(() => {
         setIsRequestSentOptim(true);
       });
 
       await sendConnectionRequest(profile.user_id);
+    }
+
+    if (receivedRequest) {
+      startTransition(() => {
+        setIsConnectedOptim(true);
+      });
+
+      await acceptConnectionRequest(receivedRequest);
     }
   }
 

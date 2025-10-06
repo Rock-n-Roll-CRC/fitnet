@@ -39,4 +39,4 @@ export default Layout;
 
 // TODO: Check empty states on all screen sizes!
 // TODO: Check everything on different roles
-// TODO: Display accept button instead of connect on profile
+// TODO: Fix padding for Empty State
