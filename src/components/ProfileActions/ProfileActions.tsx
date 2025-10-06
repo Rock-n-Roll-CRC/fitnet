@@ -125,14 +125,8 @@ export default function ProfileActions({
       });
 
       await deleteSavedProfile(profile.user_id);
-    }
 
-    if (isRequestSent) {
-      startTransition(() => {
-        setIsRequestSentOptim(true);
-      });
-
-      await sendConnectionRequest(profile.user_id);
+      return;
     }
 
     if (receivedRequest) {
@@ -141,6 +135,18 @@ export default function ProfileActions({
       });
 
       await acceptConnectionRequest(receivedRequest);
+
+      return;
+    }
+
+    if (!isRequestSent) {
+      startTransition(() => {
+        setIsRequestSentOptim(true);
+      });
+
+      await sendConnectionRequest(profile.user_id);
+
+      return;
     }
   }
 
