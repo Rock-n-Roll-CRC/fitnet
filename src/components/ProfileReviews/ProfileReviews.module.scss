@@ -78,8 +78,11 @@
     @include remove-button-styles;
 
     position: sticky;
-    inset: auto auto 0 50%;
+    inset: auto auto 0;
+    inline-size: 100%;
+    max-inline-size: 35rem;
     padding: $whitespace-4 $whitespace-7;
+    margin: 0 auto;
     font-size: $font-size-4;
     font-weight: $font-weight-semi-bold;
     color: $color-neutral-1;

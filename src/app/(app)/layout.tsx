@@ -38,4 +38,4 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 export default Layout;
 
 // TODO: Check everything on different roles
-// TODO: Work on responsive design for review box (writing review)
+// TODO: When clear notifications mark as read

@@ -63,20 +63,12 @@ export default function ReviewModal({
     startTransition(() => {
       setOptimisticProfile({
         ...rateeProfile,
-        ratings: rateeProfile.ratings.some(
-          (review) =>
-            review.ratee_id === rateeProfile.user_id &&
-            review.rater_id === session.user.id,
-        )
-          ? [
-              ...rateeProfile.ratings.filter(
-                (review) =>
-                  review.ratee_id !== rateeProfile.user_id &&
-                  review.rater_id !== session.user.id,
-              ),
-              tempReview,
-            ]
-          : [...rateeProfile.ratings, tempReview],
+        ratings: [
+          ...rateeProfile.ratings.filter(
+            (review) => review.rater_id !== session.user.id,
+          ),
+          tempReview,
+        ],
       });
     });
 
@@ -88,63 +80,69 @@ export default function ReviewModal({
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       className={`${styles["review-modal"] ?? ""} ${(isOpen && styles["review-modal--open"]) || ""}`}
     >
-      <div className={styles["review-modal__heading-container"]}>
-        <h2 className={styles["review-modal__heading"]}>Rate and Review</h2>
+      <div className={styles["review-modal__body"]}>
+        <div className={styles["review-modal__heading-container"]}>
+          <h2 className={styles["review-modal__heading"]}>Rate and Review</h2>
 
-        <button onClick={onClose} className={styles["review-modal__button"]}>
-          <CloseOutlineSVG className={styles["review-modal__button-icon"]} />
-        </button>
-      </div>
-
-      <div className={styles["review-modal__ratee-overview"]}>
-        <div className={styles["review-modal__ratee-image-wrapper"]}>
-          <Image
-            src={rateeProfile.avatar_url}
-            alt={rateeProfile.full_name}
-            fill
-            className={styles["review-modal__ratee-image"]}
-          />
+          <button onClick={onClose} className={styles["review-modal__button"]}>
+            <CloseOutlineSVG className={styles["review-modal__button-icon"]} />
+          </button>
         </div>
 
-        <p className={styles["review-modal__ratee-name"]}>
-          {rateeProfile.full_name}
-        </p>
-      </div>
+        <div className={styles["review-modal__ratee-overview"]}>
+          <div className={styles["review-modal__ratee-image-wrapper"]}>
+            <Image
+              src={rateeProfile.avatar_url}
+              alt={rateeProfile.full_name}
+              fill
+              className={styles["review-modal__ratee-image"]}
+            />
+          </div>
 
-      <div className={styles["review-modal__rating-container"]}>
-        <p className={styles["review-modal__label"]}>Tap a star to rate it!</p>
+          <p className={styles["review-modal__ratee-name"]}>
+            {rateeProfile.full_name}
+          </p>
+        </div>
 
-        <div className={styles["review-modal__star-container"]}>
-          <RatingSet rating={rating} setRating={setRating} />
+        <div className={styles["review-modal__rating-container"]}>
+          <p className={styles["review-modal__label"]}>
+            Tap a star to rate it!
+          </p>
 
-          <div className={styles["review-modal__star-details"]}>
-            {rating ?? "-"} stars
+          <div className={styles["review-modal__star-container"]}>
+            <RatingSet rating={rating} setRating={setRating} />
+
+            <div className={styles["review-modal__star-details"]}>
+              {rating ?? "-"} stars
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className={styles["review-modal__text-container"]}>
-        <p className={styles["review-modal__label"]}>Review your experience</p>
+        <div className={styles["review-modal__text-container"]}>
+          <p className={styles["review-modal__label"]}>
+            Review your experience
+          </p>
 
-        <textarea
-          name=""
-          id=""
-          value={text}
-          onChange={(event) => {
-            setText(event.target.value);
+          <textarea
+            name=""
+            id=""
+            value={text}
+            onChange={(event) => {
+              setText(event.target.value);
+            }}
+            className={styles["review-modal__text"]}
+          ></textarea>
+        </div>
+
+        <button
+          onClick={() => {
+            void handlePost();
           }}
-          className={styles["review-modal__text"]}
-        ></textarea>
+          className={styles["review-modal__post-button"]}
+        >
+          Post Review
+        </button>
       </div>
-
-      <button
-        onClick={() => {
-          void handlePost();
-        }}
-        className={styles["review-modal__post-button"]}
-      >
-        Post Review
-      </button>
     </div>
   );
 }
