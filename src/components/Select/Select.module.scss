@@ -30,6 +30,7 @@
 
   &--filled {
     inline-size: 100%;
+    max-inline-size: none;
   }
 
   &__label {

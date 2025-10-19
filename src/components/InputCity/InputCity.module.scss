@@ -28,6 +28,7 @@
 
   &--filled {
     inline-size: 100%;
+    max-inline-size: none;
 
     #{$this}__container {
       inline-size: 100%;
