@@ -45,9 +45,18 @@
     box-shadow: 0 0 1.5rem $color-neutral-5;
   }
 
-  &__image {
+  &__image-wrapper {
     @include size-shorthand(4rem, 4rem);
 
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius-large;
+  }
+
+  &__image {
+    object-fit: cover;
+    object-position: center;
+    overflow-clip-margin: unset;
     border-radius: $border-radius-large;
   }
 

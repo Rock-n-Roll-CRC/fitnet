@@ -21,13 +21,14 @@ export default function ChatHeader({
       className={`${styles["chat-header"] ?? ""} ${(onlineUsers.includes(profile.user_id) && styles["chat-header--online"]) || ""}`}
     >
       <div className={styles["chat-header__body"]}>
-        <Image
-          src={profile.avatar_url}
-          alt={profile.full_name}
-          width={30}
-          height={30}
-          className={styles["chat-header__image"]}
-        />
+        <div className={styles["chat-header__image-wrapper"]}>
+          <Image
+            src={profile.avatar_url}
+            alt={profile.full_name}
+            fill
+            className={styles["chat-header__image"]}
+          />
+        </div>
         <p className={styles["chat-header__name"]}>{profile.full_name}</p>
       </div>
     </section>

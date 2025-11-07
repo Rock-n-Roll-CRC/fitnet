@@ -15,9 +15,18 @@
     @include flex-shorthand(row, nowrap, $whitespace-3, center, center);
   }
 
-  &__image {
+  &__image-wrapper {
     @include size-shorthand(7.5rem, 7.5rem);
 
+    position: relative;
+    overflow: hidden;
+    border-radius: $border-radius-circle;
+  }
+
+  &__image {
+    object-fit: cover;
+    object-position: center;
+    overflow-clip-margin: unset;
     border-radius: $border-radius-circle;
   }
 

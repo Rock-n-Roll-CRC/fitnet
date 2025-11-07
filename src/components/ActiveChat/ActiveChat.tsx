@@ -25,13 +25,14 @@ export default function ActiveChat({
       className={styles["active-chat"]}
     >
       <div className={styles["active-chat__body"]}>
-        <Image
-          src={profile.avatar_url}
-          alt={profile.full_name}
-          width={30}
-          height={30}
-          className={styles["active-chat__image"]}
-        />
+        <div className={styles["active-chat__image-wrapper"]}>
+          <Image
+            src={profile.avatar_url}
+            alt={profile.full_name}
+            fill
+            className={styles["active-chat__image"]}
+          />
+        </div>
 
         <div className={styles["active-chat__details"]}>
           <p className={styles["active-chat__name"]}>{profile.full_name}</p>

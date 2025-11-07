@@ -16,13 +16,14 @@ export default function ProfileChatItem({
       className={styles["profile-chat-item"]}
     >
       <div className={styles["profile-chat-item__body"]}>
-        <Image
-          src={profile.avatar_url}
-          alt={profile.full_name}
-          width={30}
-          height={30}
-          className={styles["profile-chat-item__image"]}
-        />
+        <div className={styles["profile-chat-item__image-wrapper"]}>
+          <Image
+            src={profile.avatar_url}
+            alt={profile.full_name}
+            fill
+            className={styles["profile-chat-item__image"]}
+          />
+        </div>
 
         <div className={styles["profile-chat-item__details"]}>
           <p className={styles["profile-chat-item__name"]}>

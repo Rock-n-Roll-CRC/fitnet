@@ -55,12 +55,14 @@ const ProfileItem = ({
   return (
     <div className={styles["profile-item"]}>
       <div className={styles["profile-item__body"]}>
-        <Link href={`/profile/${profile.user_id}`}>
+        <Link
+          href={`/profile/${profile.user_id}`}
+          className={styles["profile-item__image-wrapper"]}
+        >
           <Image
             src={profile.avatar_url}
-            width={30}
-            height={30}
             alt={profile.full_name}
+            fill
             className={styles["profile-item__image"]}
           />
         </Link>
