@@ -33,6 +33,9 @@ export default function InputCity({
 
   return (
     <div
+      onClick={(event) => {
+        console.log(`Clicked some shi: ${event.currentTarget.className}`);
+      }}
       // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       className={`${styles["city-input"] ?? ""} ${(label && styles["city-input--labeled"]) || ""} ${(error && styles["city-input--error"]) || ""} ${(fill && styles["city-input--filled"]) || ""}`}
     >
@@ -53,8 +56,10 @@ export default function InputCity({
           }}
           {...register}
           onBlur={(event) => {
-            setIsSuggestionsOpen(false);
-            void register?.onBlur(event);
+            setTimeout(() => {
+              setIsSuggestionsOpen(false);
+              void register?.onBlur(event);
+            }, 150);
           }}
           onChange={(event) => {
             async function fetchData() {
@@ -82,6 +87,9 @@ export default function InputCity({
               <button
                 type="button"
                 onClick={() => {
+                  register?.onChange({
+                    target: { value: suggestion.name, name: register.name },
+                  });
                   onChange(suggestion.name);
                   setIsSuggestionsOpen(false);
                 }}
