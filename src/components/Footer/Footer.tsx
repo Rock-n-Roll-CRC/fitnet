@@ -30,7 +30,7 @@ const Footer = () => {
                   href="mailto:danil.dikhtyar@gmail.com"
                   className={styles.footer__contact}
                 >
-                  danil.dikhtyar@gmail.com
+                  contact@dikhtyar.dev
                 </Link>
               </div>
             </div>

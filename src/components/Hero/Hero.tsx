@@ -13,12 +13,13 @@ const Hero = () => {
     <section className={styles.hero}>
       <div className={styles.hero__body}>
         <h2 className={styles.hero__heading}>
-          Curious how one tool can boost your productivity?
+          Where&apos;s your next fitness breakthrough hiding?
         </h2>
 
         <p className={styles.hero__description}>
-          With FitNet, coaches can establish a convenient, time-saving workflow
-          that makes their business scale.
+          With FitNet, connecting with the right coach is as easy as exploring a
+          map. Browse local coaches, chat instantly, and start your fitness
+          journey today.
         </p>
 
         <Button type="call-to-action" icon={ArrowForwardSVG}>

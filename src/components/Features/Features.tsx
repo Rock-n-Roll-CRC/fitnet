@@ -7,8 +7,8 @@ import dataAnalytics from "@/assets/illustrations/data-analytics.gif";
 import targetAudience from "@/assets/illustrations/target-audience.gif";
 
 import SearchSVG from "@/assets/icons/search-outline.svg";
-import CalendarSVG from "@/assets/icons/calendar-outline.svg";
-import BarChartSVG from "@/assets/icons/bar-chart-outline.svg";
+import ChatboxEllipsesOutlineSVG from "@/assets/icons/chatbox-ellipses-outline.svg";
+import StarOutlineSVG from "@/assets/icons/star-outline.svg";
 
 import SeparatorSVG from "@/assets/shapes/shape-1.svg";
 
@@ -23,12 +23,12 @@ const Features = () => {
         <FeatureBlock.Body>
           <FeatureBlock.TextContent>
             <FeatureBlock.Heading>
-              Efficient management sets your business up for growth
+              Building your fitness network sets you up for success
             </FeatureBlock.Heading>
             <FeatureBlock.Description>
-              The unique approach to client management our team at FitNet came
-              up with enables coaches to save time on doing routine tasks and
-              grow their client network all inside one app!
+              The unique approach to fitness networking our team at FitNet came
+              up with helps you avoid awkward mismatches and build genuine
+              connections with trainers who are excited to help you succeed!
             </FeatureBlock.Description>
           </FeatureBlock.TextContent>
 
@@ -37,8 +37,8 @@ const Features = () => {
             authorName="Danil Dikhtyar"
             authorPosition="Founder"
           >
-            The whole idea behind the application was to make the coach&apos;s
-            life easier
+            The whole idea behind the application was to make finding your
+            perfect coach easier
           </QuoteBlock>
         </FeatureBlock.Body>
 
@@ -49,14 +49,14 @@ const Features = () => {
         <FeatureBlock.Body>
           <FeatureBlock.TextContent>
             <FeatureBlock.Heading>
-              Simplify your coaching workflow
+              Your fitness journey starts here
             </FeatureBlock.Heading>
             <FeatureBlock.Description>
-              We know what coaches need: less hassle, more clients. That is
-              exactly what FitNet was designed for - the all-in-one tool where
-              you can do all you might need, from scaling your business to
-              managing statistics. That&apos;s how we empower coaches and drive
-              value.
+              We know what clients need: the right coach, in the right location,
+              with the right expertise. That is exactly what FitNet was designed
+              for - the all-in-one platform where you can discover, connect, and
+              communicate with fitness professionals who match your goals.
+              That&apos;s how we empower your fitness transformation.
             </FeatureBlock.Description>
           </FeatureBlock.TextContent>
 
@@ -64,32 +64,35 @@ const Features = () => {
             <Feature>
               <Feature.Icon icon={SearchSVG} />
               <Feature.TextContent>
-                <Feature.Heading>Find your clients</Feature.Heading>
+                <Feature.Heading>Discover coaches near you</Feature.Heading>
                 <Feature.Description>
-                  Users signed up as clients will search for nearby coaches.
-                  That&apos;s where you get in the scene.
+                  Use our interactive map to find qualified fitness coaches in
+                  your area. Filter by distance, expertise, and gender to match
+                  with trainers who fit your needs.
                 </Feature.Description>
               </Feature.TextContent>
             </Feature>
 
             <Feature>
-              <Feature.Icon icon={CalendarSVG} />
+              <Feature.Icon icon={ChatboxEllipsesOutlineSVG} />
               <Feature.TextContent>
-                <Feature.Heading>Track reserved sessions</Feature.Heading>
+                <Feature.Heading>Connect instantly</Feature.Heading>
                 <Feature.Description>
-                  Use our interactive calendar to track who, when and for how
-                  long is gonna use your services.
+                  Message coaches directly through our built-in chat system. Ask
+                  questions, discuss goals, and schedule sessions without
+                  switching between apps.
                 </Feature.Description>
               </Feature.TextContent>
             </Feature>
 
             <Feature>
-              <Feature.Icon icon={BarChartSVG} />
+              <Feature.Icon icon={StarOutlineSVG} />
               <Feature.TextContent>
-                <Feature.Heading>Know your statistics</Feature.Heading>
+                <Feature.Heading>Trust real feedback</Feature.Heading>
                 <Feature.Description>
-                  Take a look at various charts and diagrams reflecting your
-                  revenue, utilization rate, member retention rates and more!
+                  Check out ratings and reviews from people just like you. Know
+                  exactly what you&apos;re getting into before your first
+                  session.
                 </Feature.Description>
               </Feature.TextContent>
             </Feature>

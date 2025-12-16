@@ -1,38 +1,41 @@
 import Step from "@/components/Step/Step";
 
 import MyLocationSVG from "@/assets/illustrations/my-location.svg";
-import PhoneCallSVG from "@/assets/illustrations/phone-call.svg";
+import OnlineMessagingSVG from "@/assets/illustrations/online-messaging.svg";
 import PersonalTrainingSVG from "@/assets/illustrations/personal-training.svg";
 
 import styles from "./HowItWorks.module.scss";
 
 const steps = [
   {
-    heading: "Find your client",
+    heading: "Find your coach",
     description: (
       <>
-        Explore our interactive map to pick the client that fits you best by
-        weighing their proposed price, fitness goal and workout place.
+        Explore the interactive map to discover qualified coaches near you.
+        Filter by expertise, location radius, and gender to find your perfect
+        trainer.
       </>
     ),
     illustration: MyLocationSVG,
   },
   {
-    heading: "Contact for details",
+    heading: "Connect and chat",
     description: (
       <>
-        Use the provided client&apos;s phone number to iron out the details and
-        ensure that both sides are ready to meet.
+        Send a connection request and message your coach directly through our
+        built-in chat. Discuss your goals, availability, and other things — all
+        within the platform.
       </>
     ),
-    illustration: PhoneCallSVG,
+    illustration: OnlineMessagingSVG,
   },
   {
-    heading: "Workout together",
+    heading: "Train and review",
     description: (
       <>
-        Meet your client at the discussed place and make sure to do your best to
-        help your client achieve their goal!
+        Meet your coach at your chosen location and work towards your fitness
+        goals. After your sessions, leave a rating to help others in the
+        community find great trainers.
       </>
     ),
     illustration: { value: PersonalTrainingSVG, isHorizontal: true },

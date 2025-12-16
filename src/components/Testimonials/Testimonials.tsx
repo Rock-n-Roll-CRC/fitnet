@@ -11,54 +11,54 @@ import styles from "./Testimonials.module.scss";
 
 const testimonials = [
   {
-    author: { name: "Peter", country: "Fitness coach" },
+    author: { name: "Elena", country: "CrossFit coach" },
     description: (
       <>
-        Your app is what I needed but didn&apos;t know I wanted — it not only
-        doubled my sessions, but made scheduling the thing of the past.
+        The map feature is brilliant. I can see exactly who&apos;s searching in
+        my area and reach out immediately. Game changer for my business.
       </>
     ),
-    label: "on FitNet's positive effect on productivity",
+    label: "on discovering local clients",
   },
   {
-    author: { name: "Rachael", country: "Yoga instructor" },
+    author: { name: "Tom", country: "Bodybuilder" },
     description: (
       <>
-        FitNet&apos;s interactive map takes client management to a whole new
-        level. Now, I can find my client in less than 3 minutes.
+        Finally found a muscle growth coach nearby who gets my goals. The
+        filtering saved me hours of searching through generic listings.
       </>
     ),
-    label: "on how our interactive map helps finding clients",
+    label: "on finding specialized coaching",
   },
   {
-    author: { name: "Davide", country: "Fitness coach" },
+    author: { name: "Priya", country: "Yoga instructor" },
     description: (
       <>
-        I love the fact that you can get the insights on your revenue, clients,
-        etc. Sometimes, you need to take a look at how things are going.
+        Having chat built into the platform means I never miss a potential
+        client. They message, I respond in seconds, session booked.
       </>
     ),
-    label: "on the importance of statistics",
+    label: "on instant communication",
   },
   {
-    author: { name: "Keri", country: "Pilates instructor" },
+    author: { name: "James", country: "Cardio enjoyer" },
     description: (
       <>
-        Headspace provides me with ... a connection to myself, and a
-        disconnection from negative thoughts, feelings, and sensations.
+        Needed someone who understood sustainable weight loss. FitNet&apos;s
+        reviews helped me trust my choice before even meeting my coach.
       </>
     ),
-    label: "on finding her happy place",
+    label: "on making informed decisions",
   },
   {
-    author: { name: "Davide", country: "France" },
+    author: { name: "Maria", country: "Strength coach" },
     description: (
       <>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit expedita, odit
-        dolores itaque assumenda sed nam aperiam repellat sapiente.
+        My client base tripled in two months. The platform handles discovery and
+        communication so I can focus on actual training.
       </>
     ),
-    label: "on managing his bla bla bla",
+    label: "on growing her coaching business",
   },
 ];
 
