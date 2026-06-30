@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "gnzzrobsnvlrmavohlcf.supabase.co",
+        hostname: "mryjenzwngfqaivkqqhd.supabase.co",
         port: "",
         pathname: "**",
       },
@@ -59,8 +59,6 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-
-  eslint: { ignoreDuringBuilds: true },
 };
 
 export default nextConfig;
