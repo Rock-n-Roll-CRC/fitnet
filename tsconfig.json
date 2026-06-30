@@ -11,7 +11,6 @@
     "verbatimModuleSyntax": true,
     "useDefineForClassFields": true,
     "incremental": true,
-
     /* Strictness: */
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -20,22 +19,18 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
     /* NOT transpiling with TypeScript: */
     "module": "preserve",
     "noEmit": true,
-    "jsx": "preserve",
-
+    "jsx": "react-jsx",
     /* Running in the DOM: */
     "lib": ["es2022", "dom", "dom.iterable"],
-
     /* Plugins: */
     "plugins": [
       {
         "name": "next"
       }
     ],
-
     /* Custom Import Aliases: */
     "paths": {
       "@/*": ["./src/*"]
@@ -49,7 +44,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
