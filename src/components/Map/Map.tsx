@@ -16,7 +16,7 @@ import NearbyProfilesList from "@/components/NearbyProfilesList/NearbyProfilesLi
 
 import { calculateAge, calculateDistance } from "@/utilities/helpers";
 
-import navigateUrl from "@/assets/icons/navigate.svg?url";
+import navigateSVG from "@/assets/icons/navigate.svg?url";
 
 import styles from "./Map.module.scss";
 import type { Session } from "next-auth";
@@ -67,7 +67,7 @@ const Map = ({
   const [selectedProfile, setSelectedProfile] = useState<Tables<"profiles">>();
 
   const markerIcon = divIcon({
-    html: `<img src="${navigateUrl.src}" class="${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--me"] ?? ""}" />`,
+    html: `<img src="${navigateSVG.src}" class="${styles["map__marker-icon"] ?? ""} ${styles["map__marker-icon--me"] ?? ""}" />`,
     className: styles.map__marker,
     iconAnchor: [30, 15],
   });
