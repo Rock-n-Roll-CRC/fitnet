@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],
+        condition: {
+          not: {
+            query: "?url",
+          },
+        },
         as: "*.js",
       },
     },
