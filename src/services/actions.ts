@@ -124,7 +124,7 @@ export const signUpWithCredentials = async (credentials: FormData) => {
 
 export const logOut = async () => {
   try {
-    await signOut();
+    await signOut({ redirectTo: "/login" });
   } catch (error) {
     if (isRedirectError(error)) throw error;
 
